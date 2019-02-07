@@ -1,0 +1,10 @@
+Package: HEEL
+Title: Miscellaneous Functions From HEEL Members
+Version: 0.0.0.9000
+Authors@R: person("Gordon", "Holtgrieve", email = "gholt@uw.edu", role = c("aut", "cre"))
+Description: This package is a collection of miscellaneous functions for sharing among members and friends of the Holtgrieve Ecosystem Ecology Lab (HEEL) at the University of Washington.  There is no specific theme, logic, or guarantee.  
+Depends: R (>= 3.4.2)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0
