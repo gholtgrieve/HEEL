@@ -1,12 +1,12 @@
-#' Converts standard delta notation to isotopic ratio
+#' Converts isotopic ratio data to standard delta notation
 #'
-#' This function is used to convert isotope data in standard delta notation into isotopic ratio (R).
-#' If argument 'std' is provided, then the raw ratio (R = heavy isotope / light isotope) is returned.
+#' This function is used to convert isotopic ratio data (R) into standard delta notation.
+#' If argument 'std' is provided, then the data should be the raw ratio (R = heavy isotope / light isotope).
 #' Do not use this option if ratios are given as light isotope / heavy isotope (not typical).  If 'std'
-#' is NULL (default) then the 'grand ratio' (R-sample/R-standard) is returned.
+#' is NULL (default) then data should be the 'grand ratio' (R-sample/R-standard).
 #'
 #' @usage
-#' delta.to.R(x, std = NULL)
+#' R.to.delta(x, std = NULL)
 #' @param x Numeric.
 #' @param std Character vector of length one indicating the accepted international standard the data are relative to.
 #'            Possible options are:
@@ -18,14 +18,12 @@
 #'   \item{VSMOW-H}{D/H = 0.000156}
 #'   \item{VCDT}{34S/32S = 0.043990}
 #' }
-#' @return Object same as 'x' with data as an isotopic ratio.
+#' @return Object same as 'x' with data in dleta notation.
 #' @examples
-#' delta.to.R(10, std = "air")  # Returns R_sample
-#' delta.to.R(1.0)  # Returns R_sample/R_standard
 #' @author Gordon W. Holtgrieve
 #' @export
 
-delta.to.R <- function(x, std = NULL){
+R.to.delta <- function(x, std = NULL){
   STD.options <- c("VPDB", "air-N", "air-O", "VSMOW-O", "VSMOW-H", "VCDT")
   STD.R <- c(isotope.standards[isotope.standards$Name=="VPDB","R_13C12C"],
              isotope.standards[isotope.standards$Name=="air","R_15N14N"],
@@ -36,14 +34,14 @@ delta.to.R <- function(x, std = NULL){
 
   # Error handling
   if(is.null(std)){
-    out <- x / 1000 + 1
+    out <- (x - 1) * 1000
   } else {
     if(length(std)>1) stop("Error: Argument 'std' should be length == 1 (i.e., a single reference standard.)")
     if(!(std %in% STD.options)) stop("Error: Argument 'std' is not one of the currently supported options.")
 
     Rstd <-STD.R[STD.options == std]
 
-    out <- Rstd * (x / 1000 + 1)
+    out <- (x/Rstd - 1) * 1000
   }
 
   return(out)
