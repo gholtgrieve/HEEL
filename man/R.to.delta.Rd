@@ -12,22 +12,28 @@ R.to.delta(x, std = NULL)
 \item{std}{Character vector of length one indicating the accepted international standard the data are relative to.
            Possible options are:
 \describe{
-  \item{VPDB}{13C/12C = 0.01118 (note: carbon only)}
+  \item{VPDB}{13C/12C = 0.011180 (note: carbon only)}
   \item{air-N}{15N/14N = 0.003676}
-  \item{air-O}{18O/16O = 0.002053}
-  \item{VSMOW-O}{18O/16O = 0.002005}
-  \item{VSMOW-H}{D/H = 0.000156}
-  \item{VCDT}{34S/32S = 0.043990}
+  \item{air-O}{18O/16O = 0.00205292}
+  \item{VSMOW-O}{18O/16O = 0.00200520}
+  \item{VSMOW-H}{D/H = 0.00015576}
+  \item{VCDT}{34S/32S = 0.0441626}
 }}
 }
 \value{
-Object same as 'x' with data in dleta notation.
+Object same as 'x' with data in delta notation rounded to two decimal places.
 }
 \description{
 This function is used to convert isotopic ratio data (R) into standard delta notation.
 If argument 'std' is provided, then the data should be the raw ratio (R = heavy isotope / light isotope).
 Do not use this option if ratios are given as light isotope / heavy isotope (not typical).  If 'std'
 is NULL (default) then data should be the 'grand ratio' (R-sample/R-standard).
+}
+\examples{
+R.to.delta(1) #zero per mil
+R.to.delta(1.001) #one per mil
+R.to.delta(0.00200520, std="VSMOW-O") #zero per mil
+R.to.delta(delta.to.R(23.8, std="VSMOW-O"), std = "air-O") #converts from VSMOW to air scales
 }
 \author{
 Gordon W. Holtgrieve

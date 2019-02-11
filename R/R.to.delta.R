@@ -11,15 +11,19 @@
 #' @param std Character vector of length one indicating the accepted international standard the data are relative to.
 #'            Possible options are:
 #' \describe{
-#'   \item{VPDB}{13C/12C = 0.01118 (note: carbon only)}
+#'   \item{VPDB}{13C/12C = 0.011180 (note: carbon only)}
 #'   \item{air-N}{15N/14N = 0.003676}
-#'   \item{air-O}{18O/16O = 0.002053}
-#'   \item{VSMOW-O}{18O/16O = 0.002005}
-#'   \item{VSMOW-H}{D/H = 0.000156}
-#'   \item{VCDT}{34S/32S = 0.043990}
+#'   \item{air-O}{18O/16O = 0.00205292}
+#'   \item{VSMOW-O}{18O/16O = 0.00200520}
+#'   \item{VSMOW-H}{D/H = 0.00015576}
+#'   \item{VCDT}{34S/32S = 0.0441626}
 #' }
-#' @return Object same as 'x' with data in dleta notation.
+#' @return Object same as 'x' with data in delta notation rounded to two decimal places.
 #' @examples
+#' R.to.delta(1) #zero per mil
+#' R.to.delta(1.001) #one per mil
+#' R.to.delta(0.00200520, std="VSMOW-O") #zero per mil
+#' R.to.delta(delta.to.R(23.8, std="VSMOW-O"), std = "air-O") #converts from VSMOW to air scales
 #' @author Gordon W. Holtgrieve
 #' @export
 
@@ -44,6 +48,6 @@ R.to.delta <- function(x, std = NULL){
     out <- (x/Rstd - 1) * 1000
   }
 
-  return(out)
+  return(round(out,digits=2))
 
 }

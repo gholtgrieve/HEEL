@@ -7,7 +7,7 @@
 #'
 #' @docType data
 #' @usage data(isotope.standards)
-#' @format A dataframe with 53 rows and 21 variables:
+#' @format A dataframe with 55 rows and 21 variables:
 #' \describe{
 #'   \item{Name}{Primary identifier for the isotope standard. Character string.}
 #'   \item{InternationalSTD}{Identifies as accepted international standard material. Boolean.}
