@@ -1,7 +1,7 @@
 Package: HEEL
 Type: Package
 Title: Miscellaneous Functions From HEEL Members
-Version: 1.1.0
+Version: 1.1.1
 Author: Gordon W. Holtgrieve
 Maintainer: Gordon W. Holtgrieve <gholt@uw.edu>
 Description: This package is a collection of miscellaneous functions for sharing among members and friends of the Holtgrieve Ecosystem Ecology Lab (HEEL) at the University of Washington.  There is no specific theme, logic, or guarantee.  

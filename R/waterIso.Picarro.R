@@ -340,6 +340,11 @@ Calculate.nDiscard <- function(memory, cutoff){
   cat("Analysis start:", as.character(rawData$Time.Code[1]), "\n", sep = "\t")
   cat("Analysis end:", as.character(rawData$Time.Code[length(rawData$Time.Code)]), "\n", sep = "\t")
   cat("Data reduction performed", format(Sys.time(), "%a %b %d %X %Y"), "\n", sep = "\t")
+  cat(paste("Analyzed using R", getRversion()))
+  cat("----Installed Packages----")
+  for (package_name in sort(loadedNamespaces())) {
+    cat(paste(package_name, packageVersion(package_name)))
+  }
   cat("\n")
   cat("\n")
 
