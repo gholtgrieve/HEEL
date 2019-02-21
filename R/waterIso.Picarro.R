@@ -94,8 +94,8 @@ Calculate.nDiscard <- function(memory, cutoff){
   numInj <- max(data$Inj.Nr)
   cat("It appears the number of injections per sample is ", numInj,".","\n", sep="")
   cat("Is that correct?")
-  flag <- readline("Type y or n.")
-  if(flag != "y") stop("You entered 'no' when the data says yes.  Check to see who is wrong.")
+  flag <- readline("Type T or F.")
+  if(!flag) stop("You entered false when the data says true.  Check to see who is wrong.")
 
 #identify total number of vials analysed (standards + samples)
   vials <- unique(data$Sample)
@@ -115,8 +115,6 @@ Calculate.nDiscard <- function(memory, cutoff){
   if(!flag) instrumentName <- readline("Enter the instrument name.")
 
 ###########################################################################################################
-
-
 
 ###########################################################################################################
 #  Calculate the dD & d18O "memory" for this run.  Set number of injections to discard.
