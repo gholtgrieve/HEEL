@@ -16,7 +16,6 @@
 #'   }
 #' @author Gordon W. Holtgrieve
 #' @export
-#'
 
 get.isotope.standard <- function(std, isotope.system){
 
