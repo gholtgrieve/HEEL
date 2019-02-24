@@ -2,7 +2,7 @@
 #'
 #' This function is used to pull out isotope standard data from the isotope.standards dataframe
 #' easily and efficently.  The isotope.standards dataframe contains only raw isotope ratios,
-#' so this function also will convert to delta value relative to a specified standard.
+#' so this function also will convert to delta value relative to the common international standard.
 #'
 #' @usage
 #' @param std  Character vector with name(s) of the isotope standard of interest.
