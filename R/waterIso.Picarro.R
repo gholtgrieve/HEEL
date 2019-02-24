@@ -38,7 +38,9 @@ waterIso.Picarro <- function(data.file, sample.file, working.STDs = c("BW","KD",
 output.file <- paste(data.file,"_reduced_final.txt", sep="")
 
 #create a data frame with the d18O and dD of possible standards
-refSTDs <- isotope.standards[isotope.standards$Name %in% working.STDs, c("Name", "dD_vsVSMOW", "d18O_vsVSMOW")]
+refSTDs <- data.frame(Name = working.STDs,
+                      dD_vsVSMOW = get.isotope.standard(working.STDs, "H")$delta,
+                        d18O_vsVSMOW = get.isotope.standard(working.STDs, "O18")$delta)
 
 #Identify which two standards are to be used in the correction and which is the check.
 refWater1  <-  working.STDs[1]
@@ -94,8 +96,8 @@ Calculate.nDiscard <- function(memory, cutoff){
   numInj <- max(data$Inj.Nr)
   cat("It appears the number of injections per sample is ", numInj,".","\n", sep="")
   cat("Is that correct?")
-  flag <- readline("Type T or F.")
-  if(!flag) stop("You entered false when the data says true.  Check to see who is wrong.")
+  flag <- readline("Is that correct?. Type T or F.")
+  if(flag==F) stop("You entered false when the data says true.  Check to see who is wrong.")
 
 #identify total number of vials analysed (standards + samples)
   vials <- unique(data$Sample)
@@ -112,7 +114,7 @@ Calculate.nDiscard <- function(memory, cutoff){
   instrumentName <- instruments[which(instruments[,1] == instrumentID),2]
   cat("It appears the instrument was ", instrumentName,".","\n", sep="")
   flag <- as.logical(readline("Is that correct (T/F)?"))
-  if(!flag) instrumentName <- readline("Enter the instrument name.")
+  if(flag==F) instrumentName <- readline("Enter the instrument name.")
 
 ###########################################################################################################
 
