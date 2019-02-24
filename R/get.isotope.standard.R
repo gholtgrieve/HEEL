@@ -5,14 +5,15 @@
 #' so this function also will convert to delta value relative to a specified standard.
 #'
 #' @usage
-#' @param std  Caharcter vector with name(s) of the isotope standard of interest.
+#' @param std  Character vector with name(s) of the isotope standard of interest.
 #' @param isotope.system  Character vector of length one indicating the (single) isotope system of interest. Currently supported isotope systems are "C", "N", "S", "H", "O18", "O17".
 #' @return A list with the following elements.
 #' \describe{
-#'   \item{delta}{The value of standard in delta notation for the given isotope system. Uses common
+#'   \item{delta}{Numeric value of the standard in delta notation for the given isotope system. Uses the most common international standard for each isotope system. Specifically, VPDB for C, air for N, VCDT for S, and VSMOW for H, O18, and O17.}
 #'   \item{std.R}{The ratio of heavy to light isotope of the standard for the given isotope system (e.g., 13C/12C)}
 #'   \item{R}{The ratio of the standard relative to ratio of the common international standard for the given isotope system (i.e., R_std/R_VPDB)}
 #'   \item{massPct}{The mass percent of the standard for the given isotope system.}
+#'   }
 #' @author Gordon W. Holtgrieve
 #' @export
 #'
