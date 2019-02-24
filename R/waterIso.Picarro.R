@@ -95,7 +95,6 @@ Calculate.nDiscard <- function(memory, cutoff){
 #find total number of injections per sample
   numInj <- max(data$Inj.Nr)
   cat("It appears the number of injections per sample is ", numInj,".","\n", sep="")
-  cat("Is that correct?")
   flag <- readline("Is that correct?. Type T or F.")
   if(flag==F) stop("You entered false when the data says true.  Check to see who is wrong.")
 
