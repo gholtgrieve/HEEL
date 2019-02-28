@@ -52,17 +52,21 @@ get.isotope.standard <- function(std, isotope.system){
         },
         stop("Parameter isotope.system is missing or not one of the currently supported systems.")
         )
-  std.R <- isotope.standards$Value[isotope.standards$Name %in% std & isotope.standards$dataType == dataType_R]
+
+  #Check name given as standard against list of possible names and return the 'offical' name
+  offical.standard.name <- check.isotope.standard.name(std)
+
+  std.R <- isotope.standards$Value[isotope.standards$Name %in% offical.standard.name & isotope.standards$dataType == dataType_R]
   if(length(std.R)==0)  stop("No data available.  Try again.")
 
   R <- std.R/reference.std.R
   delta <- (R - 1) * 1000
-  temp <- isotope.standards$Value[isotope.standards$Name %in% std & isotope.standards$dataType == dataType_mass]
+  temp <- isotope.standards$Value[isotope.standards$Name %in% offical.standard.name & isotope.standards$dataType == dataType_mass]
   if(length(temp)==0){
     massPct <- NA
   } else {
     massPct = temp
   }
 
- return(list(std = std, isotope.system = isotope.system, delta = delta, std.R = std.R, R = R, massPct = massPct))
+ return(list(std = offical.standard.name, isotope.system = isotope.system, delta = delta, std.R = std.R, R = R, massPct = massPct))
 }
