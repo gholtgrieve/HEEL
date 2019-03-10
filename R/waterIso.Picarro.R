@@ -35,10 +35,10 @@
 waterIso.Picarro <- function(data.file, sample.file, working.STDs = c("BW","KD","SW")){
 
 #Output file name
-output.file <- paste(data.file,"_reduced_final.txt", sep="")
+output.file <- paste(tools::file_path_sans_ext(data.file),"_reduced_final.txt", sep="")
 
 #create a data frame with the d18O and dD of possible standards
-refSTDs <- data.frame(Name = working.STDs,
+refSTDs <- data.frame(Name = get.isotope.standard(working.STDs, "H")$std,
                       dD_vsVSMOW = get.isotope.standard(working.STDs, "H")$delta,
                         d18O_vsVSMOW = get.isotope.standard(working.STDs, "O18")$delta)
 
