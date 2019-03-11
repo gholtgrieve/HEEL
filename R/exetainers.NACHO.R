@@ -4,16 +4,25 @@
 #' is thin and organige the raw data.  Plots are generated (as .pdfs) to look for mass effects on the results ansd the user is asked whether to correct for
 #' sample mass differences among injections and samples.  After corrections, measured values are calibrated against the working standards included
 #' in the run.  The function writes a .csv with the thinned raw data and a .txt with all relevant information about the analysis.  The finalized
-#' sample data are writen as a .csv file and adataframe the data is also returned.
+#' sample data are writen as a .csv file and a dataframe of the data is also returned.
+#'
+#' The input data file has strick formatting and data requirments.  Each sample or standard should have seven rows of data: 3 for massess 32, 34
+#' and 40; 2 for masses 28 and 29, and 2 for masses 44, 45, 46.  Deviations for the is will result in the function failing.  In additon there
+#' must be the following four identification columns:
+#'   \describe{
+#'     \item{Identifier.1}{Unique identifier for each exetainer in the file. If two runs are combined, be sure this field remains unique. Character.}
+#'     \item{Identifier.2}{Mililiters of air added to air standards. Use only with air standards; othersie blank. Numeric.}
+#'     \item{Comment}{Identifies whether the extetainer is a 'airSTD', 'waterSTD', 'Sample' or 'Conditioner'. These are the only vaild options fr this field.}
+#'     \item{analysisDate}{Data of the run(s) on NACHO. Character.}
+#'   }
 #'
 #' @usage exetainers.NACHO(data.file, analysis.date, area.cutoff = F, injections.standards = c(F, T, T, T), injections.samples = c(F, T, T, T), lab.air.T = 20, system.pressure.atm = 1.49701, salinity = 0)
 #'
 #' @param data.file     Full file name for raw data from the instrument. Must be a .csv file! Character.
-#' @param analysis.date Date of analysis on NACHO as a character.
 #' @param area.cutoff   Defines the peak area (Vs) cutoff below which an individual analysis (injection) is droped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.
 #' @param injections.standards  Boolean vector length 4 idenitfying which injections of the standards to drop (F) or keep (T) for use in the calculations.
 #' @param injections.samples    Boolean vector length 4 idenitfying which injections of the samples to drop (F) or keep (T) for use in the calculations.
-#' @param lab.air.T     Temperature of the lab at time of analysis in degrees Celcius.  Defaults to 20.  Numeric.
+#' @param lab.air.T     Temperature of the mass spec lab at time of analysis in degrees Celcius.  Defaults to 20.  Numeric.
 #' @param system.pressure.atm   Pressure of the inlet system in atmospheres.  Defaults to 1.49701 (22 psi).  Numeric.
 #' @param salinity      Salninty of the sample in ppt.  Defaults to 0.  Numeric.
 #'
@@ -120,13 +129,12 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
   #############################################################################
   #Load raw data file
   rawData <- read.csv(data.file, header=T)
-  rawData$analysisDate <- as.factor(analysisDate)
 
   #Determine number of samples and standards in this run
   exetainers <- unique(rawData[,c("Identifier.1","Identifier.2","Comment")])
   nTotal <- length(exetainers[,1])
   nSamples <- sum(exetainers$Comment=="Sample")
-  nStandards <- sum(exetainers$Comment=="Standard")
+  nStandards <- sum(exetainers$Comment=="airSTD")
   nConditioners <- sum(exetainers$Comment=="Conditioner")
   nWaterStandards <- sum(exetainers$Comment=="WaterSTD")
   print(nSamples + nStandards + nConditioners)   #Note: nTotal = nSamples + nStandards + nConditioners
@@ -139,7 +147,7 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
   x=rep(NA,length(exetainers$Identifier.1))
   y=rep(NA,length(exetainers$Identifier.1))
   for (i in 1:nTotal){
-    x[i]=ifelse(exetainers[i,3]=="Conditioner"|exetainers[i,3]=="Standard",exetainers$Identifier.2[i],NA)
+    x[i]=ifelse(exetainers[i,3]=="Conditioner"|exetainers[i,3]=="airSTD",exetainers$Identifier.2[i],NA)
     y[i]=ifelse(exetainers[i,3]=="WaterSTD"|exetainers[i,3]=="Sample",exetainers$Identifier.2[i],NA)
   }
 
@@ -210,7 +218,7 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
   #############################################################################
 
   if (flagUseAreaCutoff){
-    temp <- thinnedData[thinnedData$Identifier.1=="Standard",]
+    temp <- thinnedData[thinnedData$Identifier.1=="airSTD",]
     index <- list(temp$Identifier.2[temp$keep], temp$analysisDate[temp$keep])
     airSTDs <- aggregate(temp[temp$keep,-c(1:2,4:5)],by=index,mean, na.rm=T)
 
@@ -218,7 +226,7 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
     #Compile the air standards, thin to only the selected injections (defined above), and average
     std.parameters <- c("deckAir_mL", "R.28.40", "Area.32", "d.34O2.32O2", "d.33O2.32O2", "Area.40",
                     "d.32O2.40Ar", "Area.28", "d.15N.14N", "Area.44", "d.13C.12C")
-    temp <- thinnedData[thinnedData$Comment=="Standard",]
+    temp <- thinnedData[thinnedData$Comment=="airSTD",]
     index <- list(temp$Identifier.1[injections.standards])
     airSTDs <- aggregate(temp[injections.standards, std.parameters],by=index,mean, na.rm=T)
     rm(temp)
