@@ -1,0 +1,68 @@
+---
+title: "HOLTGRIEVE ECOSYSTEM ECOLOGY LAB"
+subtitle: "PROTOCOL FOR CLEANING GLASS & PLASTIC-WARE"
+author: "Gordon W. Holtgrieve"
+date: "Revision date: 7 July 2016"
+description: "This document describes the standard method to clean glass and plastic containers prior to collecting most samples or conducting chemical analyses. Based on IsoLab method by A. Schauer."
+category: "Protocol"
+geometry: left = 1in, right = 1in, top = 1in, bottom = 1in
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# INTRODUCTION
+This document describes the standard method to clean glass and plastic containers prior to collecting most samples or conducting chemical analyses. The basic steps include washing with alkaline soap (Liqui-Nox), acid washing, and, in the case of lab and some field glassware, ashing. Also included in this protocol is making and disposing of a hydrochloric acid (HCl) bath. Based on IsoLab method by A. Schauer.
+
+# SAFETY
+You will be using a strong alkaline soap (Liqui-Nox) and 12 M hydrochloric acid (HCl), which is a very strong acid. Familiarize yourself with the MSDSs for Liqui-Nox and hydrochloric acid. You must wear closed toed shoes, pants and a lab coat.  Safety glasses, a face shield, and long black rubber gloves are required when working with 12 M HCl. Purple nitrile gloves are sufficient protection when working with 1 N acid, although the longer gloves are useful. Material coming out of the muffle furnace can be very hot and there is a chance of shattering if items experience a dramatic change in temperature. Wear eye protection and use metal tongs with heat resistant gloves as necessary.
+
+# NOTE ON TYPES OF WATER USED IN THE PROTOCOL
+There are four types of water available on the 2nd floor of FSH.  They are:  
+
+* Tap Water – Tap water is directly from the city water supply and available in all rooms.  
+* DI Water – Basic deionized (DI) water is available from the black plastic tap on the right side of the black sink in room 235.  The resistivity of this water is ~10 Mohms (larger numbers = more pure).  
+* Ultrapure Water – DI water can be run through a polishing column (attached to the wall) by connecting the hose to a plastic fitting near the second shelf to the left of the sink.  Water passing through the secondary column has a resistivity of ~16 Mohms.  
+* Nanopure Water – When functional, the Nanopure system mounted to the concrete column will provide the highest purity of water at 18.2 Mohms. This is typically used to make reagents. Be sure to check the digital display to ensure the unit is meeting the 18.2 Mohm specification prior to using.  
+
+# HOW TO MAKE A 1 N ACID BATH – Work in Room 232
+The default concentration for the acid bath is 1 N (equivalent to 1 M), which is approximately 8% 12 M HCl by volume. **Remember to always add acid to water SLOWLY**.  
+
+1.	Working in the fume hood and staring with a clean bin that has locking watertight lid.  
+2.	Add 10 L of Ultrapure Water to the bin.  
+3.	Add ~840 mL of ACS grade 12 M HCl (37% by weight).  Immediately cap acid bottle and return to the acid cabinet.  
+4.	Wait ~15 minutes for fumes to vent.  
+5.	The acid bath can be covered with the locking lid and moved to room 235.  Always use a cart to move the bath.  
+
+# CLEANING GLASS AND PLASTIC – Work in Room 235
+1. Pre-rinse used containers with tap water to remove any left over sample or dirt.  
+2. Place item in a tub of Liqui-Nox soapy water (~1% dilution with tap water). Lightly scrub with sponge or bottle brush. Soak overnight if necessary.  
+3. Rinse thoroughly with DI Water to remove all traces of the soap (minimum 3X).  
+4. Transfer directly to the acid bath.  All items should be submerged and full of acid (i.e., all surfaces are in contact with the acid).  Soak for 8-24 hours (overnight).  
+5. Remove acid bath one item at a time and rinse 3X with DI water.  Place into clean bin.  
+6. Fill bin with Ultrapure Water.  Make sure all items are submerged and soak overnight.  
+7. Remove items and give one last rinse with Ultrapure Water, then air dry on pads on counter in room 235.  To speed up the drying process (glass only) you can oven dry at 60°C in room 333.  
+8. Return to appropriate storage location.  Samples bottles waiting to go to the field (i.e., Nalgene bottles) are kept in room 235 in cabinets and drawers on the west wall. Lab glassware is kept in room 232 in upper cabinets on east wall.  
+
+# ASHING GLASSWARE – Work in Room 235  
+Glassware to be used in analysis of organics (i.e., fatty acids or amino acids), as well as some field sampling containers, must also be ashed in the muffle furnace. Brief instructions are given here -- see Muffle Furnace Protocol for detailed instructions. **Never muffle volumetric glassware including volumetric flasks, burettes, and pipettes.**   
+
+1. Cover glassware openings with Al foil. Smaller items (e.g., Exetainers or pipettes) should be wrapped in foil packs. Mark an X or similar on foil to show it has not been muffled (the pen will disappear during muffling).  
+2. Place items in muffle furnace carefully making sure the items are not touching the metal coils on the sides of the oven.   
+3. Turn on the muffle furnace and set to 100 °C.  It is desirable to ramp the temperature up over about an hour to minimize thermal shock.    Every 10-20 minutes increase the temperature by another 100 °C until oven reaches 500 °C.   
+4. Ash at 500 °C for 4-6 hours (do not leave overnight).   
+5. Turn off muffle furnace and leave it sit for at least 2 hours.  Then crack open door. Leave it alone until the internal temp is <50 °C.  It takes longer to cool the furnace than it does to bake the items.   
+6. Remove items leaving Al foil covers in place.  Foil should stay on until the item is to be used.   
+7. Return to appropriate storage location.   
+
+# HOW TO DISPOSE OF AN ACID BATH – Work in Room 235
+Should the acid bath become discolored or contaminated in any way, dispose by first neutralizing then sending down the drain.  If contaminated with hazardous waste, follow the Hazardous Waste protocol.   
+
+1.	Use sodium bicarbonate (baking soda) to neutralize the acid in a relatively large container. Add sodium bicarbonate slowly to minimize foaming. If the solution no longer foams when you add sodium bicarbonate, the solution is neutral (with a pH between 6 and 9).   
+2.	Pour the treated solution down the drain. Note date and volume disposed on log above sink.   
+3.	Wash the bin and lid with Liqui-Nox soap and rinse with DI Water a minimum of 3 times.   
+4.	Rinse a final time with Ultrapure Water and let air dry.   
+
+# REAGENTS & SUPPLIES  
+
+*	[Hydrochloric Acid](https://ar.admin.washington.edu/Buyer/Main/aw?awh=r&awssk=yta0&awrdt=1), Certified ACS Plus, 36.5 to 38.0%, Fisher Chemical, 2.5 L case of 6,	Fisher Scientific catalogue #: A144S-212.  
+* [Alconox Liquinox](https://ar.admin.washington.edu/Buyer/Main/aw?awh=r&awssk=yta0&awrdt=1) Critical Cleaning Liquid Detergent, 3.8 L, Fisher Scientific catalogue #: 16-000-126.

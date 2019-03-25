@@ -9,15 +9,13 @@ exetainers.NACHO(data.file, analysis.date, area.cutoff = F, injections.standards
 \arguments{
 \item{data.file}{Full file name for raw data from the instrument. Must be a .csv file! Character.}
 
-\item{analysis.date}{Date of analysis on NACHO as a character.}
-
 \item{area.cutoff}{Defines the peak area (Vs) cutoff below which an individual analysis (injection) is droped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.}
 
 \item{injections.standards}{Boolean vector length 4 idenitfying which injections of the standards to drop (F) or keep (T) for use in the calculations.}
 
 \item{injections.samples}{Boolean vector length 4 idenitfying which injections of the samples to drop (F) or keep (T) for use in the calculations.}
 
-\item{lab.air.T}{Temperature of the lab at time of analysis in degrees Celcius.  Defaults to 20.  Numeric.}
+\item{lab.air.T}{Temperature of the mass spec lab at time of analysis in degrees Celcius.  Defaults to 20.  Numeric.}
 
 \item{system.pressure.atm}{Pressure of the inlet system in atmospheres.  Defaults to 1.49701 (22 psi).  Numeric.}
 
@@ -34,7 +32,17 @@ This function is used to decompose and finalize gas ratio data from exetainers a
 is thin and organige the raw data.  Plots are generated (as .pdfs) to look for mass effects on the results ansd the user is asked whether to correct for
 sample mass differences among injections and samples.  After corrections, measured values are calibrated against the working standards included
 in the run.  The function writes a .csv with the thinned raw data and a .txt with all relevant information about the analysis.  The finalized
-sample data are writen as a .csv file and adataframe the data is also returned.
+sample data are writen as a .csv file and a dataframe of the data is also returned.
+
+The input data file has strick formatting and data requirments.  Each sample or standard should have seven rows of data: 3 for massess 32, 34
+and 40; 2 for masses 28 and 29, and 2 for masses 44, 45, 46.  Deviations for the is will result in the function failing.  In additon there
+must be the following four identification columns:
+  \describe{
+    \item{Identifier.1}{Unique identifier for each exetainer in the file. If two runs are combined, be sure this field remains unique. Character.}
+    \item{Identifier.2}{Mililiters of air added to air standards. Use only with air standards; othersie blank. Numeric.}
+    \item{Comment}{Identifies whether the extetainer is a 'airSTD', 'waterSTD', 'Sample' or 'Conditioner'. These are the only vaild options fr this field.}
+    \item{analysisDate}{Data of the run(s) on NACHO. Character.}
+  }
 }
 \author{
 Gordon W. Holtgrieve
