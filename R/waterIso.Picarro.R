@@ -30,7 +30,7 @@
 #'    }
 #' @author Gordon W. Holtgrieve
 #' @export
-#'
+#' @importFrom tools file_path_sans_ext
 
 waterIso.Picarro <- function(data.file, sample.file, working.STDs = c("BW","KD","SW")){
 

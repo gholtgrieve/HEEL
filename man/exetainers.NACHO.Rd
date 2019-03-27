@@ -22,9 +22,19 @@ exetainers.NACHO(data.file, analysis.date, area.cutoff = F, injections.standards
 \item{salinity}{Salninty of the sample in ppt.  Defaults to 0.  Numeric.}
 }
 \value{
-Dataframe of :
+Dataframe of finalized data for each exeatiner including:
   \describe{
-    \item{}{}
+    \item{d180_02.vs.air}{18O:16O of diatomic oxygen (O2) in the headspace in standard delta notation relative to atmospheric air.}
+    \item{d180_02.vs.VSMOW}{18O:16O of diatomic oxygen (O2) in the headspace in standard delta notation relative to VSMOW.}
+    \item{d170_02.vs.air}{17O:16O of diatomic oxygen (O2) in the headspace in standard delta notation relative to atmospheric air.
+          Use with caution as this method has not been validated.}
+    \item{d15N_N2.vs.air}{15N:14N of diatomic nitrogen (N2) in the headspace in standard delta notation relative to atmospheric air.
+          Use with caution as this method has not been validated.}
+    \item{O2.Ar}{Oxygen to argon ratio (mass 32:40) of headspace gas.}
+    \item{d13C.CO2}{13C:12C of carbon dioxide (CO2) in the headspace (after acidificatioon) in standard delta notation relative to VPDB.}
+    \item{d13C.TotalDIC}{13C:12C of dissolved inroganic carbon in standard delta notation relative to VPDB calculated from the headspace
+          CO2 and using Henry's constant to estimate the 13C:12C of CO2 that raims dissoved in water.  Note that it may be necessary to
+          further correct these data based on co-analyzed DIC standards.}
    }
 }
 \description{

@@ -5,7 +5,18 @@ Version: 0.2.2
 Author: Gordon W. Holtgrieve
 Maintainer: Gordon W. Holtgrieve <gholt@uw.edu>
 Description: This package is a collection of miscellaneous functions for sharing among members and friends of the Holtgrieve Ecosystem Ecology Lab (HEEL) at the University of Washington.  There is no specific theme, logic, or guarantee.  
-Depends: R (>= 3.4.2)
+Depends: 
+  R (>= 3.4.2),
+  rmarkdown (>= 1.12),
+  dplyr (>= 0.8.0.1),
+  knitr (>= 1.22)
+Imports:
+  stringr,
+  CHNOSZ,
+  tools
+Suggests:
+  devtools,
+  roxygen2
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

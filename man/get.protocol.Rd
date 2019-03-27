@@ -11,6 +11,7 @@ get.protocol(protocol, format)
 \describe{
   \item{"Data Management"}
   \item{"Dish Cleaning"}
+  \item{"d15N-AA"}
   }}
 
 \item{format}{File format to be generated. Options are "pdf", "html", "word", "markdown", "rmarkdown". Character vector of length 1.}

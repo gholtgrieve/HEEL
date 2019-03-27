@@ -9,8 +9,8 @@
 #' get.molar.mass(mol="C2H6O")
 #' get.molar.mass(mol=c("Ag(S2O3)2", "CO2"))
 #' @author Gordon W. Holtgrieve
-#' @importFrom CHNOSZ makeup
 #' @export
+#' @importFrom CHNOSZ makeup
 
 get.molar.mass <- function(mol){
   # Error handling

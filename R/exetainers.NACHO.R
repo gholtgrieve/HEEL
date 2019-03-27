@@ -42,7 +42,8 @@
 #'    }
 #' @author Gordon W. Holtgrieve
 #' @export
-#'
+#' @import dplyr
+#' @importFrom tools file_path_sans_ext
 
 exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
                               injections.standards = c(F, T, T, T), injections.samples = c(F, T, T, T),
