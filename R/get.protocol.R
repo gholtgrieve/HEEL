@@ -22,7 +22,7 @@
 #' @importFrom stringr str_replace
 
 get.protocol <- function(protocol = NULL, format=NULL){
-  listo <- cbind(1:2, c("Data Management", "Dish Cleaning", "d15N-AA"), c("DataManagement.Rmd", "DishCleaning.Rmd", "d15NAA.CSIA.AC-PV.Rmd"))
+  listo <- cbind(1:3, c("Data Management", "Dish Cleaning", "d15N-AA"), c("DataManagement.Rmd", "DishCleaning.Rmd", "d15NAA.CSIA.AC-PV.Rmd"))
 
 # If no arguments print list of supported protocols
   if (is.null(protocol) | is.null(format)) {
