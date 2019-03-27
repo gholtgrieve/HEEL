@@ -18,6 +18,7 @@
 #' @author Gordon W. Holtgrieve
 #' @export
 #' @import rmarkdown
+#' @import knitr
 #' @importFrom stringr str_replace
 
 get.protocol <- function(protocol = NULL, format=NULL){
