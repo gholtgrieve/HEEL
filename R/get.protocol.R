@@ -10,6 +10,7 @@
 #' \describe{
 #'   \item{"Data Management"}
 #'   \item{"Dish Cleaning"}
+#'   \item{"d15N-AA"}
 #'   }
 #' @param format File format to be generated. Options are "pdf", "html", "word", "markdown", "rmarkdown". Character vector of length 1.
 #' @examples
@@ -18,7 +19,7 @@
 #' @export
 
 get.protocol <- function(protocol = NULL, format=NULL){
-  listo <- cbind(1:2, c("Data Management", "Dish Cleaning"), c("DataManagement.Rmd", "DishCleaning.Rmd"))
+  listo <- cbind(1:2, c("Data Management", "Dish Cleaning", "d15N-AA"), c("DataManagement.Rmd", "DishCleaning.Rmd", "d15NAA.CSIA.AC-PV.Rmd"))
 
 # If no arguments print list of supported protocols
   if (is.null(protocol) | is.null(format)) {

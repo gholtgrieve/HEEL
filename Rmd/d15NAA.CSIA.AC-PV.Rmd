@@ -1,0 +1,181 @@
+---
+title: "HOLTGRIEVE ECOSYSTEM ECOLOGY LAB"
+author: "Gordon W. Holtgrieve"
+date: 'Revision date: 2 Oct 2017'
+output: pdf_document
+geometry: left = 1in, right = 1in, top = 1in, bottom = 1in
+description: This protocol describes the process to extract and derivatize amino acids (AAs) from biologic material so that they are suitable for quantification by GC-FID and isotopic analysis by GC-C-irMS. Derived from Rachel Jeffery’s protocol based on Chikaraishi et al. (2009) method with elements from Popp et al. (2007).
+subtitle: PROTOCOL TO EXTRACT AND DERIVATIZE AMINO ACIDS FROM BIOLOGIC MATERIAL USING MODIFIED ACETYL CHLORIDE- PIVALOYL CHLORIDE DERIVATIZATION
+category: Protocol
+---
+
+# INTRODUCTION
+This protocol describes the process to extract and derivatize amino acids (AAs) from biologic material so that they are suitable for quantification by GC-FID and isotopic analysis by GC-C-irMS. The method is based on that used by Chikaraishi et al. (2007) and Rachel Jeffery’s at University of Liverpool, UK, and is a slight modification of that published in Metges et al. (1996) combined with elements from Popp et al. (2007). The method involves esterification by isopropanol and acetyl chloride followed by derivatization using toluene and pivaloyl chloride. This method is unsuitable for carbon isotopic analysis. Norleucine is added to each sample as an internal quantification and isotopic standard. This protocol is designed for a run of 9 samples over two days.  
+
+# SAFETY
+This method uses numerous chemicals that are considered hazardous for flammability and toxicity. Therefore, most of the work must be conducted in the fume hood.  Toxic chemicals include toluene, isopropanol (a.k.a., IPA), methylene chloride (dichloromethane or DCM), acetyl chloride, and pivaloyl chloride. Toluene and IPA can affect the respiratory and central nervous systems with repeat and prolonged exposure. DCM is a suspected carcinogen. Acetyl chloride reacts violently with water and can burn exposed skin. All of the above chemicals are flammable. Concentrated hydrochloric acid (HCl) is used when preparing reagents. When working with all chemicals always wear a minimum of nitrile gloves and eye protection. Work in the fume hood when dealing with organic solvents and acids. Familiarize yourself with the MSDS for all chemicals prior to starting this protocol.  
+
+# MATERIALS  
+
+* Eighteen clean Reacti-Vials, caps, and septa.
+*	Minimum 27 ashed 5 3/4” Pasteur pipettes.
+*	Nine 9” glass Pasteur pipettes ashed with a sealed tip.  Prepare by melting the tips individually using a Bunsen burner in the fume hood (be careful of other chemicals).  Group in packs of 50 or more and ash at 500 $^\circ$C for 2-4 hours.
+*	Wheaton auto-pipetter (fits Pasteur pipettes) and rubber blubs.
+*	One pack (9) 1 mL vials of 6N protein sequencing grade HCl.
+*	Leur-tip 2.5 mL glass gas-tight syringe.
+*	Nine 0.22 $\mu$m Millex-GP syringe filters.
+*	Nine 12 X 75 mm glass tubes, ashed.
+*	Nine 2 mL GC vials and inserts with screw-on caps.
+
+# PREPARING REAGENTS 
+0.01 N HCl — Work in the fume hood when using concentrated HCl. Using 1000 $\mu$L pipetter add 830 $\mu$L 12 N HCl to a 1 L volumetric flask filled ~2/3 with Nanopure water. Fill to mark with Nanopure water using a squirt bottle.  Mix and transfer to the designated 1 L glass bottle.
+
+0.2 N HCl — Work in the fume hood when using concentrated HCl. Using a 10 mL glass pipette, add 4.2 mL 12 N HCl to a 250 mL volumetric flask filled ~2/3 with Nanopure water. Fill to mark with Nanopure water using a squirt bottle. Mix and transfer to the designated 500 mL glass bottle.
+
+4:1 IPA:acetyl chloride — Working in the fume hood, measure 400 mL 2-propanol (IPA) using 500 mL graduated cylinder. Transfer to a clean 1 L beaker. Prepare a large ice bath. Add a total of 100 mL acetyl chloride to the IPA in ~5 mL increments. Be careful to bring acetyl chloride in contact with water; results in a highly exothermic reaction. Store in the designated 500 mL media bottle with white Teflon lined cap.
+
+4:1 Toluene: pivaloyl chloride — Working in the fume hood, measure 400 mL toluene using a 500 mL graduated cylinder. Transfer to the designated 500 mL glass bottle using an ashed glass funnel. Slowly add the entire 100 mL bottle of pivaloyl chloride (a.k.a. trimethylacetyl chloride) using the glass funnel.
+
+3:2 n-hexanes/DCM — Working in the fume hood, measure 300 mL n-hexanes using a 500 mL graduated cylinder. Transfer to the designated 500 mL glass bottle using an ashed glass funnel. Next measure and add 200 mL DCM (a.k.a. methylene chloride) using the same graduated cylinder and glass funnel.
+
+Dried DCM — Working in the fume hood, decant 100 mL DCM (a.k.a. methylene chloride) from supplier bottle into designated bottle. Add ~50 g of room temperature 3A molecular sieve beads. DCM will be dry in 48 hours (plan ahead). Activating the molecular sieves: Pre-weigh the desired amount of beads into an ashed beaker. Bake at 350 $^\circ$C in the muffle furnace for 4 hours. Remove while hot (use tongs) and place in desiccator until the cool to room temperature.
+
+# ACID HYDROLYSIS
+1.	Weigh 5 mg of sample on the 6-point balance in FSH 333 using small pieces of cut weight paper. Record weight to 0.001 mg. Add to clean Reacti-Vial and cap with a clean septum (white side toward the sample).   
+2.	Add 20 $\mu$L of norleucine (0.05 M in 0.1 N HCl) to each sample using the 2-20 $\mu$L pipette and a new plastic micropipette tip.   
+3.	Add full contents of one vial of 6N protein sequencing grade HCl to each Reacti-Vial. Flush with N~2~, cap, and hydrolyze at 150 $^\circ$C for 70 min.   
+4.	Cool to room temperature. Evaporate hydrolysate to dryness under N~2~ at 55 $^\circ$C. Be careful to remove vails from heat before they are full evaporated so the sample doesn’t burn.   
+5.	Add 1 mL 0.01 N HCl and let sit for 30 minutes to fully dissolve sample. Vortex periodically to mix.  
+
+# FILTRATION
+1.	Arrange in a rack 9 ashed glass tubes labeled to match your samples.   
+2.	Clean a 2.5 mL luer-tip gas tight syringe and accompanying metal needle. Draw 2 mL Nanopure water and discard. Repeat with individual rinses 2 mL methanol and 2 mL water, discarding each into waste.   
+3.	Draw the full sample into the syringe being sure no sample is left in the needle.  
+4.	Replace needle with a new 0.22 $\mu$m Millex-GP and filter sample into the appropriate glass tube or Reacti-Vial.  
+5.	Perform a filter rinse to recover any remaining sample by switching filter for the needle and drawing no more than 250 $\mu$L 0.01 N HCl. Replace the needle with the previously used filter and push the HCl into the glass tube or Reacti-Vial.   
+6.	Repeat steps 6 through 10 for each of your samples.   
+7.	Clean needle and syringe as per #6, wipe with a KimWipe and let air dry.  
+
+# COLUMN PURIFICATION  
+
+1. Prepare a 5 cm cation-exchange column for each sample in the fume hood using the plexi-glass rack. Use 9” Pasteur pipettes with a sealed tip (see Materials)   
+  a. Plug the bottom of wide part of the pipette with a small amount of ashed glass wool.   
+  b. Dry load ~1 mm of ashed sand over the glass wool. This is easiest using a folded piece of weighing paper to hold the sand.   
+  c. Slowly add the cation exchange resin in small amounts using the designated squirt bottle. Use a second pipette to remove air bubbles so the resin can settle. Fill until there is ~5 cm of resin.  
+  d. Fill the pipette to a little below the constriction with 2 N ammonium hydroxide (NH~4~OH) using a second pipette.  
+  e. Break tip of pipette with two hands and quickly place a new glass tube under the pipette to collect the NH~4~OH.  When done draining, dispose NH~4~OH down the drain and place used tubes in the Lab Glass container.  
+  f. Place clean Reacti-Vials under columns.  
+2.	Transfer the samples from the tube to the top of the column using a new glass pipette for each sample. Follow with 1 mL of NH~4~OH. As the level comes down, continue to add NH~4~OH until a total of 4 mL has been run through the column.  
+3.	Evaporate the eluent to dryness under N2 at 80 $^\circ$C. Dispose of columns in Lab Glass waste.  
+4.	Add 1 mL 0.01 N HCl and let sit for 30 minutes to fully dissolve sample. Vortex periodically to mix.  
+
+# DE-FATTING
+1.	Add 2 mL 3:2 n-hexanes/DCM to the Reacti-Vials, tighten cap and shake by hand for 30 seconds to create an emulsion.  
+2.	Centrifuge at 600 RCF for 5 minutes being sure to properly balance the centrifuge.   
+3.	Remove the upper organic solvent layer with Pasteur pipette and discard into the halogenated waste container.  
+4.	Repeat steps 1 through 3 three times.   
+5.	Very gently blow samples with N~2~ for 5-10 minutes to ensure no organic solvent is remaining.  
+6.	Cap samples and arrange in a plastic rack. Freeze until solid in the leftmost -80 $^\circ$C freezer in room 235.  
+7.	Bring to room 333 and freeze dry for 12-24 hrs. Samples can be sucked out of the Reacti-Vials if they are not covered. Either crack the caps or cover with pieces of kim-wipe rubber-banded to the vial.   
+8.	After samples are dry, replace the septa with new ones.  
+
+*Potential stopping point: can be stored long-term (<12 months) in freezer after adding 200 $\mu$L 0.2 N HCl and flushing with N~2~ or Ar. *  
+
+# ISOPROPANOL ESTERIFICATION  
+
+1. Bring samples to room temperature.  
+2. Add 2 mL 4:1 isopropanol:acetyl chloride to each sample and  heat to 110 $^\circ$C for 120 minutes following an N~2~ flush.  
+3. Cool to room temperature on ice. Once cool, open caps and evaporate at 55 $^\circ$C under N~2~. Be careful to remove vials from heat before they are full evaporated so the sample doesn’t burn.   
+
+# DERIVATIZATION BY ACYLATION  
+
+1. Add 1 mL of 4:1 Toluene: pivaloyl chloride to each sample. Swirl to mix. Acylate by heating to 110 $^\circ$C for 120 min after an N~2~ flush.   
+2. Cool to room temperature on ice. Once cool, open caps and evaporate at room temperature under N~2~.  
+
+# LIQUID-LIQUID EXTRACTION   
+
+1. Label the appropriate number of ashed glass tubes and place in a rack.   
+2. Re-dissolve samples in 1 mL P buffer water followed by 2 mL 3:2 n-hexanes/DCM.   
+3. Cap and shake vigorously for 30 seconds.   
+4. Centrifuge at 600 RCF for 5 minutes being sure to properly balance the centrifuge.    
+5. Using a new Pasteur pipette for each sample, pipette the top organic fraction containing acylated AA esters and place in the corresponding glass tube.    
+6. Add another 1.8 mL of 3:2 n-hexanes/DCM to the original sample that has the remaining water. Shake and centrifuge again. Pipette off the organic fraction and add to the glass tube.   
+7. Discard the remaining water into hazardous waste.   
+8. If dehydrating the sample, skip to the section below. Otherwise, evaporate n-hexanes/DCM at room temperature under N~2~.   
+9. Re-dissolve in 100 $\mu$L dried DCM. Vortex at low speed (level 5) and transfer to labeled GC vial with insert. Repeat.   
+10. Evaporate DCM at room temperature under N~2~.   
+11. Raise in 100 $\mu$L ethyl acetate and quickly cap.   
+12.	Store in freezer until analysis.   
+
+# SAMPLE DEHYDRATION (currently not employed)
+1.	Evaporate n-hexanes/DCM at room temperature under N~2~ until ~1 mL remains.   
+2.	While waiting for the samples to evaporate, prepare the appropriate number of Pasteur pipette columns for desiccation.   
+a.	Plug the bottom of wide part of the pipette with a small amount of ashed glass wool.   
+b.	Add small quantity (2-3 spatulas) of MgSO~4~ over glass wool.   
+c.	Rinse with ~1 mL DCM from squirt bottle and discard.   
+d.	Place labeled GC vials under each pipette to collect the sample.  
+3.	Add the samples from the glass tube to the columns and follow with ~500 $\mu$L DCM to make sure all the sample has passed.  
+4.	Evaporate DCM at room temperature under N~2~.  
+5.	Raise in 100 $\mu$L ethyl acetate and quickly cap.   
+6.	Store in freezer until analysis.  
+
+# WASTE
+Label an empty jug with a temporary hazardous waste label that reads “Halogenated Waste”. Equip with a plastic funnel and stopper. All halogen-containing chemical waste should go in this container.  Halogen wastes include DCM, chloroform, and TFAA. Non-halogenated waste can go in a similarly labeled “Non-halogenated Waste” jug.  
+
+When the halogenated waste jug is 4/5 full, submit an [Online Chemical Waste Collection](https://depts.washington.edu/ehas/pubcookie/prod/mychemwaste/index.php) request.  Replace hazardous waste label with one that represent the approximate contents. For this protocol, an example would be:  
+
+Chemical                    | Composition
+------------------------    | -------------
+hexanes                     | ~25 %
+methylene chloride (DCM)    | ~25 % 
+hydrochloric acid           | ~25 %
+water                       | ~25 %
+
+The glass cuvettes and used Pasteur pipettes can be disposed of in an appropriately labeled “Lab Glass” box. See the section on Non-Hazardous Laboratory Glass and Plastic at the UW EH&S website [here](https://www.ehs.washington.edu/rbsresplan/sharp.shtm).  
+
+# CLEANING & RECYCLING
+Reacti-Vials, septa and caps should be cleaned following the [HEEL Glass- & Plastic-ware Cleaning](http://holtgrievelab.uw.edu/dishwashing/) protocol. The glass syringe(s) and their needle(s) should be cleaned by rinsing with 2 mL water, 2 mL methanol, and 2 mL water prior to being returned to the drawer. Used glass tubes and Pasteur pipettes should be left in beakers in the hood until solvents have been fully evaporated then disposed of in Lab Glass. Syringe filters go in the trash.  
+
+# REAGENTS & SUPPLIES  
+
+*	[Tuf-Bond PTFE/silicone discs](https://www.fishersci.ca/shop/products/ptfe-silicone-discs/pi12718), 18 mm, pack of 72, Fisher Scientific catalog #: PI12718.
+*	[Pierce 6N Hydrochloric Acid Solution](https://www.fishersci.com/shop/products/pierce-hydrochloric-acid-solution/pi24308?searchHijack=true&searchTerm=PI24308&searchType=RAPID&crossRef=PI24308), Fisher Scientific, 10 x 1 mL ampules, catalogue #: PI24308.
+*	[0.22 $\mu$m Millex-GP](https://www.fishersci.com/shop/products/emd-millipore-millex-sterile-syringe-filters-pes-membrane-green-4/slgp033rb?searchHijack=true&searchTerm=SLGP033RB&searchType=RAPID) syringe filter, Fisher Scientific, pack of 250, catalogue #: SLGP033RB.
+*	[Methylene Chloride](https://www.fishersci.com/shop/products/methylene-chloride-stabilized-hplc-fisher-chemical-5/d1431?searchHijack=true&searchTerm=D1431&searchType=RAPID) (Stabilized/HPLC grade), Fisher Chemical, 1 L,	Fisher Scientific catalogue #: D143-1.
+*	[Hexanes](https://www.fishersci.com/shop/products/hexanes-hplc-fisher-chemical-6/h302sk4?searchHijack=true&searchTerm=H302SK4&searchType=RAPID) (HPLC grade), Fisher Chemical, 4 L,	Fisher Scientific catalogue #: H302SK-4.
+*	[2-Propanol](https://www.fishersci.com/shop/products/2-propanol-hplc-fisher-chemical-5/a4514) (HPLC grade), Fisher Chemical, 4 L, Fisher Scientific catalogue #: A451-4. 
+*	[Acetyl chloride](https://www.fishersci.com/shop/products/acetyl-chloride-98-acros-organics-3/ac151270010?searchHijack=true&searchTerm=AC151270010&searchType=RAPID) (98%), ACROS Organics, 1 L, Fisher Scientific catalogue #: AC151270010.
+*	[Toluene](https://www.fishersci.com/shop/products/toluene-hplc-fisher-chemical-4/t2904?keyword=true) (HPLC), 4 L, Fisher Scientific catalogue #: T290-4.
+*	[Trimethylacetyl Chloride](http://www.sigmaaldrich.com/catalog/product/aldrich/t72605?lang=en&region=US) (Pivaloyl Chloride) (99%), Sigma Aldrich, 100 mL, Sigma catalogue #: T72605-100ML.
+*	[Ethyl Acetate](https://www.fishersci.com/shop/products/ethyl-acetate-hplc-fisher-chemical-5/p-215936) (HPLC), Fisher Chemical, 1 L, Fisher Scientific catalogue #: E195-1.
+*	[Magnesium Sulfate Anhydrous](https://www.fishersci.com/shop/products/magnesium-sulfate-anhydrous-powder-certified-fisher-chemical-3/m65500#?keyword=M65500) (Powder/Certified), Fisher Chemical, 500 g, Fisher Scientific catalogue #: M65-500.
+*	[12 x 75 mm round glass cuvettes](https://www.fishersci.com/shop/products/fisherbrand-disposable-borosilicate-glass-tubes-plain-end-10/p-192824), Fisher Scientific, case of 1000, catalogue #: 14-961-26.
+*	Disposable Borosilicate Glass [Pasteur Pipettes](https://www.fishersci.com/shop/products/fisherbrand-disposable-borosilicate-glass-pasteur-pipets-4/1367820b), case of 1440, Fisher Scientific catalogue #: 13-678-20B.
+*	Agilent [Screw Top Vial](http://www.agilent.com/store/en_US/Prod-5182-0715/5182-0715), clear with write-on spot, 2 mL, pack of 100, Agilent Technologies part #5182-0715.
+*	Agilent [Vial Insert](http://www.agilent.com/store/productDetail.jsp?catalogId=5181-1270), 250 $\mu$L, glass with polymer feet, pack of 100, Agilent Technologies part #5181-1270.
+*	Agilent [Screw Cap](http://www.agilent.com/store/productDetail.jsp?catalogId=5181-1270), blue with PFTE/red silicone septa, pack of 100, Agilent Technologies part #5190-7024.
+
+# References
+\setlength{\parindent}{-0.2in}
+\setlength{\leftskip}{0.2in}
+\setlength{\parskip}{8pt}
+\noindent  
+
+Chikaraishi Y, Ogawa NO, Kashiyama Y, Takano Y, Suga H, Tomitani A, et al. Determination of aquatic food-web structure based on compound-specific nitrogen isotopic composition of amino acids. Limnol Oceanogr Methods. 2009;7: 740–750. doi: 10.4319/lom.2009.7.740.  
+
+Macko, S.A., M.E. Uhle, M.H. Engel, and V. Andrusevich. 1997. Stable nitrogen isotope analysis of amino acid enantiomers by gas chromatography combustion/isotope ratio mass spectrometry. Anal. Chem. 69: 926–929.  
+
+Metges CC, Petzke K, Hennig U. Gas chromatography/combustion/isotope ratio mass spectrometric comparison of N -acetyl- and N-pivaloyl amino acid esters to measure 15N isotopic abundances in physiological samples: a pilot study on amino acid synthesis in the upper gastro-intestinal tract of minipigs. J Mass Spectrom. 1996;31: 367–376. doi: 10.1002/(SICI)1096-9888(199604)31:4<367::AID-JMS310>3.0.CO;2-V. pmid:8799283   
+
+Popp, B. N., and 7 others. 2007. Insight into the trophic ecology of yellowfin tuna, Thunnus albacares, from compound-specific nitrogen isotope analysis of proteinaceous amino acids, p. 173–190. In T.D. Dawson and R.T.W. Siegwolf [eds.], Stable isotopes as Indicators of Ecological Change. Terrestrial Ecology Series.  
+\
+
+```{r, echo=FALSE, warning=F, message=F}
+
+x <- matrix(c("File rendered on:", format(Sys.time(), "%d %b %Y"),
+              "R version:", as.character(getRversion()),
+              "HEEL package version:", as.character(packageVersion("HEEL"))), ncol=2, byrow=T)
+print(knitr::kable(x, row.names = F))
+
+```
+

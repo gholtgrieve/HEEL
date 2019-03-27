@@ -100,7 +100,7 @@ MS Windoze OS
 \
 ```{r, echo=FALSE, warning=F, message=F}
 
-x <- matrix(c("Printed on:", format(Sys.time(), "%d %b %Y"),
+x <- matrix(c("File rendered on:", format(Sys.time(), "%d %b %Y"),
               "R version:", as.character(getRversion()),
               "HEEL package version:", as.character(packageVersion("HEEL"))), ncol=2, byrow=T)
 print(knitr::kable(x, row.names = F))
