@@ -11,6 +11,7 @@ get.protocol(protocol, format)
 \describe{
   \item{"Data Management"}
   \item{"Dish Cleaning"}
+  \item {"Muffle Furnace}
   \item{"d15N-AA"}
   }}
 

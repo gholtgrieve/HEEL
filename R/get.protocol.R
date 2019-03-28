@@ -10,6 +10,7 @@
 #' \describe{
 #'   \item{"Data Management"}
 #'   \item{"Dish Cleaning"}
+#'   \item {"Muffle Furnace}
 #'   \item{"d15N-AA"}
 #'   }
 #' @param format File format to be generated. Options are "pdf", "html", "word", "markdown", "rmarkdown". Character vector of length 1.
@@ -22,7 +23,11 @@
 #' @importFrom stringr str_replace
 
 get.protocol <- function(protocol = NULL, format=NULL){
-  listo <- cbind(1:3, c("Data Management", "Dish Cleaning", "d15N-AA"), c("DataManagement.Rmd", "DishCleaning.Rmd", "d15NAA.CSIA.AC-PV.Rmd"))
+  listo <- matrix(ncol = 2, byrow = T, data = c("Data Management",       "DataManagement.Rmd",
+                                                "Dish Cleaning",         "DishCleaning.Rmd",
+                                                "Muffle Furnace",        "MuffleFurnace.Rmd",
+                                                "d15N-AA",               "d15NAA.CSIA.AC-PV.Rmd"),
+                  dimnames = list(NULL, c("Argument", "File Name")))
 
 # If no arguments print list of supported protocols
   if (is.null(protocol) | is.null(format)) {

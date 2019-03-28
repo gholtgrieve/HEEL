@@ -1,0 +1,120 @@
+---
+title: "HOLTGRIEVE ECOSYSTEM ECOLOGY LAB"
+author: "Gordon W. Holtgrieve"
+date: 'Revision date: 21 Oct 2016'
+output: pdf_document
+geometry: left = 1in, right = 1in, top = 1in, bottom = 1in
+description: This document describes how to safely operate the muffle furnace in FSH 235.  Based on IsoLab protocol by A. Schauer.
+subtitle: MUFFLE FURNACE PROTOCOL
+category: Protocol
+---
+
+# INTRODUCTION  
+The muffle furnace is a well-insulated oven with a maximum temperature of 1100 °C.  It is typically used to remove organics from glassware, filters, or sample material (ashing).  It is critical to know the melting point of whatever you are putting inside it (see below).
+
+# SAFETY  
+Material coming out of the muffle furnace can be very hot and there is a chance of shattering if items experience a dramatic change in temperature.  Wear eye protection and use metal tongs with heat resistant gloves as necessary.
+
+# LOADING THE MUFFLE FURNACE (FSH 235)
+
+1. Cover glassware openings with Al foil. Smaller items (e.g., Exetainers or pipettes) should be wrapped in foil packs. Mark an X or similar on foil to show it has not been muffled (the pen will disappear during muffling).  
+2. Make sure the desired temperature is not past the melting point of any of the materials put inside the furnace.  Remember:  never muffle volumetric glassware.  
+3. Carefully place items in muffle furnace.   
+
+# PROGRAMMING THE MUFFLE FURNACE
+Note: The example below is for ashing glassware.  Adjust the set point and ramp rate according to the material you are working with.  
+
+1. Turn the muffle furnace on.  
+2. From the HOME display, press PAGE repeatedly to advance to the Program List (“ProG LiSt”) window.  
+3. Press SCROLL to cycle through program settings while using the UP/DOWN to adjust.   
+
+ 
+Setting	| Description	                                                                    | Suggested Value
+--------|---------------------------------------------------------------------------------|-----------------
+Hb      |	Holdback                                                                        |	Lo
+Hb U    |	Holdback units	                                                                | 10
+rmP.U	  | Ramp rate units (SEc, min, Hour)      	                                        | min
+dwl.U	  | Dwell units (SEc, min, Hour)	                                                  | Hour
+CYC.n	  | Number of times program should be run.                                          |	1
+SEG.n	  | Segment number	                                                                | 1
+tYPE	  | Sets type of action for this segment (rmP, dwEll, StEP, End)                    | rmP.r
+tGt	    | Target temperature                                                              | 500
+rATE	  | Rate of temperature increase                                                    | 2
+SEG.n	  | Segment number                                                                  | 2
+tYPE	  | Sets type of action for this segment. Set to dwell at target temperature.       | dwEll
+dur	    | Dwell duration	                                                                | 4
+SEG.n	  | Segment number	                                                                | 3
+tYPE	  | Sets type of action for this segment. Set to temperature as fast as possible.	  | StEP
+tGt	    | Target temperature                                                              | 20
+SEG.n	  | Segment number                                                                  | 4
+tYPE	  | Sets type of action for this segment. Set to end program.	                      | End
+End.t	  | End type (dwEll, rSEt, S OP)                                                    | rSEt
+
+4.	Run the program by pressing the RUN/HOLD button until the RUN light illuminates.
+
+# STOPPING & UNLOADING  
+
+1. The program will stop after the dwell time has ended.  However, the furnace will remain hot for several hours (>10 h).  It takes longer to cool the furnace than it does to bake the items.  
+2. Crack the door to the oven only after it has cooled to 100 $^\circ$C (or less).  Opening the door when hot risks breaking the glass inside.  
+3. Once the oven has cooled to <30 $^\circ$C, remove items leaving Al foil covers in place.  Foil should stay on until the item is to be used.   
+4. Turn off the power switch.  
+
+# DEFINITIONS FOR PROGRAM SETTINGS  
+| Setting	    | Description                                                                             |
+--------------|------------------------------------------------------------------------------------------
+Hb            | Holds the program when the measured chamber temperature deviates below (low) or above (hi) or both (bAnd) the setpoint minus the hold back unit value.
+Hb U          |	Holdback units
+Ramp (rmP)	  | Measured chamber temperature ramps linearly from it's current value at either a defined rate (rmP.r) or within a defined amount of time (rmP.t) to a defined setpoint chamber temperature (tGt). 
+Dwell (dwEll) |	A defined amount of time or duration (dur) that is required to hold the chamber measured temperature constant.
+Step (StEP)	  | Step segment allows a new setpoint temperature (tGt) to be defined. The control module will attempt to achieve the new setpoint temperature instantaneously with no ramping.
+End	          | Defines or signals the end of a program.
+End.t	        | Defines what the controller is supposed to do now that the program is done running. There are three
+settings or choices: Dwell (dwEll) at setpoint; Reset (rSEt) and revert to single setpoint operation; Segment Output Power (S OP) has the controller revert to manual mode.
+
+# SUGGESTED BAKING CONDITIONS  
+
+|                                |                                                                       |
+---------------------------------|------------------------------------------------------------------------
+Borosilicate glass (e.g., Pyrex) | 500 $^\circ$C for 2-4 hours 
+Quartz/Fused Silica              | 1000 $^\circ$C for 2-4 hours
+New GFF or GFC filters           | 500 $^\circ$C for 1-2 hours
+Organic samples for AFDM         | 550 $^\circ$C for 3 hours with a 0.5 $^\circ$C per minute ramp rate
+Fritted funnels                  | 480 $^\circ$C for at less than one hour
+
+# MELTING POINT FOR SELECTED MATERIALS  
+
+|                      |              |
+-----------------------|---------------
+Aluminum foil          | 660 $^\circ$C
+Borosilicate glass     | 820 $^\circ$C 
+Quartz/Fused Silica    | 1665 $^\circ$C
+GFF or GFC filters     | 800 $^\circ$C
+
+# BEWARE  
+
+* Do not put plastic in the oven.
+*	Keep corrosive materials away from the furnace.
+*	Never put highly flammable, explosive or highly reactive materials into the furnace.
+
+# FIRE
+If you find a fire burning inside, get the fire extinguisher, put out the fire, and leave the room until the air is sufficiently cleared.  If you are unable to put out the fire, pull the alarm and get out.  
+
+# TROUBLESHOOTING
+If you smell something strange coming from the muffle furnace, turn off the oven and wait for it to cool before opeing.  
+\
+
+
+```{r, echo=FALSE, warning=F, message=F}
+
+x <- matrix(c("File rendered on:", format(Sys.time(), "%d %b %Y"),
+              "R version:", as.character(getRversion()),
+              "HEEL package version:", as.character(packageVersion("HEEL"))), ncol=2, byrow=T)
+print(knitr::kable(x, row.names = F))
+
+```
+
+
+
+
+
+
