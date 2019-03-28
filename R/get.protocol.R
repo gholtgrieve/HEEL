@@ -37,7 +37,7 @@ get.protocol <- function(protocol = NULL, format=NULL){
 
 # Check if protocol is one of the available options
   row <- which(listo == protocol, arr.ind=TRUE)[1]
-  file.name <- listo[row,3]
+  file.name <- listo[row, c("File Name")]
 
 # Check if format is one of the available options and set parameters
     if (format == "pdf") {

@@ -71,9 +71,9 @@ End	          | Defines or signals the end of a program.
 End.t	        | Defines what the controller is supposed to do now that the program is done running. There are three
 settings or choices: Dwell (dwEll) at setpoint; Reset (rSEt) and revert to single setpoint operation; Segment Output Power (S OP) has the controller revert to manual mode.
 
-# SUGGESTED BAKING CONDITIONS  
+# SUGGESTED Ashing CONDITIONS  
 
-|                                |                                                                       |
+| Material                       |  Suggested Program                                                    |
 ---------------------------------|------------------------------------------------------------------------
 Borosilicate glass (e.g., Pyrex) | 500 $^\circ$C for 2-4 hours 
 Quartz/Fused Silica              | 1000 $^\circ$C for 2-4 hours
@@ -83,8 +83,8 @@ Fritted funnels                  | 480 $^\circ$C for at less than one hour
 
 # MELTING POINT FOR SELECTED MATERIALS  
 
-|                      |              |
------------------------|---------------
+| Material             | Melting Point     |
+-----------------------|--------------------
 Aluminum foil          | 660 $^\circ$C
 Borosilicate glass     | 820 $^\circ$C 
 Quartz/Fused Silica    | 1665 $^\circ$C
