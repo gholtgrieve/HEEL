@@ -194,6 +194,7 @@ NACHO}\label{configuring-the-exetainer-interface-on-nacho}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
+\tightlist
 \item
   At the white pressure controller near the autosampler, check to see if
   the helium pressure is set to 22 psi. \emph{If the system is not at 22
@@ -203,29 +204,40 @@ NACHO}\label{configuring-the-exetainer-interface-on-nacho}
   In IsoDat Acquisition, select the pulldown menu at the bottom left
   that should read ``GC-C Interface'' and change to `Exetainers' as the
   new method. The software will take a minute to reconfigure.\\
-\item ~
-  \subsection{\texorpdfstring{It possible that a little bit of air will
-  enter the system. Confirm any air has been purged by switching to the
-  `N\textsubscript{2}' gas configuration using the pulldown menu just to
-  the right of one to set the system configuration. Under the MS window,
-  mass 30 should be \textless{}100 mV (typically around 60 mV). You may
-  also check background levels of other gases (O\textsubscript{2}/Ar,
+\item
+  It possible that a little bit of air will enter the system. Confirm
+  any air has been purged by switching to the `N\textsubscript{2}' gas
+  configuration using the pulldown menu just to the right of one to set
+  the system configuration. Under the MS window, mass 30 should be
+  \textless{}100 mV (typically around 60 mV). You may also check
+  background levels of other gases (O\textsubscript{2}/Ar,
   N\textsubscript{2}, and CO\textsubscript{2}) by toggling between those
   mass jumps. You may toggle between them using the pop-up menu in the
   lower left-hand corner of the application, next to the method
-  indicator.}{It possible that a little bit of air will enter the system. Confirm any air has been purged by switching to the N2 gas configuration using the pulldown menu just to the right of one to set the system configuration. Under the MS window, mass 30 should be \textless{}100 mV (typically around 60 mV). You may also check background levels of other gases (O2/Ar, N2, and CO2) by toggling between those mass jumps. You may toggle between them using the pop-up menu in the lower left-hand corner of the application, next to the method indicator.}}\label{it-possible-that-a-little-bit-of-air-will-enter-the-system.-confirm-any-air-has-been-purged-by-switching-to-the-n2-gas-configuration-using-the-pulldown-menu-just-to-the-right-of-one-to-set-the-system-configuration.-under-the-ms-window-mass-30-should-be-100-mv-typically-around-60-mv.-you-may-also-check-background-levels-of-other-gases-o2ar-n2-and-co2-by-toggling-between-those-mass-jumps.-you-may-toggle-between-them-using-the-pop-up-menu-in-the-lower-left-hand-corner-of-the-application-next-to-the-method-indicator.}
-
-  \subsection[\# ]{\texorpdfstring{\#
-  \protect\includegraphics{/inst/img/ExetainerAnalysis/GasConfig.png}}{\# Reference gas configuration for standard exetainer analysis}}\label{reference-gas-configuration-for-standard-exetainer-analysis}
-\item ~
-  \subsection{Expand the ConFlo IV Diagnosis window on the left side of
-  IsoDat Acquisition. Confirm that reference gas configuration matches
-  the picture
-  below.}\label{expand-the-conflo-iv-diagnosis-window-on-the-left-side-of-isodat-acquisition.-confirm-that-reference-gas-configuration-matches-the-picture-below.}
-
-  \subsection[\# ]{\texorpdfstring{\#
-  \protect\includegraphics{/inst/img/ExetainerAnalysis/ConfloSettings.png}}{\# Reference gas configuration for standard exetainer analysis}}\label{reference-gas-configuration-for-standard-exetainer-analysis-1}
+  indicator.
 \end{enumerate}
+
+\begin{figure}
+\centering
+\includegraphics{/inst/img/ExetainerAnalysis/GasConfig.png}
+\caption{Reference gas configuration for standard exetainer analysis}
+\end{figure}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Expand the ConFlo IV Diagnosis window on the left side of IsoDat
+  Acquisition. Confirm that reference gas configuration matches the
+  picture below.
+\end{enumerate}
+
+\begin{figure}
+\centering
+\includegraphics{/inst/img/ExetainerAnalysis/ConfloSettings.png}
+\caption{Reference gas configuration for standard exetainer analysis}
+\end{figure}
 
 \section{ORGANIZING YOUR RUN}\label{organizing-your-run}
 
@@ -240,8 +252,16 @@ standards (first air standard is conditioner) - 1 water standard -
 Finish the first row with exetainer samples - Place an air standard at
 the start of each subsequent row, followed by samples - Second to last
 sample position should be the remaining water standard - Final sample
-position is the final remaining air standard --- \#
-\includegraphics{/inst/img/ExetainerAnalysis/ExetainerBlock.png} ---
+position is the final remaining air standard
+
+\begin{figure}
+\centering
+\includegraphics{/inst/img/ExetainerAnalysis/ExetainerBlock.png}
+\caption{A bird's-eye view of the sample block loaded with air and water
+standards only. The remaining empty positions may be filled with
+samples.}
+\end{figure}
+
 \emph{Note: Be aware that the numbering on the sample block does skip
 some even numbers.}
 
@@ -417,22 +437,37 @@ N\textsubscript{2} in your sample\\
 N\textsubscript{2} working standard reference peak\\
 \textbf{Mass jump}\\
 CO\textsubscript{2} in your sample\\
-CO\textsubscript{2} working standard reference peak\\
---- \#
+CO\textsubscript{2} working standard reference peak
+
+\begin{figure}
+\centering
 \includegraphics{/inst/img/ExetainerAnalysis/ExetainerChromatogram.png}
---- \# ENDING A RUN \& CLEAN UP Remove standards and samples from the
-block. Place in a cardboard Exetainer box or rack and return to the HEEL
-for cleaning and reuse. The system is ready to start another run if
-desired (return to beginning of this protocol). Follow the remaining
-steps if the system will remain idle for more than a couple of hours.
-Place an empty Exetainer (with cap) under the needle at its home
-position. Turn off the autosampler. The needle will drop down on to the
-Exetainer but not puncture the septa. Align the septa under the needle
-and push the autosampler needle through.\\
-Lower the He carrier gas pressure (white box) from 23 psi to 5 psi. Wait
-to make sure the pressure is stable at 5 psi and does not go to zero. In
-IsoDat Acquisition, switch from the ``Exetainer' configuration (bottom
-left pull down menu) to the ``GC-C Interface'' configuration.
+\caption{Eample of a typical chromatogram.}
+\end{figure}
+
+\section{ENDING A RUN \& CLEAN UP}\label{ending-a-run-clean-up}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Remove standards and samples from the block. Place in a cardboard
+  Exetainer box or rack and return to the HEEL for cleaning and reuse.\\
+\item
+  The system is ready to start another run if desired (return to
+  beginning of this protocol). Follow the remaining steps if the system
+  will remain idle for more than a couple of hours.
+\item
+  Place an empty Exetainer (with cap) under the needle at its home
+  position. Turn off the autosampler. The needle will drop down on to
+  the Exetainer but not puncture the septa. Align the septa under the
+  needle and push the autosampler needle through using the whit plastic
+  piece.\\
+\item
+  Lower the He carrier gas pressure (white box back and to the right of
+  the autosampler) from 22 psi to 5 psi. Wait to make sure the pressure
+  is stable at 5 psi and does not go to zero.
+\end{enumerate}
 
 \section{RETREIVING THE DATA}\label{retreiving-the-data}
 
@@ -527,7 +562,7 @@ Zinc Chloride (ZnCl\textsubscript{2}) & \textless{}1\tabularnewline
 ## 
 ## 
 ## ----------------------  ------------
-## File rendered on:       30 Mar 2019 
+## File rendered on:       31 Mar 2019 
 ## R version:              3.5.3       
 ## HEEL package version:   0.2.2       
 ## ----------------------  ------------
