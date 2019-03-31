@@ -9,8 +9,7 @@
 #' R.to.delta(x, isotope.system=NULL, reference.std = NULL)
 #' @param x Numeric.
 #' @param isotope.system  Character vector of length one indicating the (single) isotope system of interest. Currently supported isotope systems are "C", "N", "S", "H", "O18", "O17".
-#' @param reference.std Character vector of length one indicating the reference standard the data are relative to.}
-#' }
+#' @param reference.std Character vector of length one indicating the reference standard the data are relative to.
 #' @return Object same as 'x' with data in delta notation rounded to two decimal places.
 #' @examples
 #' R.to.delta(1) #zero per mil

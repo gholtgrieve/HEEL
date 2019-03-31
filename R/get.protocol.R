@@ -7,12 +7,13 @@
 #' @usage
 #' get.protocol(protocol, format)
 #' @param protocol Name of desired protocol form the following list.  Character vector of length 1.
-#' \describe{
-#'   \item{"Data Management"}
-#'   \item{"Dish Cleaning"}
-#'   \item {"Muffle Furnace}
-#'   \item{"d15N-AA"}
-#'   }
+#'  \describe{
+#'    \item{"Data Management"}
+#'    \item{"Dish Cleaning"}
+#'    \item{"Muffle Furnace"}
+#'    \item{"d15N-AA"}
+#'    \item{"Exetainer Analysis"}
+#'  }
 #' @param format File format to be generated. Options are "pdf", "html", "word", "markdown", "rmarkdown". Character vector of length 1.
 #' @examples
 #' get.protocol("Data Management", "html")
@@ -26,7 +27,8 @@ get.protocol <- function(protocol = NULL, format=NULL){
   listo <- matrix(ncol = 2, byrow = T, data = c("Data Management",       "DataManagement.Rmd",
                                                 "Dish Cleaning",         "DishCleaning.Rmd",
                                                 "Muffle Furnace",        "MuffleFurnace.Rmd",
-                                                "d15N-AA",               "d15NAA.CSIA.AC-PV.Rmd"),
+                                                "d15N-AA",               "d15NAA.CSIA.AC-PV.Rmd",
+                                                "Exetainer Analysis",    "ExetainerAnalysis.Rmd"),
                   dimnames = list(NULL, c("Argument", "File Name")))
 
 # If no arguments print list of supported protocols

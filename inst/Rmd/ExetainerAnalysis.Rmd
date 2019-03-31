@@ -1,0 +1,166 @@
+---
+title: HOLTGRIEVE ECOSYSTEM ECOLOGY LAB 
+author: Ben Miller, Gordon Holtgrieve, Julia Hart 
+date: 'Revision date: 24 Oct 2018' 
+output: pdf_document 
+geometry: left = 1in,right = 1in,top = 1in,bottom = 1in 
+subtitle: PROTOCOL FOR ANALYZING $\delta$^18^O-O~2~, O~2~/AR, $\delta$^15^N-N~2~, & $\delta$^13^C-DIC USING THE DELTA V ISOTOPE RATIO MASS SPECTROMETER
+description: Describes how to initiate a run on the Delta V mass spectrometer (“NACHO”) in OSB 446 to analyze $\delta$^18^O-O~2~, O~2~/Ar, $\delta$^15^N-N~2~, and $\delta$^13^C-Dissolved Inorganic Carbon (DIC) in Exetainer headspace. 
+category: Protocol 
+---
+
+# INTRODUCTION
+This document describes how to initiate a run on the Delta V mass spectrometer (“NACHO”) in OSB 446 to analyze $\delta$^18^O-O~2~, O~2~/Ar, $\delta$^15^N-N~2~, and $\delta$^13^C-Dissolved Inorganic Carbon (DIC) in Exetainer headspace. The protocol assumes samples and water standards have already been prepped for analysis following the Prepping Exetainers For Analysis protocol. Also included is a basic description of raw data decomposition and standardization using a developed R script.   
+
+Note that the IsoDat software to interface with the mass spec has three versions, each with separate functions. IsoDat Workspace is for manipulation files while the instrument is running. Acquisition is used to collect data. IsoDat Instrument Control is used for changing settings and tuning. You should never need to use IsoDat Instrument Control.  
+
+# SAFETY
+You will be using needles and a slightly compressed gas. If you are unfamiliar about how to work with compressed gases, you must first take the online [Compressed Gas Safety Course](https://www.ehs.washington.edu/training/compressed-gas-safety-online). Samples may contain relatively dilute concentrations of zinc chloride (ZnCl~2~) and have been acidified to pH 2. You should not come in contact with these chemicals under normal operation. Please familiarize yourself with the MSDSs for these chemicals nonetheless. Please also dispose of sharps responsibly.  
+
+# MATERIALS
+* 8-12 Exetainers with new caps and 2-4 glass bead (for air standards)
+*	~1.35% CO~2~ standard (balance He)
+*	0.5 mL syringe with 30 G needle
+*	Lab timer
+*	Vacuum oil and dedicated pipette (stored near autosampler)
+*	Small Erlenmeyer flask or beaker
+*	Microspatula (not essential, but helpful)
+*	Kimwipes
+
+# PREPARING AIR STANDARDS (OSB 435)  
+1. Prepare air standards by placing a new cap + septa on 10-12 vials that each have 2-4 glass beads. Place in a wire rack.  
+2. Take the vials to the 1.35% CO~2~ balance He tank (hereafter CO~2~ tank) by Terry's office. Open the tank and then the small black knob on the regulator. Set the regulator to approximately 2 psi pressure.  
+3. Insert the long, vent needle all the way to the bottom of the Exetainer.  The other end of the tubing should be in a small container (Erlenmeyer flask or beaker) of water.   
+4. Place the Exetainer upside down on the CO~2~ needle with the needle outlet near the septa. Check for bubbling at a rate of 2-3 bubbles per second.  
+5. After three minutes (use lab timer), remove the Exetainer from the CO~2~ needle and wait until the vent needle stops bubbling, or approximately 5 seconds. Remove vent needle and return Exetainer to the rack.  
+6. Repeat steps 3-5 for each of the Exetainers.  
+7 Take Exetainers to the fourth-floor outdoor balcony to fill with air over a range of volumes that reflects the expected range of O~2~ concentration in the samples. A typically range for low oxygen systems (warm, heterotrophic) would be 0.2 – 0.6 cc of air. For samples from more oxic environments a range of 0.4-0.8 cc would be appropriate. Regardless of expected O~2~ concentration, include standards at 0.2 and 0.8 cc air in every run to identify mass effects on $\delta$ ^18^O-O~2~ and O~2~/Ar.  All standards should be made in duplicate.  
+
+# CONFIGURING THE EXETAINER INTERFACE ON NACHO
+1. At the white pressure controller near the autosampler, check to see if the helium pressure is set to 22 psi. *If the system is not at 22 psi when you switch to the Exetainer method you will introduce atmospheric air, which will take a day to purge.*   
+2. In IsoDat Acquisition, select the pulldown menu at the bottom left that should read “GC-C Interface” and change to ‘Exetainers’ as the new method. The software will take a minute to reconfigure.    
+3. It possible that a little bit of air will enter the system.  Confirm any air has been purged by switching to the ‘N~2~’ gas configuration using the pulldown menu just to the right of one to set the system configuration. Under the MS window, mass 30 should be <100 mV (typically around 60 mV). You may also check background levels of other gases (O~2~/Ar, N~2~, and CO~2~) by toggling between those mass jumps. You may toggle between them using the pop-up menu in the lower left-hand corner of the application, next to the method indicator.  
+
+ ![Reference gas configuration for standard exetainer analysis](/inst/img/ExetainerAnalysis/GasConfig.png)
+
+4. Expand the ConFlo IV Diagnosis window on the left side of IsoDat Acquisition. Confirm that reference gas configuration matches the picture below.
+
+ ![Reference gas configuration for standard exetainer analysis](/inst/img/ExetainerAnalysis/ConfloSettings.png)
+
+
+# ORGANIZING YOUR RUN  
+*A typical run starts with three air standards, with the first discarded as a conditioner.  The remaining standards are spread throughout the run, typically placed at the beginning of each row. Randomize the order with respect to amount of air.*  
+1. Arrange the air standards (n=9), water standards (n=2), and exetainer samples (n=31) on the sampling block. The sampling block positions are labeled with even numbers only. Starting at position #2:
+	- 3 air standards (first air standard is conditioner)
+	- 1 water standard
+	- Finish the first row with exetainer samples
+	- Place an air standard at the start of each subsequent row, followed by samples
+	- Second to last sample position should be the remaining water standard
+	- Final sample position is the final remaining air standard
+
+ ![A bird’s-eye view of the sample block loaded with air and water standards only. The remaining empty positions may be filled with samples.](/inst/img/ExetainerAnalysis/ExetainerBlock.png)
+
+*Note: Be aware that the numbering on the sample block does skip some even numbers.*
+
+2. Take the block to the computer station to enter the standard and sample information into a Sequence File.    
+3. In IsoDat Workspace, open Exetainers_template.seg and “Save as...” a unique identifier for your run/sequence. This file has spaces for a full run.  
+4. In the column labeled “Identifier 1”, enter a unique name for each sample and/or standard replicated 4 times. **Sample labels must be unique accross all batches that will be analyzed together.** For example, if you running four batches one of after th other, these will be analyzed as a group and all exetainers in that group should have a unique name.  The first four lines should likely read “airSTD_0” or similar and you will increment the number for as long as you are running. Every Exetainer is measured 4 times (thus the 4 rows). Each Exetainer must have a unique ID, even air standard replicates (Ex: airSTD_0.2_R1, airSTD_0.2_R2).  
+5. In the column labeled “Comment”, identify each Exetainer as either a “Conditioner”, “Standard”, "WaterSTD", or “Sample”, again replicating 4 times. Use only these four options.  
+6. In the “Identifier 2” column, add the amount of air added to each air standard (in cc or mL). This column is only used for air standards and **must be numeric** (i.e., 0.5 with no ‘cc’ at the end).    
+7. Go back through the sequence file to make sure no rows are skipped and that the sample information lines up correctly with the AS field that identifies the position in the block. Also check that the ‘Amount’ field contains the sequence 1,2,2,2 for each Exetainer. A value of 1 tells the autosampler to move to that position.  
+8.	Save and close the sequence file.   
+9.	For each sample and water standard, thoroughly remove all the Apiezon grease on the septa using Kim wipes or paper towels. The grease will clog the needle. Pro tip: a microspatula is useful to efficiently remove all Apiezon grease.  
+10.	Add enough new vacuum oil to the septa of every Exetainer to fill the indented part of the cap using the dedicated pipette. The vacuum oil seals the septa and lubricates the needle. Don’t be stingy.  
+11.	Place the block in the autosampler tray making sure to engage the alignment tabs.   
+12. Turn on the autosampler (black switch on rear) while holding on the Exetainer where the needle is resting (important, or the exetainer will go flying across the room). The autosampler should lift the needle up then undergo a quick self-check. Place the spare Exetainer out of the way of the autosampler.  
+
+# STARTING THE RUN
+1. Reopen working sequence file in IsoDat Acquisition.  
+2. If the mass spec run will include anything less than the full autosampler tray (i.e., running a subset of samples or a small sequence), highlight all the rows corresponding to the samples in the block.    
+3. Make sure that all of your desired sample rows are highlighted before you start the machine. NACHO will only run what has been highlighted in IsoDat.   
+4. From the drop-down menus at the top of the screen select Acquisition -> Start. **Do not hit the “start button” above the spreadsheet unless you have a full block and all rows in the sequence file correspond to samples.**   
+5. An acquisition window will appear. The application will ask you to name the output .xlsx. Delete the word “acquisition” in the file name for brevity. Specify the export file type as an Excel file and rename the export file, ending with the date in the format yyyymmdd.
+6. Click OK to begin the run.
+7. Wait to check that the autosampler needle has fully penetrated the septum of the first vial. The hexagonal nut above the needle should be positioned below a white plate. If it is not, you can push the needle down with your finger. You may have to apply more vacuum oil to prevent this problem from affecting further samples.
+8. It is advisable to watch the first couple of sample injections to make sure everything is working properly. Specifically, you are looking for the presence of seven peaks of roughly equal size and the absence of a small pressure peak immediately after the first two reference gas peaks.  See example chromatogram below.  
+
+# VERIFYING ALL IS WELL WITH THE RUN
+After the first conditioning sample there are a couple of things you can check to make sure that things are working as they should.   
+* If you notice a right skew in your peaks, you may need to condition or bake the column to remove any contamination. Skewed peaks will prevent complete peak integration before the machine moves on to the next mass jump, rendering your data unusable.  
+* Watch for a small pressure peak soon after the second reference gas peak. This indicates the needle is becoming clogged. If you are fast, you can quickly clean the needle between samples.   
+* Look at the d34/32O2 of the air standards. They should range from -2.5 to -1.5. The first injection is often up around -3, but you can disregard that. Generally, you may always disregard the data from each first injection.
+* Check that the d13C is around -26.6 +/- 0.5 for injections 2-4. This value is relative to the working standards, so don’t expect them to match known values for the real world.
+* At the end of your run, check that the area for the d32-O2 curves at high and low standard concentrations bracket the d32-O2 areas for your unknown samples. Again, look at the 2nd or 3rd injections across vials. If they do not, you will need to run additional air standards with a different air range in the next batch of samples. For example, if your samples have more O~2~ than your highest standards, add standards with more air in them.
+
+# HELPFUL TIPS AND TIDBITS
+## HOW TO UNCLOG THE AUTOSAMPLER NEEDLE  
+1. Ensure that the autosampler needle is not clogged before beginning each run.  The autosampler needle will need to be unclogged if a small pressure peak appears after the second O~2~/Ar reference peak.    
+2. Turn off the autosmaples at the black switch on the back. Push the needle down with your finger on the white plastic block.   
+3. Increase the pressure of the He stream from its operational 22 psi to the maximum psi using the black knob at on the white box back an to the right of the autosampler.   
+4. Lift up on the needle gaurd and wipe the needle opening with a Kimwipe.  You can also gently clear the first 1-2 mm of the inside of the bottom opening of any septa fragments with a small gauge needle or piece of wire.      
+5. Cover the bottom opening on the autosampler needle with a finger to purge the top (intake) opening, wipe with a Kimwipe, and repeat.  
+6. Re-adjust the pressure to of the He stream to 22 psi.   
+7. Turn the autsampler back on and wait for a sucessful self check.  
+
+# EXAMPLE CHROMATOGRAMS
+Your chromatogram should have seven peaks, shown below, in the following order:  
+	O~2~/Ar working standard reference peak  
+	O~2~/Ar working standard reference peak  
+	O~2~/Ar in your sample  
+**Mass jump**  
+	N~2~ in your sample  
+	N~2~ working standard reference peak  
+**Mass jump**  
+	CO~2~ in your sample  
+	CO~2~ working standard reference peak  
+
+![Eample of a typical chromatogram.](/inst/img/ExetainerAnalysis/ExetainerChromatogram.png)
+
+# ENDING A RUN & CLEAN UP
+1. Remove standards and samples from the block.  Place in a cardboard Exetainer box or rack and return to the HEEL for cleaning and reuse.  
+2. The system is ready to start another run if desired (return to beginning of this protocol). Follow the remaining steps if the system will remain idle for more than a couple of hours. 
+3. Place an empty Exetainer (with cap) under the needle at its home position. Turn off the autosampler. The needle will drop down on to the Exetainer but not puncture the septa. Align the septa under the needle and push the autosampler needle through using the whit plastic piece.  
+4. Lower the He carrier gas pressure (white box back and to the right of the autosampler) from 22 psi to 5 psi.  Wait to make sure the pressure is stable at 5 psi and does not go to zero.
+
+# RETREIVING THE DATA
+## OPTION 1
+1. On the Desktop, open the EA_Results folder and select the date of your run.  These are saved using the nomenclature yymmdd. Check the chromatograms (.dmf files) to ensure the presence and adequate separation of all peaks.  Check within all folders with the dates that apply to your mass spec run.  If the IsoDat Acquisition was restarted due to a communication error between the IsoDat Acquisition and the Delta V mass spec, this will lead to multiple Excel summary files pertaining to your run.  Copy each one to your hard drive.
+2. Save the data to a disc.  Do not transfer files using a USB; this may introduce viruses to this PC.
+
+## OPTION 2 (preferred)
+1. Data are dynamically backed up to the HEEL NAS system and can be accessed there.  First, network to the following location:  
+	[//acoustics.washington.edu/home/CloudStation/Backup/nacho_OSB446_DellPC/G9J8G32/C/Thermo/Isodat NT/Global/User/Conflo II Interface/Results](//acoustics.washington.edu/home/CloudStation/Backup/nacho_OSB446_DellPC/G9J8G32/C/Thermo/Isodat NT/Global/User/Conflo II Interface/Results)
+2. The user is HEEL, password: TreyReil1995.
+3. Check within all folders with the dates that apply to your mass spec run. If the IsoDat Acquisition was restarted due to a communication error between the IsoDat Acquisition and the Delta V mass spec, this will lead to multiple Excel summary files pertaining to your run. Copy each one to your hard drive.
+
+#SOME THINGS TO KNOW
+* Working standards for O~2~/Ar (a custom, pre-mixed tank), N~2~ and CO~2~ come from standard gas tanks located in the closet just beyond the computer. These tanks have a long life on this machine since we draw microliters at a time.  
+* The order and number of working standard injections is by the elution times of the sample gases. There is no oven on this column, so we cannot control precisely when the sample gases elute from the column and the timings are sensative to room temperature.  
+* We use two O~2~/Ar standards because 1) there is ample time before the O~2~/Ar sample elution and 2) it primes the machine a bit.  
+* Sample data is calculated based on working standard data, which are verified by the air standards prepped at the beginning of this protocol.  
+
+# WASTE
+After your samples have been run, they need to be disposed of as chemical waste. Exetainer samples may contain relatively dilute concentrations of zinc chloride (ZnCl~2~) and have been acidified to pH 2 with 50% w/v H~3~PO~4~. Exetainer caps may be thrown away; they are not reused. Collect all liquid waste in a hazardous waste container (label suggestion below). Exetainers should be cleaned according to the “Exetainer Cleaning” protocol.  
+
+|Chemical Composition	        | vol  % |
+------------------------------|---------
+Water	                        | 99
+Phosphoric Acid (H~3~PO~4~)	  | <1
+Zinc Chloride (ZnCl~2~)       | <1
+
+\
+
+```{r, echo=FALSE, warning=F, message=F}
+
+x <- matrix(c("File rendered on:", format(Sys.time(), "%d %b %Y"),
+              "R version:", as.character(getRversion()),
+              "HEEL package version:", as.character(packageVersion("HEEL"))), ncol=2, byrow=T)
+print(knitr::kable(x, row.names = F))
+
+```
+
+
+
+
+
+

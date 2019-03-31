@@ -11,9 +11,10 @@ get.protocol(protocol, format)
 \describe{
   \item{"Data Management"}
   \item{"Dish Cleaning"}
-  \item {"Muffle Furnace}
+  \item{"Muffle Furnace"}
   \item{"d15N-AA"}
-  }}
+  \item{"Exetainer Analysis"}
+}}
 
 \item{format}{File format to be generated. Options are "pdf", "html", "word", "markdown", "rmarkdown". Character vector of length 1.}
 }

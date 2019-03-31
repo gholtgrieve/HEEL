@@ -10,6 +10,8 @@ R.to.delta(x, isotope.system=NULL, reference.std = NULL)
 \item{x}{Numeric.}
 
 \item{isotope.system}{Character vector of length one indicating the (single) isotope system of interest. Currently supported isotope systems are "C", "N", "S", "H", "O18", "O17".}
+
+\item{reference.std}{Character vector of length one indicating the reference standard the data are relative to.}
 }
 \value{
 Object same as 'x' with data in delta notation rounded to two decimal places.

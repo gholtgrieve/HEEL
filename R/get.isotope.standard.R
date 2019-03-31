@@ -4,7 +4,6 @@
 #' easily and efficently.  The isotope.standards dataframe contains only raw isotope ratios,
 #' so this function also will convert to delta value relative to the common international standard.
 #'
-#' @usage
 #' @param std  Character vector with name(s) of the isotope standard of interest.
 #' @param isotope.system  Character vector of length one indicating the (single) isotope system of interest. Currently supported isotope systems are "C", "N", "S", "H", "O18", "O17".
 #' @return A list with the following elements.

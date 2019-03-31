@@ -1,12 +1,9 @@
 #' @title Calculates Henry's constant for CO2 (mol/L/atm)
 #' @description Calculates Henry's constant for CO2 at a given temperature, salinity and pressure.
-#' @usage
 #' @param temperature Water temperature in degrees Celsius.
 #' @param salinity Salinity in practical salinity units (PSU). Defaults to 0.
 #' @param pressure.atm Surface pressure in atmospheres. Defaults to 1.
 #' @return Numeric vector of Henry's constant for a specified gas in units of mol/L/atm.
-#' @note
-#' @references
 #' @note Units of mol/L/atm and umol/L/uatm are equivalent.
 #' @author Gordon W. Holtgrieve
 #' @export
