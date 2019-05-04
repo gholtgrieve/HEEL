@@ -7,14 +7,16 @@
 #' sample data are writen as a .csv file and a dataframe of the data is also returned.
 #'
 #' The input data file has strick formatting and data requirments.  Each sample or standard should have seven rows of data: 3 for massess 32, 34
-#' and 40; 2 for masses 28 and 29, and 2 for masses 44, 45, 46.  Deviations for the is will result in the function failing.  In additon there
-#' must be the following four identification columns:
+#' and 40; 2 for masses 28 and 29, and 2 for masses 44, 45, 46.  Deviations for the is will result in the function failing.  In additon the first four columns
+#' must be the following four identification columns in this order:
 #'   \describe{
-#'     \item{Identifier.1}{Unique identifier for each exetainer in the file. If two runs are combined, be sure this field remains unique. Character.}
-#'     \item{Identifier.2}{Mililiters of air added to air standards. Use only with air standards; othersie blank. Numeric.}
-#'     \item{Comment}{Identifies whether the extetainer is a 'airSTD', 'waterSTD', 'Sample' or 'Conditioner'. These are the only vaild options fr this field.}
 #'     \item{analysisDate}{Data of the run(s) on NACHO. Character.}
+#'     \item{Identifier.1}{Unique identifier for each exetainer in the file. If two runs are combined, be sure this field remains unique. Character.}
+#'     \item{Identifier.2}{Mililiters of air added to air standards OR volume of headspace in the sample or water standard vial. Headspace volume is the difference
+#'           of the inital, full vial weigth and weight after generating the headspace. Numeric.}
+#'     \item{Comment}{Identifies whether the extetainer is a 'airSTD', 'waterSTD', 'Sample' or 'Conditioner'. These are the only vaild options for this field. Character.}
 #'   }
+#' The remaining columns should be unchaged from what is created by IsoDat.  There should be a total of 45 columsn of data in the raw data file.
 #'
 #' @usage exetainers.NACHO(data.file, analysis.date, area.cutoff = F, injections.standards = c(F, T, T, T), injections.samples = c(F, T, T, T), lab.air.T = 20, system.pressure.atm = 1.49701, salinity = 0)
 #'
@@ -42,20 +44,21 @@
 #'    }
 #' @author Gordon W. Holtgrieve
 #' @export
-#' @import dplyr
+#' @import tidyverse
 #' @importFrom tools file_path_sans_ext
 
-exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
-                              injections.standards = c(F, T, T, T), injections.samples = c(F, T, T, T),
-                              lab.air.T = 20, system.pressure.atm = 1.49701, salinity = 0){
+exetainers.NACHO <- function (data.file, area.cutoff = F, injections.standards = c(F, T, T, T),
+                              injections.samples = c(F, T, T, T), lab.air.T = 20,
+                              system.pressure.atm = 1.49701, salinity = 0){
 
-  require(dplyr)
+  require(tidyverse)
 
-  if(is.nummeric(area.cutoff)){
+  if(is.numeric(area.cutoff)){
     areaCutoff <- area.cutoff
     flagUseAreaCutoff <- T
   } else if (area.cutoff == F){
     flagUseAreaCutoff <- F
+    areaCutoff <- 10
   } else stop("Parameter 'area.cutoff' must be FALSE or numeric.")
 
   # Standard values
@@ -65,6 +68,11 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
   air.d15N.vsAir <- get.isotope.standard(std = "air", isotope.system = "N")$delta  #returns 0
   air.32O2.40Ar <- 22.426   # Reference here
 
+  #Establish a vector of column names
+  colNames <- c("analysisDate", "Identifier.1", "Identifier.2", "Comment", "Method", "Amount", "Analysis", "Line", "Gasconfiguration", "Peak.Nr",
+                "IsRef_", "Rt", "Width", "BGD.32", "BGD.33", "BGD.34", "BGD.40", "BGD.28", "BGD.29", "BGD.44", "BGD.45", "Ampl.32", "Ampl.33", "Ampl.34",
+                "Ampl.40", "Ampl.28", "Ampl.29", "Ampl.44", "Ampl.45", "Area.32", "Area.40", "Area.28", "Area.44", "R.33O2.32O2", "R.34O2.32O2",
+                "R.32O2.40Ar", "R.29N2.28N2", "R.45CO2.44CO2", "d.33O2.32O2", "d.34O2.32O2", "d.32O2.40Ar", "d.29N2.28N2", "d.15N.14N", "d.45CO2.44CO2", "d.13C.12C")
 
   #############################################################################
            ####Functions####
@@ -138,43 +146,40 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
            ####Load and index data####
   #############################################################################
   #Load raw data file
-  rawData <- read.csv(data.file, header=T)
+  rawData <- read_csv(data.file)
+  names(rawData) <- colNames
 
   #Determine number of samples and standards in this run
-  exetainers <- unique(rawData[,c("Identifier.1","Identifier.2","Comment")])
-  nTotal <- length(exetainers[,1])
+  exetainers <- unique(rawData[,c("Identifier.1","Identifier.2","Comment", "analysisDate")])
+  nTotal <- length(exetainers$Identifier.1)
   nSamples <- sum(exetainers$Comment=="Sample")
   nStandards <- sum(exetainers$Comment=="airSTD")
   nConditioners <- sum(exetainers$Comment=="Conditioner")
-  nWaterStandards <- sum(exetainers$Comment=="WaterSTD")
+  nWaterStandards <- sum(exetainers$Comment=="waterSTD")
   print(nSamples + nStandards + nConditioners)   #Note: nTotal = nSamples + nStandards + nConditioners
-  nRuns <- length(levels(rawData$analysisDate))
+  nRuns <- length(unique(rawData$analysisDate))
 
   #############################################################################
            ####Thin data to what is needed for calculations####
   #############################################################################
   #separate airSTD volumes (Conditioners|Standards) VS headspace volumes (WaterSTDs|Samples)
-  x=rep(NA,length(exetainers$Identifier.1))
-  y=rep(NA,length(exetainers$Identifier.1))
-  for (i in 1:nTotal){
-    x[i]=ifelse(exetainers[i,3]=="Conditioner"|exetainers[i,3]=="airSTD",exetainers$Identifier.2[i],NA)
-    y[i]=ifelse(exetainers[i,3]=="WaterSTD"|exetainers[i,3]=="Sample",exetainers$Identifier.2[i],NA)
-  }
+  exetainers$deckAir_mL <- exetainers$Vg <- NA
 
-  exetainers <- exetainers %>%
-    mutate(deckAir_mL = x) %>%
-    mutate(Vg = y) %>%
-    select(Identifier.1, deckAir_mL, Vg, Comment)
+  index <- exetainers$Comment=="Conditioner" | exetainers$Comment=="airSTD"
+  exetainers$deckAir_mL[index] <- exetainers$Identifier.2[index]
 
+  index <- exetainers$Comment=="waterSTD" | exetainers$Comment=="Sample"
+  exetainers$Vg[index] <- exetainers$Identifier.2[index]
 
   #Loop through each sample checking the data and compiling the important results into a new data frame
   #Set up blank data frame to store the key data for analysis
-  thinnedData <- data.frame(Identifier.1=rep(exetainers[,1],each=4),
-                            deckAir_mL=rep(exetainers[,2],each=4),
-                            Vg=rep(exetainers[,3],each=4),
-                            Comment=rep(exetainers[,4], each=4),
-                            analysisDate=NA,
-                            Injection=1:4,
+  thinnedData <- data.frame(Identifier.1 = rep(exetainers$Identifier.1, each=4),
+                            Identifier.2 = rep(exetainers$Identifier.2, each=4),
+                            Comment = rep(exetainers$Comment, each=4),
+                            Injection = 1:4,
+                            Vg = rep(exetainers$Vg, each=4),
+                            deckAir_mL = rep(exetainers$deckAir_mL, each=4),
+                            analysisDate = rep(exetainers$analysisDate, each=4),
                             R.28.40=NA,
                             Area.32=NA,
                             d.34O2.32O2=NA,
@@ -185,12 +190,13 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
                             d.15N.14N=NA,
                             Area.44=NA,
                             d.13C.12C=NA,
-                            Small.Sample.Mass=NA)
+                            Small.Sample.Mass=NA
+                            )
 
   j=1
 
   for (i in 1:nTotal){
-    print(paste("The current sample is", exetainers[i,1], "which is a", exetainers[i,4]))
+    print(paste("The current sample is", exetainers$Identifier.1[i], "which is a", exetainers$Comment[i]))
     #Pull out the data for one sample
     oneSample <- rawData[which(rawData$Identifier.1==exetainers$Identifier.1[i]),]
 
@@ -266,7 +272,11 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
     airSTDs_mean_d.32O2.40Ar <- mean(airSTDs$d.32O2.40Ar, na.rm=T)
     residuals_d.32O2.40Ar <- airSTDs$d.32O2.40Ar - airSTDs_mean_d.32O2.40Ar
     tempData <- data.frame(x= airSTDs$Area.32, y=residuals_d.32O2.40Ar)
-    nlsOut_d.32O2.40Ar <- nls(y ~ c + a*tanh(b*x/a), data=tempData, start=list(a=175, b=11, c=-120))
+    flag1 <- FALSE
+    flag1 <- inherits(try(modelOut_d.32O2.40Ar <- nls(y ~ c + a*tanh(b*x/a), data=tempData, start=list(a=100, b=10, c=-20)), silent = T), "try-error")
+    if(flag1){
+      modelOut_d.32O2.40Ar <- lm(y ~ x, data = tempData)
+    }
 
   # d15N-N2 data
     airSTDs_mean_d.15N.14N <- mean(airSTDs$d.15N.14N, na.rm=T)
@@ -314,7 +324,7 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
   rug(samples$Area.32,lwd=2,col=c("red"))
   PlotByX(x=airSTDs$Area.32, y=residuals_d.32O2.40Ar, colorVector=airSTDs$deckAir_mL, xlab="Area mass 32 (Vs)", ylab="residuals of R 32:40",
           inset=c(0.07,0), mean=airSTDs_mean_d.32O2.40Ar, legendBool=F,xlim=c(min(c(samples$Area.32,airSTDs$Area.32)),max(c(samples$Area.32,airSTDs$Area.32))))
-  tempData <- data.frame(x=airSTDs$Area.32, y=fitted(nlsOut_d.32O2.40Ar))
+  tempData <- data.frame(x=airSTDs$Area.32, y=fitted(modelOut_d.32O2.40Ar))
   lines(tempData[order(tempData$x),], lwd=2)
   rug(samples$Area.32,lwd=2,col=c("red"))
 
@@ -350,7 +360,7 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
        ####Make corrections for sample mass, asking user####
   #############################################################################
   # d18O-O2 data
-  flag_d.34O2.32O2 <- readline("Do you want to correct 34O2:32O2 for sample mass (area 32)?  Enter T/F.")
+  flag_d.34O2.32O2 <- as.logical(readline("Do you want to correct 34O2:32O2 for sample mass (area 32)?  Enter T/F."))
   if(flag_d.34O2.32O2){
     residuals_d.34O2.32O2 <- airSTDs$d.34O2.32O2 - airSTDs_mean_d.34O2.32O2
     lmOut_d.34O2.32O2 <- lm(residuals_d.34O2.32O2 ~ airSTDs$Area.32)
@@ -360,28 +370,32 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
   }
 
   # d17O-O2 data
-  flag_d.33O2.32O2 <- readline("Do you want to correct 33O2:32O2 for sample mass (area 32)?  Enter T/F.")
+  flag_d.33O2.32O2 <- as.logical(readline("Do you want to correct 33O2:32O2 for sample mass (area 32)?  Enter T/F."))
   if(flag_d.33O2.32O2){
     offset <- samples$Area.32 * coefficients(lmOut_d.33O2.32O2)[2] + coefficients(lmOut_d.33O2.32O2)[1]
     samples$d.33O2.32O2_corr <- samples$d.33O2.32O2 - offset
   }
 
   # O2:Ar data
-  flag_d.32O2.40Ar <- readline("Do you want to correct 32O2:40Ar for sample mass (area 32)?  Enter T/F.")
+  flag_d.32O2.40Ar <- as.logical(readline("Do you want to correct 32O2:40Ar for sample mass (area 32)?  Enter T/F."))
   if(flag_d.32O2.40Ar){
-    offset <- coefficients(nlsOut_d.32O2.40Ar)[3] + coefficients(nlsOut_d.32O2.40Ar)[1] * tanh(coefficients(nlsOut_d.32O2.40Ar)[2] * samples$Area.32 / coefficients(nlsOut_d.32O2.40Ar)[1])
-    samples$d.32O2.40Ar_corr <- samples$d.32O2.40Ar - offset
+    if(flag1){
+      offset <- samples$Area.32 * coefficients(modelOut_d.32O2.40Ar)[2] + coefficients(modelOut_d.32O2.40Ar)[1]
+    } else{
+      offset <- coefficients(modelOut_d.32O2.40Ar)[3] + coefficients(modelOut_d.32O2.40Ar)[1] * tanh(coefficients(modelOut_d.32O2.40Ar)[2] * samples$Area.32 / coefficients(modelOut_d.32O2.40Ar)[1])
+    }
+      samples$d.32O2.40Ar_corr <- samples$d.32O2.40Ar - offset
   }
 
   # d15N-N2 data
-  flag_d.15N.14N <- readline("Do you want to correct 15N2:14N2 for sample mass (area 28)?  Enter T/F.")
+  flag_d.15N.14N <- as.logical(readline("Do you want to correct 15N2:14N2 for sample mass (area 28)?  Enter T/F."))
   if(flag_d.15N.14N){
     offset <- samples$Area.28 * coefficients(lmOut_d.15N.14N)[2] + coefficients(lmOut_d.15N.14N)[1]
     samples$d.15N.14N_corr <- samples$d.15N.14N - offset
   }
 
   # d13C-CO2 data
-  flag_d.13C.12C <- readline("Do you want to correct 13C:12C for sample mass (area 44)?  Enter T/F.")
+  flag_d.13C.12C <- as.logical(readline("Do you want to correct 13C:12C for sample mass (area 44)?  Enter T/F."))
   if(flag_d.13C.12C){
     offset <- samples$Area.44 * coefficients(lmOut_d.13C.12C)[2] + coefficients(lmOut_d.13C.12C)[1]
     samples$d.13C.12C_corr <- samples$d.13C.12C - offset
@@ -435,8 +449,10 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
   samples$flag.smallArea32[samples$Area.32 <= areaCutoff] <- TRUE
 
   #Write the results
-  write.csv(samples, paste(tools::file_path_sans_ext(data.file),"_results.csv",sep=""))
-  write.csv(airSTDs, paste(tools::file_path_sans_ext(data.file),"_airSTDs.csv", sep=""))
+  sampleOutputFileName <-  paste(tools::file_path_sans_ext(data.file),"_results.csv",sep="")
+  standardsOutputFileName <- paste(tools::file_path_sans_ext(data.file),"_airSTDs.csv", sep="")
+  write.csv(samples, sampleOutputFileName)
+  write.csv(airSTDs, standardsOutputFileName)
 
 
   # #################################################################################
@@ -451,14 +467,15 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
   #Run and instrument information
   cat("RUN AND INSTRUMENT INFORMATION", "\n", sep = "\t")
   cat("Instrument ID:", "Thermo Delta V (NACHO)", "\n", sep = "\t")
-  cat("Analysis Date:", analysisDate, "\n", sep = "\t")
+  cat("Analysis Date(s):", unique(exetainers$analysisDate), "\n", sep = "\t")
   cat("\n")
   cat("\n")
   cat("Raw data file location:", getwd(), "\n", sep = "\t")
   cat("Raw data file name:", data.file, "\n", sep = "\t")
-  cat("Reduced data file name:", outputFileName, "\n", sep = "\t")
+  cat("Reduced sample data file name:", sampleOutputFileName, "\n", sep = "\t")
+  cat("Reduced standards data file name:", standardsOutputFileName, "\n", sep = "\t")
   cat("\n")
-  cat("Data reduction performed", format(Sys.time(), "%a %b %d %X %Y"), "using the HEEL R package version", packageVersion("HEEL"), "running R version", getRversion(), "\n")
+  cat("Data reduction performed", format(Sys.time(), "%a %b %d %X %Y"))
   cat("\n")
   cat("\n")
 
@@ -499,10 +516,12 @@ exetainers.NACHO <- function (data.file, analysis.date, area.cutoff = F,
     cat("delta 33O2:32O2 were not corrected", "\n")
   }
 
-  if (flag_d.32O2.40Ar){
+  if (all(flag_d.32O2.40Ar, flag1)){
+    cat("delta 33O2:32O2 were corrected using a linear model of the residuals vs. vs. Area 32 with intercept and slope of ",round(coefficients(modelOut_d.32O2.40Ar),3), "\n")
+  } else if (flag_d.32O2.40Ar){
     cat("delta 32O2:40Ar were corrected using a saturating model of the residuals vs. vs. Area 32 of the form y = c + a*tanh(b*Area 32/a).", "\n")
     cat("\t", "The coefficients for this model were ",round(coefficients(nlsOut_d.32O2.40Ar),3), "\n")
-  } else {
+  }  else{
     cat("delta 32O2:40Ar were not corrected", "\n")
   }
 

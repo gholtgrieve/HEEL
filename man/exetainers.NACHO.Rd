@@ -45,14 +45,16 @@ in the run.  The function writes a .csv with the thinned raw data and a .txt wit
 sample data are writen as a .csv file and a dataframe of the data is also returned.
 
 The input data file has strick formatting and data requirments.  Each sample or standard should have seven rows of data: 3 for massess 32, 34
-and 40; 2 for masses 28 and 29, and 2 for masses 44, 45, 46.  Deviations for the is will result in the function failing.  In additon there
-must be the following four identification columns:
+and 40; 2 for masses 28 and 29, and 2 for masses 44, 45, 46.  Deviations for the is will result in the function failing.  In additon the first four columns
+must be the following four identification columns in this order:
   \describe{
-    \item{Identifier.1}{Unique identifier for each exetainer in the file. If two runs are combined, be sure this field remains unique. Character.}
-    \item{Identifier.2}{Mililiters of air added to air standards. Use only with air standards; othersie blank. Numeric.}
-    \item{Comment}{Identifies whether the extetainer is a 'airSTD', 'waterSTD', 'Sample' or 'Conditioner'. These are the only vaild options fr this field.}
     \item{analysisDate}{Data of the run(s) on NACHO. Character.}
+    \item{Identifier.1}{Unique identifier for each exetainer in the file. If two runs are combined, be sure this field remains unique. Character.}
+    \item{Identifier.2}{Mililiters of air added to air standards OR volume of headspace in the sample or water standard vial. Headspace volume is the difference
+          of the inital, full vial weigth and weight after generating the headspace. Numeric.}
+    \item{Comment}{Identifies whether the extetainer is a 'airSTD', 'waterSTD', 'Sample' or 'Conditioner'. These are the only vaild options for this field. Character.}
   }
+The remaining columns should be unchaged from what is created by IsoDat.  There should be a total of 45 columsn of data in the raw data file.
 }
 \author{
 Gordon W. Holtgrieve
