@@ -16,9 +16,9 @@
 #'           of the inital, full vial weigth and weight after generating the headspace. Numeric.}
 #'     \item{Comment}{Identifies whether the extetainer is a 'airSTD', 'waterSTD', 'Sample' or 'Conditioner'. These are the only vaild options for this field. Character.}
 #'   }
-#' The remaining columns should be unchaged from what is created by IsoDat.  There should be a total of 45 columsn of data in the raw data file.
+#' The remaining columns should be unchaged from what is created by IsoDat.  There should be a total of 45 columns of data in the raw data file.
 #'
-#' @usage exetainers.NACHO(data.file, analysis.date, area.cutoff = F, injections.standards = c(F, T, T, T), injections.samples = c(F, T, T, T), lab.air.T = 20, system.pressure.atm = 1.49701, salinity = 0)
+#' @usage exetainers.NACHO(data.file, area.cutoff = F, injections.standards = c(F, T, T, T), injections.samples = c(F, T, T, T), lab.air.T = 20, system.pressure.atm = 1.49701, salinity = 0)
 #'
 #' @param data.file     Full file name for raw data from the instrument. Must be a .csv file! Character.
 #' @param area.cutoff   Defines the peak area (Vs) cutoff below which an individual analysis (injection) is droped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.
