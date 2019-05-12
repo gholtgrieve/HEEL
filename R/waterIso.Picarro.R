@@ -10,8 +10,8 @@
 #' @param data.file   Full file name for raw data from the instrument. Must be a .csv file! File name must start with the instrument ID number follow by "_". Character.
 #' @param sample.file Full file name for the sample information that coresponds to the raw data.  Also, must be a .csv file! The file must include the folowing headings (and only the following headings).  Best to use the template!
 #'   \describe{
-#'     \item{vialNum}{The vail number of the sample.}
 #'     \item{trayNum}{The tray positon on the autosampler.}
+#'     \item{vialNum}{The vail number of the sample.}
 #'     \item{sampleType}{Aceptable identifiers include: Conditioner, Standard, and Sample.}
 #'     \item{SampleDesc}{Unique identifier of the sample.}
 #'     }
@@ -81,6 +81,7 @@ Calculate.nDiscard <- function(memory, cutoff){
   return(i)
 }
 
+
 ###########################################################################################################
 ###########################################################################################################
 
@@ -141,33 +142,45 @@ Calculate.nDiscard <- function(memory, cutoff){
     }
   }
 
-# Print results of memory calc to screen and ask user how many injections to discard.
-  cat("\n")
-  cat("Average memory for this run (dD) is ", round(mean(dD.memory, na.rm=T),2), ".","\n", sep="")
-  cat("Average memory for this run (d18O) is ", round(mean(d18O.memory, na.rm=T),2), ".", "\n","\n", sep="")
+#Send message if memory can't be calculated for some reason. See if user wants to proceed.
+  memory.flag <- all(is.na(dD.memory)) | all(is.na(d18O.memory))
+  if(memory.flag){
+    cat("\n")
+    cat("Unable to calculate memory for this run.  Please check raw data for errors.")
+    stop.flag <- readline("Would you like to continue with the analysis (Y/N)?")
+    if(stop.flag == "N")  stop("Okay, cherrio.  Toddle off now...")
+  }
 
-  cat("Number of injections to achieve < 1% carryover is ", Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.01), ".", "\n", sep="")
-  cat("Number of injections to achieve < 0.1% carryover is ", Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.001), ".", "\n", sep="")
-  cat("Number of injections to achieve < 0.01% carryover is ", Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.0001), ".", "\n", sep="")
+  if(memory.flag){
+    nDiscard <- as.numeric(readline("How many injections would you like to discard?"))
+  } else {
+    # Print results of memory calc to screen and ask user how many injections to discard.
+      cat("\n")
+      cat("Average memory for this run (dD) is ", round(mean(dD.memory, na.rm=T),2), ".","\n", sep="")
+      cat("Average memory for this run (d18O) is ", round(mean(d18O.memory, na.rm=T),2), ".", "\n","\n", sep="")
 
-# Set default number of injections to discard at the number to achieve < 0.1% carryover
-# or numInj - 3, whichever is smaller.
-  nDiscard <- Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.001)
-  if (nDiscard > (numInj - 3)) nDiscard <- (numInj - 3)
+      cat("Number of injections to achieve < 1% carryover is ", Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.01), ".", "\n", sep="")
+      cat("Number of injections to achieve < 0.1% carryover is ", Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.001), ".", "\n", sep="")
+      cat("Number of injections to achieve < 0.01% carryover is ", Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.0001), ".", "\n", sep="")
 
-# Display default number of discards and user if that what they want to use.
-  cat("The default number of injections to discard is ", nDiscard, ".", "\n", sep="")
-  newDiscard <- as.logical(readline("Would you like to change the number of sample to discard (T/F)?"))
-  #If the anser to the above is T, ask user how many injections to discard and replace default with answer?
-  if (newDiscard) nDiscard <- as.numeric(readline("How many injections would you like to discard?"))
+    # Set default number of injections to discard at the number to achieve < 0.1% carryover
+    # or numInj - 3, whichever is smaller.
+      nDiscard <- Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.001)
+      if (nDiscard > (numInj - 3)) nDiscard <- (numInj - 3)
 
+    # Display default number of discards and user if that what they want to use.
+      cat("The default number of injections to discard is ", nDiscard, ".", "\n", sep="")
+      newDiscard <- as.logical(readline("Would you like to change the number of injections to discard (T/F)?"))
+      #If the anser to the above is T, ask user how many injections to discard and replace default with answer?
+      if (newDiscard) nDiscard <- as.numeric(readline("How many injections would you like to discard?"))
+  }
 ###########################################################################################################
 
 
 ###########################################################################################################
 #  #Calculate means and standard deviations for each vial after discarding the specified number of injections.
 ###########################################################################################################
-  vialMeans <- data.frame(sampleNum=vials, trayNum=NA, vialNum=NA, sampleType=NA, sampleDesc=NA, H2O.ppmv.mean=NA, H2O.ppmv.SD=NA, dD.mean=NA, dD.SD=NA, dD.res=NA, d18O.mean=NA, d18O.SD=NA, d18O.res=NA)
+  vialMeans <- data.frame(sampleNum=vials, trayNum=NA, vialNum=NA, sampleType=NA, sampleDesc=NA, H2O.ppmv.mean=NA, H2O.ppmv.SD=NA, dD.mean=NA, dD.SD=NA, d18O.mean=NA, d18O.SD=NA)
 
   for (i in vials){
     temp <- data[data$Sample==i,]
@@ -190,6 +203,14 @@ Calculate.nDiscard <- function(memory, cutoff){
   vialMeans_standards <- vialMeans[vialMeans$sampleType == "Standard",]
   vialMeans_samples <- vialMeans[vialMeans$sampleType == "Sample",]
 
+#Check if average H2O.ppmv.mean for each vial is between 19K and 21K. If not, warn the user.
+  ppmH2O.error <- vialMeans$H2O.ppmv.mean < 19000 | vialMeans$H2O.ppmv.mean > 21000
+  if(any(ppmH2O.error)) {
+    cat("\n")
+    cat("The mean H2O.ppmv for the following samples/standards is out of range (> 21K or < 19K). You should be skeptical of these results.")
+    cat("\n")
+    print(vialMeans[ppmH2O.error,c("trayNum", "vialNum", "sampleType", "sampleDesc", "H2O.ppmv.mean")])
+  }
 ###########################################################################################################
 
 ###########################################################################################################
@@ -353,22 +374,40 @@ Calculate.nDiscard <- function(memory, cutoff){
   cat("\n"); cat("\n")
 
 #Report results from memory analysis.
-  cat("RESULTS OF ANALYSIS OF INSTRUMENT MEMORY EFFECTS.", "\n", sep = "\t")
-  cat("The memory calculation for dD and 18O is:","\n", sep = "\t")
-  cat("   range = abs of the last two injections from the current vial minus the last two injections from the previous vial.","\n", sep = "\t")
-  cat("   remaining = abs of last two injections of current vial minus first injection of the current vial.","\n", sep = "\t")
-  cat("   memory (%) = remaining / range * 100","\n", sep = "\t")
-  cat("\n")
-  cat("Average memory for this run (dD) is ", round(mean(dD.memory, na.rm=T),2), ".","\n", sep = "\t")
-  cat("Average memory for this run (d18O) is ", round(mean(d18O.memory, na.rm=T),2), ".", "\n","\n", sep = "\t")
+  if(memory.flag){
+    cat("\n")
+    cat("Memory could not be calculated from the data.", "\n", sep = "\t")
+    cat("Number of discarded initial injections for each sample:", nDiscard,"\n", sep = "\t")
+    cat("\n")
+    cat("\n")
+  } else {
+    cat("RESULTS OF ANALYSIS OF INSTRUMENT MEMORY EFFECTS.", "\n", sep = "\t")
+    cat("The memory calculation for dD and 18O is:","\n", sep = "\t")
+    cat("   range = abs of the last two injections from the current vial minus the last two injections from the previous vial.","\n", sep = "\t")
+    cat("   remaining = abs of last two injections of current vial minus first injection of the current vial.","\n", sep = "\t")
+    cat("   memory (%) = remaining / range * 100","\n", sep = "\t")
+    cat("\n")
+    cat("Average memory for this run (dD) is ", round(mean(dD.memory, na.rm=T),2), ".","\n", sep = "\t")
+    cat("Average memory for this run (d18O) is ", round(mean(d18O.memory, na.rm=T),2), ".", "\n","\n", sep = "\t")
 
-  cat("Number of injections to achieve < 1% carryover is ", Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.01), "\n", sep="\t")
-  cat("Number of injections to achieve < 0.1% carryover is ", Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.001), "\n", sep="\t")
-  cat("Number of injections to achieve < 0.01% carryover is ", Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.0001), "\n", sep="\t")
-  cat("\n")
-  cat("Number of discarded initial injections for each sample:", nDiscard,"\n", sep = "\t")
-  cat("\n")
-  cat("\n")
+    cat("Number of injections to achieve < 1% carryover is ", Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.01), "\n", sep="\t")
+    cat("Number of injections to achieve < 0.1% carryover is ", Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.001), "\n", sep="\t")
+    cat("Number of injections to achieve < 0.01% carryover is ", Calculate.nDiscard(mean(dD.memory, na.rm=T)/100, 0.0001), "\n", sep="\t")
+    cat("\n")
+    cat("Number of discarded initial injections for each sample:", nDiscard,"\n", sep = "\t")
+    cat("\n")
+    cat("\n")
+  }
+
+#Report of ppm H2O is out of range for any of the samples/standards.
+  if(any(ppmH2O.error)) {
+    cat("\n")
+    cat("The mean H2O.ppmv for the following samples/standards is out of range (> 21K or < 19K). You should be skeptical of these results.")
+    cat("\n")
+    print(vialMeans[ppmH2O.error,c("trayNum", "vialNum", "sampleType", "sampleDesc", "H2O.ppmv.mean")])
+    cat("\n")
+    cat("\n")
+  }
 
 #Report results from drift corrections
   cat("DRIFT CORRECTION INFORMATION.","\n")
