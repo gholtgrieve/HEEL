@@ -1,0 +1,3 @@
+FILE FORMAT
+/t This is a TAB delimited text file created by MATLAB 8.6.0.267246 (R2015b). It is readily opened / imported using any text
+/t editor, MS Excel, Open Spreadsheet platform (XML), or other software package of your choosing.
