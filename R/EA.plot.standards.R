@@ -8,9 +8,10 @@
 #' @param results List containing results from previous functions.
 #'
 #' @import tidyverse
-#' @importFrom ggpubr stat_cor stat_regline_equation theme_minimal
+#' @importFrom ggpubr stat_cor stat_regline_equation
 #' @importFrom gridExtra grid.arrange
 #' @importFrom tools file_path_sans_ext
+#' @importFrom tibble tibble
 #'
 #' @return List containing lm objects from four linear models:
 #'              mass N vs. m/z 28

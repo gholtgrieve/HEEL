@@ -15,7 +15,9 @@ Imports:
   CHNOSZ,
   tools,
   dplyr,
-  tibble
+  tibble,
+  ggpubr,
+  gridExtra
 Suggests:
   devtools,
   roxygen2
