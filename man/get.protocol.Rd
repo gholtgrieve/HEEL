@@ -4,16 +4,16 @@
 \alias{get.protocol}
 \title{Access HEEL protocols in a desired format.}
 \usage{
-get.protocol(protocol, format)
+get.protocol(protocol = NULL, format = NULL)
 }
 \arguments{
 \item{protocol}{Name of desired protocol form the following list.  Character vector of length 1.
 \describe{
-  \item{"Data Management"}
-  \item{"Dish Cleaning"}
-  \item{"Muffle Furnace"}
-  \item{"d15N-AA"}
-  \item{"Exetainer Analysis"}
+  \item{Data Management}{}
+  \item{"ish Cleaning}{}
+  \item{Muffle Furnace}{}
+  \item{d15N-AA}{}
+  \item{Exetainer Analysis}{}
 }}
 
 \item{format}{File format to be generated. Options are "pdf", "html", "word", "markdown", "rmarkdown". Character vector of length 1.}
@@ -22,9 +22,6 @@ get.protocol(protocol, format)
 RMarkdown document for the desired protocol is rendered in the specified format and save in
 the working directory.  The file is then launched via the system.  If no arguemts are provided
 the function will print a list of the avaiable protocols.
-}
-\examples{
-get.protocol("Data Management", "html")
 }
 \author{
 Gordon W. Holtgrieve

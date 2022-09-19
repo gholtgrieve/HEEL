@@ -1,13 +1,16 @@
-#' Checks given names of an isotope standard against a list of possible names.
+#' @title Checks given names of an isotope standard against a list of possible names.
 #'
-#' Convenience function for checking a given name of an isotope standard against a list of possible names,
-#' returning the 'offical' name for use going forward.
+#' @description Convenience function for checking a given name of an isotope standard against a list of possible names,
+#' returning the 'official' name for use going forward.
 #'
-#' @usage
-#' check.isotope.standard.name(x)
-#' @param x Proposed name to be checked against list of possible names.
+#' @usage  check.isotope.standard.name(x)
+#'
+#' @param  x Proposed name to be checked against list of possible names.
+#'
 #' @return Character vector contaiing the 'offical' name of the standard.
+#'
 #' @author Gordon W. Holtgrieve
+#'
 #' @export
 
 check.isotope.standard.name <- function(x){

@@ -1,14 +1,22 @@
 #' @title Calculates Henry's constant for CO2 (mol/L/atm)
+#'
 #' @description Calculates Henry's constant for CO2 at a given temperature, salinity and pressure.
+#'
 #' @param temperature Water temperature in degrees Celsius.
+#'
 #' @param salinity Salinity in practical salinity units (PSU). Defaults to 0.
 #' @param pressure.atm Surface pressure in atmospheres. Defaults to 1.
+#'
 #' @return Numeric vector of Henry's constant for a specified gas in units of mol/L/atm.
+#'
 #' @note Units of mol/L/atm and umol/L/uatm are equivalent.
+#'
 #' @author Gordon W. Holtgrieve
+#'
 #' @export
 
 get.K0.CO2 <- function(temperature=20, salinity = 0, pressure.atm = 1){
+
   #### Error Checking ####
   if(is.null(temperature)){
     stop("Error: 'temperature' is required data.")

@@ -14,7 +14,8 @@ get.isotope.standard(std, isotope.system)
 \value{
 A list with the following elements.
 \describe{
-  \item{delta}{Numeric value of the standard in delta notation for the given isotope system. Uses the most common international standard for each isotope system. Specifically, VPDB for C, air for N, VCDT for S, and VSMOW for H, O18, and O17.}
+  \item{delta}{Numeric value of the standard in delta notation for the given isotope system. Uses the most common international standard for each isotope system.
+               Specifically, VPDB for C, air for N, VCDT for S, and VSMOW for H, O18, and O17.}
   \item{std.R}{The ratio of heavy to light isotope of the standard for the given isotope system (e.g., 13C/12C)}
   \item{R}{The ratio of the standard relative to ratio of the common international standard for the given isotope system (i.e., R_std/R_VPDB)}
   \item{massPct}{The mass percent of the standard for the given isotope system.}
@@ -22,7 +23,7 @@ A list with the following elements.
 }
 \description{
 This function is used to pull out isotope standard data from the isotope.standards dataframe
-easily and efficently.  The isotope.standards dataframe contains only raw isotope ratios,
+easily and efficiently.  The isotope.standards dataframe contains only raw isotope ratios,
 so this function also will convert to delta value relative to the common international standard.
 }
 \author{

@@ -1,19 +1,24 @@
-#' Helper function to access information in the isotope.standards dataframe
+#' @title Helper function to access information in the isotope.standards dataframe
 #'
-#' This function is used to pull out isotope standard data from the isotope.standards dataframe
-#' easily and efficently.  The isotope.standards dataframe contains only raw isotope ratios,
+#' @description This function is used to pull out isotope standard data from the isotope.standards dataframe
+#' easily and efficiently.  The isotope.standards dataframe contains only raw isotope ratios,
 #' so this function also will convert to delta value relative to the common international standard.
 #'
 #' @param std  Character vector with name(s) of the isotope standard of interest.
+#'
 #' @param isotope.system  Character vector of length one indicating the (single) isotope system of interest. Currently supported isotope systems are "C", "N", "S", "H", "O18", "O17".
+#'
 #' @return A list with the following elements.
 #' \describe{
-#'   \item{delta}{Numeric value of the standard in delta notation for the given isotope system. Uses the most common international standard for each isotope system. Specifically, VPDB for C, air for N, VCDT for S, and VSMOW for H, O18, and O17.}
+#'   \item{delta}{Numeric value of the standard in delta notation for the given isotope system. Uses the most common international standard for each isotope system.
+#'                Specifically, VPDB for C, air for N, VCDT for S, and VSMOW for H, O18, and O17.}
 #'   \item{std.R}{The ratio of heavy to light isotope of the standard for the given isotope system (e.g., 13C/12C)}
 #'   \item{R}{The ratio of the standard relative to ratio of the common international standard for the given isotope system (i.e., R_std/R_VPDB)}
 #'   \item{massPct}{The mass percent of the standard for the given isotope system.}
 #'   }
+#'
 #' @author Gordon W. Holtgrieve
+#'
 #' @export
 
 get.isotope.standard <- function(std, isotope.system){

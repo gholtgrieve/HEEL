@@ -9,7 +9,8 @@ delta.to.R(x, isotope.system=NULL, reference.std = NULL)
 \arguments{
 \item{x}{Numeric.}
 
-\item{isotope.system}{Character vector of length one indicating the (single) isotope system of interest. Currently supported isotope systems are "C", "N", "S", "H", "O18", "O17".}
+\item{isotope.system}{Character vector of length one indicating the (single) isotope system of interest.
+Currently supported isotope systems are "C", "N", "S", "H", "O18", "O17".}
 
 \item{reference.std}{Character vector of length one indicating the reference standard the data are relative to.}
 }
@@ -21,10 +22,6 @@ This function is used to convert isotope data in standard delta notation into is
 If arguments 'isotope.system' and 'reference.std' are provided, then the raw ratio (R = heavy isotope / light isotope) is returned.
 Do not use this option if ratios are given as light isotope / heavy isotope (not typical).
 If 'isotope.system' or 'reference.std' is NULL (default) then the 'grand ratio' (R-sample/R-standard) is returned.
-}
-\examples{
-delta.to.R(1.0)  # Returns R_sample/R_standard (==1.001)
-delta.to.R(10, isotope.system = "N", reference.std = "air")  # Returns ratio of heavy to light isotope (e.g., 15N/14N)
 }
 \author{
 Gordon W. Holtgrieve

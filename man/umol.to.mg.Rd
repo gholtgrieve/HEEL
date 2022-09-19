@@ -15,10 +15,7 @@ umol.to.mg(x, mol)
 Object same as 'x' but in units of milligrams
 }
 \description{
-This function is used to moles or molar concentration data from units of micromoles to miligrams.
-}
-\examples{
-umol.to.mg(1200, mol = "CO2")
+This function is used to moles or molar concentration data from units of micromoles to milligrams.
 }
 \author{
 Gordon W. Holtgrieve

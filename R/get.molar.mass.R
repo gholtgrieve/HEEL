@@ -1,18 +1,22 @@
-#' Calculate average molar mass of molecules.
+#' @title Calculate average molar mass of molecules.
 #'
-#' Convenience function for obtaining the average molar mass of chemical compounds as found in nature.
-#' @usage
-#' get.molar.mass(mol)
-#' @param mol Character vector of simple chemcial formulas.
+#' @description Convenience function for obtaining the average molar mass of chemical compounds as found in nature.
+#'
+#' @usage get.molar.mass(mol)
+#'
+#' @param mol Character vector of simple chemical formulas.
+#'
 #' @return Numeric vector of average molar masses same length as 'mol'.
-#' @examples
-#' get.molar.mass(mol="C2H6O")
-#' get.molar.mass(mol=c("Ag(S2O3)2", "CO2"))
+#'
 #' @author Gordon W. Holtgrieve
-#' @export
+#'
 #' @importFrom CHNOSZ makeup
+#'
+#' @export
+
 
 get.molar.mass <- function(mol){
+
   # Error handling
   if(any(is.null(mol))) stop("Error: Missing argument 'mol'.")
   if(any(!is.character(mol))) stop("Error: Argument 'mol' must be of type character.")

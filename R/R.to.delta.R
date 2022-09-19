@@ -1,22 +1,21 @@
-#' Converts isotopic ratio data to standard delta notation
+#' @title Converts isotopic ratio data to standard delta notation
 #'
-#' This function is used to convert isotopic ratio data (R) into standard delta notation.
+#' @description This function is used to convert isotopic ratio data (R) into standard delta notation.
 #' If arguments 'isotope.system' and 'reference.std' are provided, then x should be the raw ratio (R = heavy isotope / light isotope).
 #' Do not use this option if ratios are given as light isotope / heavy isotope (not typical). If 'isotope.system' or 'reference.std' is
 #' NULL (default) then x should be the 'grand ratio' (R-sample/R-standard).
 #'
-#' @usage
-#' R.to.delta(x, isotope.system=NULL, reference.std = NULL)
+#' @usage R.to.delta(x, isotope.system=NULL, reference.std = NULL)
+#'
 #' @param x Numeric.
-#' @param isotope.system  Character vector of length one indicating the (single) isotope system of interest. Currently supported isotope systems are "C", "N", "S", "H", "O18", "O17".
+#' @param isotope.system  Character vector of length one indicating the (single) isotope system of interest.
+#'                        Currently supported isotope systems are "C", "N", "S", "H", "O18", "O17".
 #' @param reference.std Character vector of length one indicating the reference standard the data are relative to.
+#'
 #' @return Object same as 'x' with data in delta notation rounded to two decimal places.
-#' @examples
-#' R.to.delta(1) #zero per mil
-#' R.to.delta(1.001) #one per mil
-#' R.to.delta(0.00200520, isotope.system = "O18", reference.std = "VSMOW") #zero per mil
-#' R.to.delta(delta.to.R(23.8, isotope.system = "O18", reference.std = "VSMOW"), isotope.system = "O18", reference.std = "air") #converts from VSMOW to air scales
+#'
 #' @author Gordon W. Holtgrieve
+#'
 #' @export
 
 R.to.delta <- function(x, isotope.system=NULL, reference.std = NULL){

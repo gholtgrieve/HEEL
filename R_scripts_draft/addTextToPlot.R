@@ -1,7 +1,7 @@
-#'@title Add Text to a Plot Using Relaive Positoning
+#'@title Add Text to a Plot Using Relative Positioning
 #'@description
 #'Easy little way to add a text to a plot.  The plot area is rescaled to range from 0 to 1 in both directions.
-#'Text placement is on this scale with larger values of y and x moving the placement up and to the right respectively.\cr
+#'Text placement is on this scale with larger values of y and x moving the placement up and to the right respectively.
 #'
 #'@usage
 #'addTextToPlot(x, y, text, ...)

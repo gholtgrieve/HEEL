@@ -14,7 +14,7 @@ Character vector contaiing the 'offical' name of the standard.
 }
 \description{
 Convenience function for checking a given name of an isotope standard against a list of possible names,
-returning the 'offical' name for use going forward.
+returning the 'official' name for use going forward.
 }
 \author{
 Gordon W. Holtgrieve

@@ -10,8 +10,10 @@
 #'
 #' @param results List containing results from previous functions.
 #'
-#' @import tidyverse
 #' @importFrom tools file_path_sans_ext
+#' @importFrom tibble tibble
+#' @importFrom stringr str_detect
+#' @importFrom dplyr summarize filter group_by
 #'
 #' @return List with two tables: 1) standard C & N data ($standard.CN),
 #'         sample C & N data ($sample.CN), and 2) calibration model coefficients ($calibration.coefficients).
@@ -34,13 +36,13 @@ EA.adjust <- function(results){
   blank.correct.flag <- results$blank.correct.flag
 
   # Pick the correct data depending on which corrections were performed.
-  if(str_detect(drift.correct.flag, "both|BOTH|Both")) {
+  if(stringr::str_detect(drift.correct.flag, "both|BOTH|Both")) {
     d13C <- standard.CN$d.13C.12C.drift
     d15N <- standard.CN$d.15N.14N.drift
-  } else if(str_detect(drift.correct.flag, "C|c")){
+  } else if(stringr::str_detect(drift.correct.flag, "C|c")){
     d13C <- standard.CN$d.13C.12C.drift
     d15N <- standard.CN$d.15N.14N
-  } else if(str_detect(drift.correct.flag, "N|n")){
+  } else if(stringr::str_detect(drift.correct.flag, "N|n")){
     d15N <- standard.CN$d.15N.14N.drift
     d13C <- standard.CN$d.13C.12C
   } else if (blank.correct.flag){
@@ -54,12 +56,12 @@ EA.adjust <- function(results){
   #Make data matrix to populate with means for the run(s)
   mean.measured.values <- standard.CN %>%
                           group_by(group) %>%
-                          summarize(d13C = mean(d13C), d15N = mean(d15N))
+                          dplyr::summarize(d13C = mean(d13C), d15N = mean(d15N))
 
   ## Adjust d13 vs. tank to vs. VPDB using GA1 and GA2 working standards
   ## Build linear model using VPDB values on the y and drift corrected raw values on the x.
-  x <- filter(mean.measured.values, group == "GA1" | group == "GA2")$d13C
-  y <- filter(known.delta.values, group == "GA1" | group == "GA2")$d13C
+  x <- dplyr::filter(mean.measured.values, group == "GA1" | group == "GA2")$d13C
+  y <- dplyr::filter(known.delta.values, group == "GA1" | group == "GA2")$d13C
   C.lm <- lm(y ~ x)
   C.lm.coeff <- coefficients(C.lm)
   sample.CN$d.13C.12C.VPDB <- C.lm.coeff[1] + C.lm.coeff[2] * sample.CN$d13C
@@ -67,15 +69,15 @@ EA.adjust <- function(results){
 
   ## Adjust d13 vs. tank to vs. VPDB using GA1 and GA2 working standards
   ## Build linear model using VPDB values on the y and drift corrected raw values on the x.
-  x <- filter(mean.measured.values, group == "SALMON" | group == "GA2")$d15N
-  y <- filter(known.delta.values, group == "SALMON" | group == "GA2")$d15N
+  x <- dplyr::filter(mean.measured.values, group == "SALMON" | group == "GA2")$d15N
+  y <- dplyr::filter(known.delta.values, group == "SALMON" | group == "GA2")$d15N
   N.lm <- lm(y ~ x)
   N.lm.coeff <- coefficients(N.lm)
   sample.CN$d.15N.14N.air <- N.lm.coeff[1] + N.lm.coeff[2] * sample.CN$d15N
   standard.CN$d.15N.14N.air <- N.lm.coeff[1] + N.lm.coeff[2] * standard.CN$d15N
 
   #Calculate percent C using peak area vs. mass of GA1 QTY.
-  mass.C.lm.coeff <-  filter(standard.CN, group == "GA1", ) %>%
+  mass.C.lm.coeff <-  dplyr::filter(standard.CN, group == "GA1", ) %>%
                       lm(mass.C.mg ~ Area.44, data = .) %>%
                       coefficients()
   sample.CN$pctC <- (mass.C.lm.coeff[1] + mass.C.lm.coeff[2] * sample.CN$Area.44) / sample.CN$Amount * 100
@@ -93,7 +95,7 @@ EA.adjust <- function(results){
   temp <- data.frame(Model=c("d13C", "d15N", "Percent C", "Percent N"),
                      rbind(C.lm.coeff, N.lm.coeff, mass.C.lm.coeff, mass.N.lm.coeff))
   colnames(temp) <- c("Value","Intercept", "Slope")
-  calibration.coefficients <- tibble(temp)
+  calibration.coefficients <- tibble::tibble(temp)
 
   return(list(standard.CN=standard.CN, sample.CN=sample.CN, calibration.coefficients=calibration.coefficients))
 }

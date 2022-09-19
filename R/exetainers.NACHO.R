@@ -1,10 +1,10 @@
-#' @title Finalizes extetainer gas ratio data from NACHO
+#' @title Finalizes exetainer gas ratio data from NACHO
 #'
 #' @description This function is used to decompose and finalize gas ratio data from exetainers analyzed on the Delta V irMS systems (NACHO).  The first step
-#' is thin and organige the raw data.  Plots are generated (as .pdfs) to look for mass effects on the results ansd the user is asked whether to correct for
+#' is thin and organize the raw data.  Plots are generated (as .pdfs) to look for mass effects on the results and the user is asked whether to correct for
 #' sample mass differences among injections and samples.  After corrections, measured values are calibrated against the working standards included
 #' in the run.  The function writes a .csv with the thinned raw data and a .txt with all relevant information about the analysis.  The finalized
-#' sample data are writen as a .csv file and a dataframe of the data is also returned.
+#' sample data are written as a .csv file and a dataframe of the data is also returned.
 #'
 #' The input data file has strick formatting and data requirments.  Each sample or standard should have seven rows of data: 3 for massess 32, 34
 #' and 40; 2 for masses 28 and 29, and 2 for masses 44, 45, 46.  Deviations for the is will result in the function failing.  In additon the first four columns
@@ -18,17 +18,21 @@
 #'   }
 #' The remaining columns should be unchaged from what is created by IsoDat.  There should be a total of 45 columns of data in the raw data file.
 #'
-#' @usage exetainers.NACHO(data.file, area.cutoff = F, injections.standards = c(F, T, T, T), injections.samples = c(F, T, T, T), lab.air.T = 20, system.pressure.atm = 1.49701, salinity = 0)
+#' @usage exetainers.NACHO(data.file, area.cutoff = F,
+#'                         injections.standards = c(F, T, T, T),
+#'                         injections.samples = c(F, T, T, T),
+#'                         lab.air.T = 20, system.pressure.atm = 1.49701,
+#'                         salinity = 0)
 #'
 #' @param data.file     Full file name for raw data from the instrument. Must be a .csv file! Character.
-#' @param area.cutoff   Defines the peak area (Vs) cutoff below which an individual analysis (injection) is droped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.
-#' @param injections.standards  Boolean vector length 4 idenitfying which injections of the standards to drop (F) or keep (T) for use in the calculations.
-#' @param injections.samples    Boolean vector length 4 idenitfying which injections of the samples to drop (F) or keep (T) for use in the calculations.
-#' @param lab.air.T     Temperature of the mass spec lab at time of analysis in degrees Celcius.  Defaults to 20.  Numeric.
+#' @param area.cutoff   Defines the peak area (Vs) cutoff below which an individual analysis (injection) is dropped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.
+#' @param injections.standards  Boolean vector length 4 identifying which injections of the standards to drop (F) or keep (T) for use in the calculations.
+#' @param injections.samples    Boolean vector length 4 identifying which injections of the samples to drop (F) or keep (T) for use in the calculations.
+#' @param lab.air.T     Temperature of the mass spec lab at time of analysis in degrees Celsius.  Defaults to 20.  Numeric.
 #' @param system.pressure.atm   Pressure of the inlet system in atmospheres.  Defaults to 1.49701 (22 psi).  Numeric.
-#' @param salinity      Salninty of the sample in ppt.  Defaults to 0.  Numeric.
+#' @param salinity      Salinity of the sample in ppt.  Defaults to 0.  Numeric.
 #'
-#' @return Dataframe of finalized data for each exeatiner including:
+#' @return Dataframe of finalized data for each exetainer including:
 #'   \describe{
 #'     \item{d180_02.vs.air}{18O:16O of diatomic oxygen (O2) in the headspace in standard delta notation relative to atmospheric air.}
 #'     \item{d180_02.vs.VSMOW}{18O:16O of diatomic oxygen (O2) in the headspace in standard delta notation relative to VSMOW.}
@@ -42,16 +46,19 @@
 #'           CO2 and using Henry's constant to estimate the 13C:12C of CO2 that raims dissoved in water.  Note that it may be necessary to
 #'           further correct these data based on co-analyzed DIC standards.}
 #'    }
-#' @author Gordon W. Holtgrieve
-#' @export
+#'
 #' @import tidyverse
+#'
 #' @importFrom tools file_path_sans_ext
+#'
+#' @author Gordon W. Holtgrieve
+#'
+#' @export
+
 
 exetainers.NACHO <- function (data.file, area.cutoff = F, injections.standards = c(F, T, T, T),
                               injections.samples = c(F, T, T, T), lab.air.T = 20,
                               system.pressure.atm = 1.49701, salinity = 0){
-
-  require(tidyverse)
 
   if(is.numeric(area.cutoff)){
     areaCutoff <- area.cutoff
@@ -116,7 +123,7 @@ exetainers.NACHO <- function (data.file, area.cutoff = F, injections.standards =
 
   calc.d13C.DIC <- function (d13C.CO2, Vg, lab.air.T, system.pressure.atm){
     # Calculates d13C of total DIC from headspace d13C-CO2 following modified method of
-    # Assayag et al. Rapid Commun. Mass Spectrom. 2006; 20: 2243–2251. Modified to
+    # Assayag et al. 2006. Rapid Commun. Mass Spectrometry. 20:2243-2251. Modified to
     # to calculate Henery's constant as a function of temperature, pressure,, and salinity.
     # Uses following equation: d13-DIC = d13C-CO2 - alpha / (1 + Vg/(Vl*R*T*KH))
     # Vg: Volume gas (headspace)
@@ -539,7 +546,8 @@ exetainers.NACHO <- function (data.file, area.cutoff = F, injections.standards =
 
   cat("\n"); cat("\n")
 
-  cat("Headspace d13C-CO2 was converted to d13C of total DIC (d13C_DIC) following a modified method of Assayag et al. Rapid Commun. Mass Spectrom. 2006; 20: 2243–2251.","\n")
+  cat("Headspace d13C-CO2 was converted to d13C of total DIC (d13C_DIC) following a modified method of
+      Assayag et al. 2006. Rapid Commun. Mass Spectrometry. 20:2243-2251.","\n")
 
   cat("\n"); cat("\n")
 

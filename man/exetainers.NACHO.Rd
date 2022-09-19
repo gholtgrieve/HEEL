@@ -2,27 +2,31 @@
 % Please edit documentation in R/exetainers.NACHO.R
 \name{exetainers.NACHO}
 \alias{exetainers.NACHO}
-\title{Finalizes extetainer gas ratio data from NACHO}
+\title{Finalizes exetainer gas ratio data from NACHO}
 \usage{
-exetainers.NACHO(data.file, area.cutoff = F, injections.standards = c(F, T, T, T), injections.samples = c(F, T, T, T), lab.air.T = 20, system.pressure.atm = 1.49701, salinity = 0)
+exetainers.NACHO(data.file, area.cutoff = F,
+                        injections.standards = c(F, T, T, T),
+                        injections.samples = c(F, T, T, T),
+                        lab.air.T = 20, system.pressure.atm = 1.49701,
+                        salinity = 0)
 }
 \arguments{
 \item{data.file}{Full file name for raw data from the instrument. Must be a .csv file! Character.}
 
-\item{area.cutoff}{Defines the peak area (Vs) cutoff below which an individual analysis (injection) is droped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.}
+\item{area.cutoff}{Defines the peak area (Vs) cutoff below which an individual analysis (injection) is dropped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.}
 
-\item{injections.standards}{Boolean vector length 4 idenitfying which injections of the standards to drop (F) or keep (T) for use in the calculations.}
+\item{injections.standards}{Boolean vector length 4 identifying which injections of the standards to drop (F) or keep (T) for use in the calculations.}
 
-\item{injections.samples}{Boolean vector length 4 idenitfying which injections of the samples to drop (F) or keep (T) for use in the calculations.}
+\item{injections.samples}{Boolean vector length 4 identifying which injections of the samples to drop (F) or keep (T) for use in the calculations.}
 
-\item{lab.air.T}{Temperature of the mass spec lab at time of analysis in degrees Celcius.  Defaults to 20.  Numeric.}
+\item{lab.air.T}{Temperature of the mass spec lab at time of analysis in degrees Celsius.  Defaults to 20.  Numeric.}
 
 \item{system.pressure.atm}{Pressure of the inlet system in atmospheres.  Defaults to 1.49701 (22 psi).  Numeric.}
 
-\item{salinity}{Salninty of the sample in ppt.  Defaults to 0.  Numeric.}
+\item{salinity}{Salinity of the sample in ppt.  Defaults to 0.  Numeric.}
 }
 \value{
-Dataframe of finalized data for each exeatiner including:
+Dataframe of finalized data for each exetainer including:
   \describe{
     \item{d180_02.vs.air}{18O:16O of diatomic oxygen (O2) in the headspace in standard delta notation relative to atmospheric air.}
     \item{d180_02.vs.VSMOW}{18O:16O of diatomic oxygen (O2) in the headspace in standard delta notation relative to VSMOW.}
@@ -39,10 +43,10 @@ Dataframe of finalized data for each exeatiner including:
 }
 \description{
 This function is used to decompose and finalize gas ratio data from exetainers analyzed on the Delta V irMS systems (NACHO).  The first step
-is thin and organige the raw data.  Plots are generated (as .pdfs) to look for mass effects on the results ansd the user is asked whether to correct for
+is thin and organize the raw data.  Plots are generated (as .pdfs) to look for mass effects on the results and the user is asked whether to correct for
 sample mass differences among injections and samples.  After corrections, measured values are calibrated against the working standards included
 in the run.  The function writes a .csv with the thinned raw data and a .txt with all relevant information about the analysis.  The finalized
-sample data are writen as a .csv file and a dataframe of the data is also returned.
+sample data are written as a .csv file and a dataframe of the data is also returned.
 
 The input data file has strick formatting and data requirments.  Each sample or standard should have seven rows of data: 3 for massess 32, 34
 and 40; 2 for masses 28 and 29, and 2 for masses 44, 45, 46.  Deviations for the is will result in the function failing.  In additon the first four columns

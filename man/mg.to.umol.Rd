@@ -17,9 +17,6 @@ Object same as 'x' but in units of micromoles
 \description{
 This function is used to convert mass or concentration data from units of milligrams to micromoles.
 }
-\examples{
-mg.to.umol(52.8114, mol="CO2")
-}
 \author{
 Gordon W. Holtgrieve
 }

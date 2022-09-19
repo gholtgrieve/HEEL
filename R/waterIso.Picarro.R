@@ -1,6 +1,6 @@
-#' Finalizes water isotope data from a Picarro CRDS
+#' @title Finalizes water isotope data from a Picarro CRDS
 #'
-#' This function is used to decompose and finalize raw water isotope data from a Picarro CRDS instrument.  The first step
+#' @description This function is used to decompose and finalize raw water isotope data from a Picarro CRDS instrument.  The first step
 #' is to correct for linear drift of the instrument.  The second step calibrate the measured values against the working standards included
 #' in the run and calculate QA/QC metrics.  The function writes a .txt with all relevant information included.  A dataframe of
 #' the finalized sample data is also returned.
@@ -8,14 +8,17 @@
 #' @usage waterIso.Picarro(data.file, sample.file, working.STDs = c("BW","KD","SW"))
 #'
 #' @param data.file   Full file name for raw data from the instrument. Must be a .csv file! File name must start with the instrument ID number follow by "_". Character.
-#' @param sample.file Full file name for the sample information that coresponds to the raw data.  Also, must be a .csv file! The file must include the folowing headings (and only the following headings).  Best to use the template!
+#' @param sample.file Full file name for the sample information that corresponds to the raw data.  Also, must be a .csv file! The file must include the
+#'                    following headings (and only the following headings).  Best to use the template!
 #'   \describe{
 #'     \item{trayNum}{The tray positon on the autosampler.}
 #'     \item{vialNum}{The vail number of the sample.}
 #'     \item{sampleType}{Aceptable identifiers include: Conditioner, Standard, and Sample.}
 #'     \item{SampleDesc}{Unique identifier of the sample.}
 #'     }
-#' @param working.STDs Character vector of length 3 listing names of working stadards included in the run. The first two will be used for correction and calibration, the third as the QA/QC check.  Defaults to IsoLab standards "BW", "KD", "SW".
+#' @param working.STDs Character vector of length 3 listing names of working stadards included in the run. The first two will be used for correction and calibration,
+#'                     the third as the QA/QC check.  Defaults to IsoLab standards "BW", "KD", "SW".
+#'
 #' @return Dataframe of finalized water isotope data including:
 #'   \describe{
 #'     \item{trayNum}{The tray positon on the autosampler.}
@@ -28,9 +31,12 @@
 #'     \item{d18O.mean.VSMOW}{Average 18O:16O of water across saved injections in standard delta notation relative to VSMOW.}
 #'     \item{d18O.SD}{Standard deviation of 18O:16O across saved injections in standard delta notation relative to VSMOW.}
 #'    }
-#' @author Gordon W. Holtgrieve
-#' @export
 #' @importFrom tools file_path_sans_ext
+#'
+#' @author Gordon W. Holtgrieve
+#'
+#' @export
+
 
 waterIso.Picarro <- function(data.file, sample.file, working.STDs = c("BW","KD","SW")){
 

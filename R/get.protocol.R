@@ -1,34 +1,34 @@
-#' Access HEEL protocols in a desired format.
+#' @title Access HEEL protocols in a desired format.
 #'
-#' RMarkdown document for the desired protocol is rendered in the specified format and save in
+#' @description RMarkdown document for the desired protocol is rendered in the specified format and save in
 #' the working directory.  The file is then launched via the system.  If no arguemts are provided
 #' the function will print a list of the avaiable protocols.
 #'
-#' @usage
-#' get.protocol(protocol, format)
 #' @param protocol Name of desired protocol form the following list.  Character vector of length 1.
 #'  \describe{
-#'    \item{"Data Management"}
-#'    \item{"Dish Cleaning"}
-#'    \item{"Muffle Furnace"}
-#'    \item{"d15N-AA"}
-#'    \item{"Exetainer Analysis"}
+#'    \item{Data Management}{}
+#'    \item{"ish Cleaning}{}
+#'    \item{Muffle Furnace}{}
+#'    \item{d15N-AA}{}
+#'    \item{Exetainer Analysis}{}
 #'  }
 #' @param format File format to be generated. Options are "pdf", "html", "word", "markdown", "rmarkdown". Character vector of length 1.
-#' @examples
-#' get.protocol("Data Management", "html")
-#' @author Gordon W. Holtgrieve
-#' @export
+#'
 #' @import rmarkdown
 #' @import knitr
 #' @importFrom stringr str_replace
+#'
+#' @author Gordon W. Holtgrieve
+#'
+#' @export
+
 
 get.protocol <- function(protocol = NULL, format=NULL){
-  listo <- matrix(ncol = 2, byrow = T, data = c("Data Management",       "DataManagement.Rmd",
-                                                "Dish Cleaning",         "DishCleaning.Rmd",
-                                                "Muffle Furnace",        "MuffleFurnace.Rmd",
-                                                "d15N-AA",               "d15NAA.CSIA.AC-PV.Rmd",
-                                                "Exetainer Analysis",    "ExetainerAnalysis.Rmd"),
+  listo <- matrix(ncol = 2, byrow = T, data = c("Data Management", "DataManagement.Rmd",
+                                                "Dish Cleaning", "DishCleaning.Rmd",
+                                                "Muffle Furnace", "MuffleFurnace.Rmd",
+                                                "d15N-AA", "d15NAA.CSIA.AC-PV.Rmd",
+                                                "Exetainer Analysis", "ExetainerAnalysis.Rmd"),
                   dimnames = list(NULL, c("Argument", "File Name")))
 
 # If no arguments print list of supported protocols

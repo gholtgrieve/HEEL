@@ -13,11 +13,13 @@ Depends:
 Imports:
   stringr,
   CHNOSZ,
-  tools
+  tools,
+  dplyr,
+  tibble
 Suggests:
   devtools,
   roxygen2
-License: GPL-3
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/gholtgrieve/HEEL

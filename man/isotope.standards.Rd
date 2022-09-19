@@ -3,13 +3,15 @@
 \docType{data}
 \name{isotope.standards}
 \alias{isotope.standards}
-\title{Dataset containing isotope standards and their accepted values}
-\format{A dataframe with 179 rows and 3 variables:
+\title{Data set containing isotope standards and their accepted values}
+\format{
+A dataframe with 179 rows and 3 variables:
 \describe{
   \item{Name}{Primary identifier for the isotope standard. Character string.}
   \item{dataType}{Identifies the data type in the Value column. Character string.}
   \item{Value}{Identifies as working standard for the HEEL. Numeric.}
-}}
+}
+}
 \usage{
 data(isotope.standards)
 }

@@ -7,17 +7,13 @@
 get.molar.mass(mol)
 }
 \arguments{
-\item{mol}{Character vector of simple chemcial formulas.}
+\item{mol}{Character vector of simple chemical formulas.}
 }
 \value{
 Numeric vector of average molar masses same length as 'mol'.
 }
 \description{
 Convenience function for obtaining the average molar mass of chemical compounds as found in nature.
-}
-\examples{
-get.molar.mass(mol="C2H6O")
-get.molar.mass(mol=c("Ag(S2O3)2", "CO2"))
 }
 \author{
 Gordon W. Holtgrieve

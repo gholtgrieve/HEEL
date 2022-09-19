@@ -9,15 +9,17 @@ waterIso.Picarro(data.file, sample.file, working.STDs = c("BW","KD","SW"))
 \arguments{
 \item{data.file}{Full file name for raw data from the instrument. Must be a .csv file! File name must start with the instrument ID number follow by "_". Character.}
 
-\item{sample.file}{Full file name for the sample information that coresponds to the raw data.  Also, must be a .csv file! The file must include the folowing headings (and only the following headings).  Best to use the template!
+\item{sample.file}{Full file name for the sample information that corresponds to the raw data.  Also, must be a .csv file! The file must include the
+                 following headings (and only the following headings).  Best to use the template!
 \describe{
-  \item{vialNum}{The vail number of the sample.}
   \item{trayNum}{The tray positon on the autosampler.}
+  \item{vialNum}{The vail number of the sample.}
   \item{sampleType}{Aceptable identifiers include: Conditioner, Standard, and Sample.}
   \item{SampleDesc}{Unique identifier of the sample.}
   }}
 
-\item{working.STDs}{Character vector of length 3 listing names of working stadards included in the run. The first two will be used for correction and calibration, the third as the QA/QC check.  Defaults to IsoLab standards "BW", "KD", "SW".}
+\item{working.STDs}{Character vector of length 3 listing names of working stadards included in the run. The first two will be used for correction and calibration,
+the third as the QA/QC check.  Defaults to IsoLab standards "BW", "KD", "SW".}
 }
 \value{
 Dataframe of finalized water isotope data including:

@@ -1,14 +1,16 @@
-  #' Converts moles or molar concentration data from molar units to mass units
+  #' @title Converts moles or molar concentration data from molar units to mass units
   #'
-  #' This function is used to moles or molar concentration data from units of micromoles to miligrams.
-  #' @usage
-  #' umol.to.mg(x, mol)
+  #' @description This function is used to moles or molar concentration data from units of micromoles to milligrams.
+  #'
+  #' @usage umol.to.mg(x, mol)
+  #'
   #' @param x Mass (or concentration) of the molecule, in micromoles, to be converted
   #' @param mol Character vector of length one indicating the molecule in question.
+  #'
   #' @return Object same as 'x' but in units of milligrams
-  #' @examples
-  #' umol.to.mg(1200, mol = "CO2")
+  #'
   #' @author Gordon W. Holtgrieve
+  #'
   #' @export
 
 umol.to.mg <- function(x, mol){
