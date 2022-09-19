@@ -2,7 +2,7 @@
 #'
 #' @description This function ...
 #'
-#' @usage EA.check(data.file)
+#' @usage EA.check(results)
 #'
 #' @param data.file     Character vector of full file names for raw data files from the instrument. Must be a .csv file!
 #'
@@ -16,7 +16,7 @@
 #' @keywords internal
 #' @export
 
-EA.report <- function(data.file){
+EA.report <- function(results){
 
   # Write .csv files
 

@@ -13,8 +13,6 @@ EA.NACHO(data.file.dir = getwd(), combine.runs = F, area.cutoff = F)
 FALSE means each run is corrected independently. Default is to combine standards (==T).}
 
 \item{area.cutoff}{Defines the peak area (Vs) cutoff below which an individual analysis (injection) is dropped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.}
-
-\item{data.file}{Character vector of full file names for raw data files from the instrument. Must be a .csv file!}
 }
 \value{
 Dataframe of data for each unknown sample that includes following finalized values (i.e., what you want...):

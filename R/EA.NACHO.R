@@ -24,7 +24,6 @@
 #'
 #' @usage EA.NACHO(data.file.dir = getwd(), combine.runs = F, area.cutoff = F)
 #'
-#' @param data.file      Character vector of full file names for raw data files from the instrument. Must be a .csv file!
 #' @param data.file.dir  Character vector of length 1 containing file path to raw .csv files.
 #' @param combine.runs   Boolean flag identifying if the standard across all runs in the folder should be combined into a single standard curve or if each run should be analyzed independently.
 #'                       FALSE means each run is corrected independently. Default is to combine standards (==T).
