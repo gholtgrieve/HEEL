@@ -12,6 +12,8 @@
 #'
 #' @import tidyverse
 #' @importFrom tools file_path_sans_ext
+#' @importFrom stringr str_detect
+#' @importFrom dplyr between
 #'
 #' @return Character vector of length 1 indicating the results of the drift correct as  N, C, both, or none.
 #'
@@ -62,12 +64,12 @@ EA.drift.correct <- function(results){
     rownames(driftAnalysis) <- c("GA1", "GA2", "SALMON")
 
     #use on STD (not QTY)
-    dataSTD <- standard.CN[str_detect(data$Comment, "STD|std|Std"),]
+    dataSTD <- standard.CN[stringr::str_detect(data$Comment, "STD|std|Std"),]
 
     group <- c("GA1", "GA2", "SALMON")
 
     for(i in 1:3){
-      tempData <- dataSTD[str_detect(dataSTD$group, group[i]),]
+      tempData <- dataSTD[stringr::str_detect(dataSTD$group, group[i]),]
 
       if(nrow(tempData)==0){
         #do nothing
@@ -100,12 +102,12 @@ EA.drift.correct <- function(results){
     drift.correct.flag2 <- readline("Do you want to drift correct? Allowed responses: N, C, both, none.")
 
     # flow control
-    if(str_detect(drift.correct.flag2, "none|NONE|None")) {
+    if(stringr::str_detect(drift.correct.flag2, "none|NONE|None")) {
       # If drift.correct.flag is false (i.e., do not drift correct), then do nothing and change the
       return(list(standard.CN=standard.CN, sample.CN=sample.CN, drift.correct.flag=drift.correct.flag2))
     }
 
-    if (str_detect(drift.correct.flag2, "C|c") | str_detect(drift.correct.flag2, "both|BOTH|Both")) {
+    if (stringr::str_detect(drift.correct.flag2, "C|c") | stringr::str_detect(drift.correct.flag2, "both|BOTH|Both")) {
        sample.CN$d.13C.12C.drift <- drift.correct.function(data = sample.CN$d.13C.12C, row = sample.CN$Row,
                                                           driftAnalysis = driftAnalysis, element = "C")
 
@@ -114,7 +116,7 @@ EA.drift.correct <- function(results){
     }
 
 
-    if (str_detect(drift.correct.flag2, "N|n") | str_detect(drift.correct.flag2, "both|BOTH|Both")) {
+    if (stringr::str_detect(drift.correct.flag2, "N|n") | stringr::str_detect(drift.correct.flag2, "both|BOTH|Both")) {
        sample.CN$d.15N.14N.drift <- drift.correct.function(data = sample.CN$d.15N.14N, row = sample.CN$Row,
                                                            driftAnalysis = driftAnalysis, element = "N")
 
