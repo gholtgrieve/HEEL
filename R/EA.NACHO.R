@@ -9,7 +9,7 @@
 #'   \describe{
 #'     \item{Row}{Row number for the IsoDat sequence file.}
 #'     \item{Analysis}{Unique number assigned by IsoDat for each analysis.}
-#'     \item{Identifier 1}{Unique identifier for each sample or standard in the file. If two runs are combined, be sure this field remains unique. Character.}}
+#'     \item{Identifier 1}{Unique identifier for each sample or standard in the file. If two runs are combined, be sure this field remains unique. Character.}
 #'     \item{Comment}{Identifies whether the particular analysis is a 'STD', 'QTY', 'SAMPLE', 'BLANK', 'ZERO', or 'DUMMY'. These are the only vaild options for this field. Character.}
 #'     \item{Amount}{Mass of SAMPLE, STANDARD, QTY, or DUMMY in miligrams (mg). BLANK and ZERO can be 0.0 or blank. Numeric.}
 #'     \item{Is Ref _}{Flag that identifies wheter this line line is for a reference gas peak (==1) or not (==0). Numeric.}
@@ -17,11 +17,12 @@
 #'     \item{d 15N/14N}{Ratio of 15N to 14N in delta units relative to the refernce gas (i.e., N2 tank). Numeric.}
 #'     \item{Area 44}{Peak area for mass 44 in Vs. Numeric.}
 #'     \item{d 13C/12C}{Ratio of 13C to 12C in delta units relative to the refernce gas (i.e., CO2 tank). Numeric.}
+#'     }
 #'
 #' The remaining columns should be unchanged from what is created by IsoDat.  There should be a total of 49 columns of data in the raw data file.
 #' Column names will be modified when imported to R.
 #'
-#' @usage EA.NACHO(data.files, data.file.dir, combine.runs = T, area.cutoff = F)
+#' @usage EA.NACHO(data.file.dir = getwd(), combine.runs = F, area.cutoff = F)
 #'
 #' @param data.file      Character vector of full file names for raw data files from the instrument. Must be a .csv file!
 #' @param data.file.dir  Character vector of length 1 containing file path to raw .csv files.
@@ -68,12 +69,6 @@ results <- list(analysis.dates=NA,
 
   results$data.files <- list.files(data.file.dir)
 
-  if(combine.runs){
-    results$raw.sequence.data <- EA.combine.runs(results$data.files)
-  } else {
-    #results$raw.sequence.data <-
-  }
-
   # Now walk through the data decomposition steps
   results[c("standard.CN","sample.CN","blank.CN", "zero.flag", "blank.flag")] <- EA.organize(results)
   results[c("standard.CN","sample.CN","blank.correct.flag")] <- EA.blank.correct(results)
@@ -82,7 +77,7 @@ results <- list(analysis.dates=NA,
   results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results)
   results[c("standard.CN","sample.CN","calibration.coefficients")] <- EA.adjust(results)
   results[c("known.standard.values", "error.analysis.results")] <- EA.check(results)
-  EA.report(results)
+  #EA.report(results)
 
   return(results$sample.CN)
 }
