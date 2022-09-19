@@ -2,15 +2,18 @@
 #'
 #' @description This function calculates the r
 #'
-#' @usage EA.check(data.files, data.file.dir, combine.STDs = F, area.cutoff = F)
+#' @usage EA.check(results)
 #'
 #' @param results List containing results from previous functions.
 #'
-#' @return List with three objects: known.delta.values.permil,
+#' @return List with two objects: known.standard.values, error.analysis.results
 #'
 #' @author Gordon W. Holtgrieve
 #'
+#' @importFrom tibble tibble
+#'
 #' @keywords internal
+#'
 #' @export
 
 EA.check <- function(results){
@@ -24,7 +27,7 @@ EA.check <- function(results){
   ## Access data ##
   standard.CN <- results$standard.CN
 
-  error.analysis.results <- tibble(
+  error.analysis.results <- tibble::tibble(
                                 Value = c("d13C", "d15N", "pctC", "pctN"),
                                 Precision = NA,
                                 Accuracy = NA)
