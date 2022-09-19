@@ -20,10 +20,13 @@ params:
     
 ---
 # LABORATORY																						
-																				
+	UW Facility for Compound-Specific Isotope Analysis of Environmental Samples (known informally a NACHO)
+	College of the Environment
+	University of Washington
+	Director is Gordon Holtgrieve, gholt@uw.edu, 206-227-9930
 																						
 # METHOD																						
-	Your solid samples were analyzed for bulk $\delta$^13^C and $\delta$^15^N on a ThermoFinnigan Delta V with a Carlo Erba EA in continuous flow mode following the
+	Your solid samples were analyzed for bulk $\delta$^13^C and $\delta$^15^N on a ThermoFinnigan Delta V with a Carlo Erba elemental analyzer in continuous flow mode following the
 	general method of Fry et al. 1992. Automated analysis system for coupled d13C and d15N measurements. Analytical Chemistry 64, 288-291.	
 
 # ANALYSIS																						
@@ -35,7 +38,9 @@ params:
 	Run comments: 'r run.comments'																					
 																						
 # REFERENCE MATERIALS																						
-	All internationally recognized reference material accepted values can be found at the [CIAAW](http://www.ciaaw.org/).																					
+	All internationally recognized reference material accepted values can be found at the [CIAAW](http://www.ciaaw.org/). Typically we use 
+	IsoLab working standards GA1, GA2, and Bristol Bay Sockeye (salmon) on NACHO.  You can find information about these standards on 
+	the [IsoLab web page](https://isolab.ess.washington.edu/resources/standards.php#solid). Below are data specific to this run:
 ```{r, echo=FALSE, results='asis'}
 library(tibble)
 library(knitr)
@@ -52,7 +57,14 @@ knitr::kable(tibble(error.analysis.results), format = "simple", caption="Accurac
 ```	
 													
 # ZEROS & BLANKS
+  The table below includes measurable blanks and zeros. Blanks are empty tins while zeros are no tin or sample. The table below, if given, 
+  contains the data for blanks and zero from this run. No tbale incated balnks and zeros were not measurable. Blank correction has
+  not been implimented in the script. 
+```{r echo=FALSE}
+#knitr::kable(standard.coefficients, format = "simple", caption="Blank & Zero data.")   
 
+```
+  
 
 # MASS EFFECTS
   Your data were analysed for effects of sample mass on peak area and isotopic ratios. Ideally, there should be a strong linear response of 
@@ -66,7 +78,7 @@ standard.plots[[2]]
 ```
 
 #SAMPLE MASS CHECK
-Not implimented yet.
+Not implemented yet. P
 
 
 # SAMPLE DATA
