@@ -10,6 +10,7 @@
 #' @author Gordon W. Holtgrieve
 #'
 #' @keywords internal
+#'
 #' @export
 
 
