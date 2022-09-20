@@ -7,12 +7,12 @@
 EA.NACHO(data.file.dir = getwd(), combine.runs = F, area.cutoff = F)
 }
 \arguments{
-\item{data.file.dir}{Character vector of length 1 containing file path to raw .csv files.}
-
 \item{combine.runs}{Boolean flag identifying if the standard across all runs in the folder should be combined into a single standard curve or if each run should be analyzed independently.
 FALSE means each run is corrected independently. Default is to combine standards (==T).}
 
 \item{area.cutoff}{Defines the peak area (Vs) cutoff below which an individual analysis (injection) is dropped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.}
+
+\item{data.file.dir}{Character vector of length 1 containing file path to raw .csv files.}
 }
 \value{
 Dataframe of data for each unknown sample that includes following finalized values (i.e., what you want...):

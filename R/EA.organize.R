@@ -51,11 +51,10 @@ EA.organize <- function(results){
   N2 <- raw.sequence.data[which(raw.sequence.data$Gasconfiguration == "N2" & raw.sequence.data$Is.Ref._ == 0), c("Analysis", keep.N)] #This is the sample N info
   CO2 <- raw.sequence.data[which(raw.sequence.data$Gasconfiguration == "CO2" & raw.sequence.data$Is.Ref._ == 0), c(keep.all, keep.C)] #This is the sample CO2 info
   tempCN <- merge(x = CO2,N2, by = "Analysis") #N and CO2 sample & standards results are combined into one object
-  rm(N2, CO2)
 
   #Separate zeros from everything else and save as a .csv. If zeros are not detectable the dataframe will be empty and nrow() will return zero.
   zero.CN <- tempCN[str_detect(tempCN$Comment, "ZERO|zero|Zero"),]
-  if(nrow(blank.CN)!=0)  zero.flag = T
+  if(nrow(zero.CN)!=0)  zero.flag = T
 
   #Separate blanks (not zeros) from everything else and save as a .csv. If blanks are not detectable the dataframe will be empty and nrow() will return zero
   blank.CN <- tempCN[str_detect(tempCN$Comment, "BLANK|blank|Blank"),]

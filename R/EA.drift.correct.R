@@ -52,7 +52,7 @@ EA.drift.correct <- function(results){
   if(!drift.correct.flag1){  #Tests if none of the above checks are TRUE
 
     print("Samples and Standards NOT drift corrected becuase of insufficent data to perform calculation.")
-    return(list(standard.CN=standard.CN, sample.CN=sample.CN, drift.correct.flag = drift.correct.flag))
+    return(list(standard.CN=standard.CN, sample.CN=sample.CN, drift.correct.flag = "none"))
 
   } else if(drift.correct.flag1){
 

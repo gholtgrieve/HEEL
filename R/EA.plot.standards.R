@@ -29,26 +29,28 @@ EA.plot.standards <- function(results){
 
   standard.CN <- results$standard.CN
   sequenceID <- results$analysis.dates
-  drft.correct.flag <- results$drift.correct.flag
+  drift.correct.flag <- results$drift.correct.flag
   blank.correct.flag <- results$blank.correct.flag
 
   # Pick the correct data depending on which corrections were performed.
   if(str_detect(drift.correct.flag, "both|BOTH|Both")) {
-      d13C <- standard.CN$d.13C.12C.drift
-      d15N <- standard.CN$d.15N.14N.drift
+      d13C <- standard.CN$d.13C.12C.drift[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
+      d15N <- standard.CN$d.15N.14N.drift[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
+  } else if(str_detect(drift.correct.flag, "none|NONE|None")){
+    d13C <- standard.CN$d.13C.12C[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
+    d15N <- standard.CN$d.15N.14N[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
   } else if(str_detect(drift.correct.flag, "C|c")){
-    d13C <- standard.CN$d.13C.12C.drift
-    d15N <- standard.CN$d.15N.14N
+    d13C <- standard.CN$d.13C.12C.drift[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
+    d15N <- standard.CN$d.15N.14N[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
   } else if(str_detect(drift.correct.flag, "N|n")){
-    d15N <- standard.CN$d.15N.14N.drift
-    d13C <- standard.CN$d.13C.12C
+    d15N <- standard.CN$d.15N.14N.drift[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
+    d13C <- standard.CN$d.13C.12C[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
   } else if (blank.correct.flag){
-    d13C <- standard.CN$d.13C.12C.blank
-    d15N <- standard.CN$d.15N.14N.blank
-  } else {
-    d13C <- standard.CN$d.13C.12C
-    d15N <- standard.CN$d.15N.14N
+    d13C <- standard.CN$d.13C.12C.blank[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
+    d15N <- standard.CN$d.15N.14N.blank[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
   }
+  temp <- standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2", c("Area.28", "Area.44", "group")]
+  temp <- data.frame(d13C=d13C, d15N=d15N, temp)
 
   # PLOT 1 -----------------------------
   # Area Response vs. Measured Element Mass for GA1 & GA2 standards
@@ -69,7 +71,7 @@ EA.plot.standards <- function(results){
                label.y.npc = "center") +
       theme_minimal() +
       ggpubr::stat_regline_equation()
-    p21 <- gridExtra::grid.arrange(p2, p1, ncol = 2, top = sequenceID)
+    p21 <- gridExtra::grid.arrange(p2, p1, ncol = 2)
 
     #Save linear models for mass calculations later
     temp <- standard.CN[standard.CN$group == "GA2" | standard.CN$group == "GA1",]
@@ -80,7 +82,7 @@ EA.plot.standards <- function(results){
     # PLOT 2 -----------------------------
     # Delta vs. Area of QTY standards
     # includes only  GA1 & GA2
-      p5 <- ggplot(standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2",], aes(x = Area.28, y = d15N, group = group, color = group)) +
+      p5 <- ggplot(temp, aes(x = Area.28, y = d15N, group = group, color = group)) +
         geom_point() +
         labs(y = "d15N", title = "d15N vs m/z 28") +
         stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
@@ -89,8 +91,7 @@ EA.plot.standards <- function(results){
         geom_smooth(method = lm, formula = y ~ x, se = FALSE) +
         theme_minimal() +
         theme(legend.position = "none")
-
-      p6 <-  ggplot(standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2",], aes(x = Area.44, y = d13C, group = group, color = group)) +
+      p6 <-  ggplot(temp, aes(x = Area.44, y = d13C, group = group, color = group)) +
         geom_point() +
         labs(y = "d13C", title = "d13C vs m/z 44 ") +
         stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
@@ -98,7 +99,7 @@ EA.plot.standards <- function(results){
         stat_regline_equation(label.y.npc = "top") +
         theme_minimal() +
         geom_smooth(method = lm, formula = y ~ x, se = FALSE)
-      p65 <- grid.arrange(p6, p5, ncol = 2, top = sequenceID)
+      p65 <- gridExtra::grid.arrange(p6, p5, ncol = 2)
 
       #Save linear models for mass calculations later
       d15N.vs.Area28.lm.coeff <- coefficients(lm(temp$d.15N.14N.drift ~ temp$Area.28))

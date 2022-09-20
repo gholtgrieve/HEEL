@@ -17,7 +17,7 @@
 EA.blank.correct <- function(results){
 
   ## Access data ##
-  blank.flag <- resulst$blank.flag
+  blank.flag <- results$blank.flag
   blank.CN <- results$blank.CN
   sample.CN <- results$sample.CN
   standard.CN <- results$standard.CN

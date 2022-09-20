@@ -22,17 +22,15 @@
 #' The remaining columns should be unchanged from what is created by IsoDat.  There should be a total of 49 columns of data in the raw data file.
 #' Column names will be modified when imported to R.
 #'
-#' @usage EA.NACHO(data.file.dir = getwd(), combine.runs = F, area.cutoff = F)
+#' @usage EA.NACHO(combine.runs = F, area.cutoff = F)
 #'
-#' @param data.file.dir  Character vector of length 1 containing file path to raw .csv files.
 #' @param combine.runs   Boolean flag identifying if the standard across all runs in the folder should be combined into a single standard curve or if each run should be analyzed independently.
 #'                       FALSE means each run is corrected independently. Default is to combine standards (==T).
 #' @param area.cutoff    Defines the peak area (Vs) cutoff below which an individual analysis (injection) is dropped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.
 #'
 #' @import tidyverse
-#' @import here
 #' @importFrom tools file_path_sans_ext
-#' @importFrom utils choose.dir
+#' @importFrom easycsv choose_dir
 #'
 #' @return Dataframe of data for each unknown sample that includes following finalized values (i.e., what you want...):
 #'   \describe{
@@ -67,10 +65,14 @@ results <- list(analysis.dates=NA,
                 run.comments=NA)
 
   dir <- easycsv::choose_dir()
+  rootDir <- getwd()
+  setwd(dir)
 
   results$analysis.dates <- readline("Enter date(s) samples were run on the irMS. Use format YYYY-MM-DD:  ")
 
   results$data.files <- list.files(path = dir, pattern = "\\.csv$")
+
+  results$raw.sequence.data <- read.csv(results$data.files)
 
   # Now walk through the data decomposition steps
   results[c("standard.CN","sample.CN","blank.CN", "zero.flag", "blank.flag")] <- EA.organize(results)
