@@ -35,7 +35,7 @@ EA.check <- function(results){
   #Calculate mean measured values dor d13C, d15N, pct C and pct N. Use salmon standard for C and GA1 for N.
   mean.salmon.d13C.measured <- mean(standard.CN$d.13C.12C.VPDB[standard.CN$group == "SALMON"], na.rm = T)
   mean.salmon.pctC.measured <- mean(standard.CN$pctC[standard.CN$group == "SALMON"], na.rm = T)
-  mean.GA1.d15N.measured <- mean(standard.CN$d.15N.14N.VPDB[standard.CN$group == "GA1"], na.rm = T)
+  mean.GA1.d15N.measured <- mean(standard.CN$d.15N.14N.air[standard.CN$group == "GA1"], na.rm = T)
   mean.GA1.pctN.measured <- mean(standard.CN$pctN[standard.CN$group == "GA1"], na.rm = T)
 
   #Calculate accuracy for d13C, d15N, pctC, and pctN. Use salmon standard for C and GA1 for N.

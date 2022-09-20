@@ -25,56 +25,71 @@
 
 EA.adjust <- function(results){
 
-  known.delta.values <- data.frame(group = c("GA1", "GA2", "SALMON"),
+  known.standard.d13C.d15N<- data.frame(group = c("GA1", "GA2", "SALMON"),
                          d13C = c(-28.3, -13.7, -21.3),
                          d15N = c(-4.6, -5.7, 11.3))
 
   ## Access data ##
   sample.CN <- results$sample.CN
   standard.CN <- results$standard.CN
-  drft.correct.flag <- results$drift.correct.flag
+  drift.correct.flag <- results$drift.correct.flag
   blank.correct.flag <- results$blank.correct.flag
 
-  # Pick the correct data depending on which corrections were performed.
-  if(stringr::str_detect(drift.correct.flag, "both|BOTH|Both")) {
-    d13C <- standard.CN$d.13C.12C.drift
-    d15N <- standard.CN$d.15N.14N.drift
-  } else if(stringr::str_detect(drift.correct.flag, "C|c")){
-    d13C <- standard.CN$d.13C.12C.drift
-    d15N <- standard.CN$d.15N.14N
-  } else if(stringr::str_detect(drift.correct.flag, "N|n")){
-    d15N <- standard.CN$d.15N.14N.drift
-    d13C <- standard.CN$d.13C.12C
+  # Pick the correct data depending on which corrections were performed.  This is ugly, but OK for now.
+  if(str_detect(drift.correct.flag, "both|BOTH|Both")) {
+    standard.d13C <- standard.CN$d.13C.12C.drift
+    sample.d13C <- sample.CN$d.13C.12C.drift
+    standard.d15N <- standard.CN$d.15N.14N.drift
+    ssample.d15N <- sample.CN$d.15N.14N.drift
+  } else if(str_detect(drift.correct.flag, "none|NONE|None")){
+    standard.d13C <- standard.CN$d.13C.12C
+    sample.d13C <- sample.CN$d.13C.12C
+    standard.d15N <- standard.CN$d.15N.14N
+    sample.d15N <- sample.CN$d.15N.14N
+  } else if(str_detect(drift.correct.flag, "C|c")){
+    standard.d13C <- standard.CN$d.13C.12C.drift
+    sample.d13C <- sample.CN$d.13C.12C.drift
+    standard.d15N <- standard.CN$d.15N.14N
+    sample.d15N <- sample.CN$d.15N.14N
+  } else if(str_detect(drift.correct.flag, "N|n")){
+    standard.d15N <- standard.CN$d.15N.14N.drift
+    sample.d15N <- sample.CN$d.15N.14N.drift
+    standard.d13C <- standard.CN$d.13C.12C
+    sample.d13C <- sample.CN$d.13C.12C
   } else if (blank.correct.flag){
-    d13C <- standard.CN$d.13C.12C.blank
-    d15N <- standard.CN$d.15N.14N.blank
-  } else {
-    d13C <- standard.CN$d.13C.12C
-    d15N <- standard.CN$d.15N.14N
+    standard.d13C <- standard.CN$d.13C.12C.blank
+    sample.d13C <- sample.CN$d.13C.12C.blank
+    standard.d15N <- standard.CN$d.15N.14N.blank
+    sample.d15N <- sample.CN$d.15N.14N.blank
   }
+  standard.CN.temp <- data.frame(standard.d13C = standard.d13C,
+                                 standard.d15N = standard.d15N,
+                                 group = standard.CN$group)
+  sample.CN.temp <- data.frame(sample.d13C = sample.d13C,
+                               sample.d15N = sample.d15N)
 
-  #Make data matrix to populate with means for the run(s)
-  mean.measured.values <- standard.CN %>%
+  #Make data matrix to populate with means of the standard in the run(s)
+  mean.standard.measured <- standard.CN.temp %>%
                           group_by(group) %>%
-                          dplyr::summarize(d13C = mean(d13C), d15N = mean(d15N))
+                          dplyr::summarize(d13C = mean(standard.d13C), d15N = mean(standard.d15N))
 
   ## Adjust d13 vs. tank to vs. VPDB using GA1 and GA2 working standards
   ## Build linear model using VPDB values on the y and drift corrected raw values on the x.
-  x <- dplyr::filter(mean.measured.values, group == "GA1" | group == "GA2")$d13C
-  y <- dplyr::filter(known.delta.values, group == "GA1" | group == "GA2")$d13C
+  x <- dplyr::filter(mean.standard.measured, group == "GA1" | group == "GA2")$d13C
+  y <- dplyr::filter(known.standard.d13C.d15N, group == "GA1" | group == "GA2")$d13C
   C.lm <- lm(y ~ x)
   C.lm.coeff <- coefficients(C.lm)
-  sample.CN$d.13C.12C.VPDB <- C.lm.coeff[1] + C.lm.coeff[2] * sample.CN$d13C
-  standard.CN$d.13C.12C.VPDB <- C.lm.coeff[1] + C.lm.coeff[2] * standard.CN$d13C
+  sample.CN$d.13C.12C.VPDB <- C.lm.coeff[1] + C.lm.coeff[2] * sample.CN.temp$sample.d13C
+  standard.CN$d.13C.12C.VPDB <- C.lm.coeff[1] + C.lm.coeff[2] * standard.CN.temp$standard.d13C
 
   ## Adjust d13 vs. tank to vs. VPDB using GA1 and GA2 working standards
   ## Build linear model using VPDB values on the y and drift corrected raw values on the x.
-  x <- dplyr::filter(mean.measured.values, group == "SALMON" | group == "GA2")$d15N
-  y <- dplyr::filter(known.delta.values, group == "SALMON" | group == "GA2")$d15N
+  x <- dplyr::filter(mean.standard.measured, group == "SALMON" | group == "GA2")$d15N
+  y <- dplyr::filter(known.standard.d13C.d15N, group == "SALMON" | group == "GA2")$d15N
   N.lm <- lm(y ~ x)
   N.lm.coeff <- coefficients(N.lm)
-  sample.CN$d.15N.14N.air <- N.lm.coeff[1] + N.lm.coeff[2] * sample.CN$d15N
-  standard.CN$d.15N.14N.air <- N.lm.coeff[1] + N.lm.coeff[2] * standard.CN$d15N
+  sample.CN$d.15N.14N.air <- N.lm.coeff[1] + N.lm.coeff[2] * sample.CN.temp$sample.d15N
+  standard.CN$d.15N.14N.air <- N.lm.coeff[1] + N.lm.coeff[2] * standard.CN.temp$standard.d15N
 
   #Calculate percent C using peak area vs. mass of GA1 QTY.
   mass.C.lm.coeff <-  dplyr::filter(standard.CN, group == "GA1", ) %>%
@@ -82,7 +97,6 @@ EA.adjust <- function(results){
                       coefficients()
   sample.CN$pctC <- (mass.C.lm.coeff[1] + mass.C.lm.coeff[2] * sample.CN$Area.44) / sample.CN$Amount * 100
   standard.CN$pctC <- (mass.C.lm.coeff[1] + mass.C.lm.coeff[2] * standard.CN$Area.44) / standard.CN$Amount * 100
-
 
   #Calculate percent C using peak area vs. mass of GA1 QTY.
   mass.N.lm.coeff <-  filter(standard.CN, group == "GA1", ) %>%
@@ -92,10 +106,10 @@ EA.adjust <- function(results){
   standard.CN$pctN <- (mass.N.lm.coeff[1] + mass.N.lm.coeff[2] * standard.CN$Area.28) / standard.CN$Amount * 100
 
   #Make model coefficients dataframe
-  temp <- data.frame(Model=c("d13C", "d15N", "Percent C", "Percent N"),
+  model.coeff.temp <- data.frame(Model=c("d13C", "d15N", "Percent C", "Percent N"),
                      rbind(C.lm.coeff, N.lm.coeff, mass.C.lm.coeff, mass.N.lm.coeff))
-  colnames(temp) <- c("Value","Intercept", "Slope")
-  calibration.coefficients <- tibble::tibble(temp)
+  colnames(model.coeff.temp) <- c("Value","Intercept", "Slope")
+  calibration.coefficients <- tibble::tibble(model.coeff.temp)
 
   return(list(standard.CN=standard.CN, sample.CN=sample.CN, calibration.coefficients=calibration.coefficients))
 }
