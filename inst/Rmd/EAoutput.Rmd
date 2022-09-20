@@ -12,12 +12,13 @@ params:
     known.standard.values:
     calibration.coefficients:
     error.analysis.results:
-    zeros.blanks:    
+    zeros.CN:
+    blanks.CN:    
     standard.CN:
     sample.CN:
     blank.CN:
     run.comments:
-    
+      
 ---
 # LABORATORY																						
 	UW Facility for Compound-Specific Isotope Analysis of Environmental Samples (known informally a NACHO)
@@ -58,10 +59,11 @@ knitr::kable(tibble(error.analysis.results), format = "simple", caption="Accurac
 													
 # ZEROS & BLANKS
   The table below includes measurable blanks and zeros. Blanks are empty tins while zeros are no tin or sample. The table below, if given, 
-  contains the data for blanks and zero from this run. No tbale incated balnks and zeros were not measurable. Blank correction has
-  not been implimented in the script. 
+  contains the data for blanks and zero from this run. No table indicates blanks and zeros were not measurable. Blank correction has
+  not been implemented in the script. 
 ```{r echo=FALSE}
-#knitr::kable(standard.coefficients, format = "simple", caption="Blank & Zero data.")   
+#knitr::kable(blank.CN, format = "simple", caption="Blank data.")
+#knitr::kable(zero.CN, format = "simple", caption="Blank data.") 
 
 ```
   

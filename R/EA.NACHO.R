@@ -30,7 +30,9 @@
 #' @param area.cutoff    Defines the peak area (Vs) cutoff below which an individual analysis (injection) is dropped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.
 #'
 #' @import tidyverse
+#' @import here
 #' @importFrom tools file_path_sans_ext
+#' @importFrom utils choose.dir
 #'
 #' @return Dataframe of data for each unknown sample that includes following finalized values (i.e., what you want...):
 #'   \describe{
@@ -44,7 +46,7 @@
 #'
 #' @export
 
-EA.NACHO <- function(data.file.dir = getwd(), combine.runs = F, area.cutoff = F){
+EA.NACHO <- function(combine.runs = F, area.cutoff = F){
 
 results <- list(analysis.dates=NA,
                 data.files=NA,
@@ -64,9 +66,11 @@ results <- list(analysis.dates=NA,
                 blank.CN=NA,
                 run.comments=NA)
 
+  dir <- easycsv::choose_dir()
+
   results$analysis.dates <- readline("Enter date(s) samples were run on the irMS. Use format YYYY-MM-DD:  ")
 
-  results$data.files <- list.files(data.file.dir)
+  results$data.files <- list.files(path = dir, pattern = "\\.csv$")
 
   # Now walk through the data decomposition steps
   results[c("standard.CN","sample.CN","blank.CN", "zero.flag", "blank.flag")] <- EA.organize(results)
