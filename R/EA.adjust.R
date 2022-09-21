@@ -95,15 +95,15 @@ EA.adjust <- function(results){
   mass.C.lm.coeff <-  dplyr::filter(standard.CN, group == "GA1", ) %>%
                       lm(mass.C.mg ~ Area.44, data = .) %>%
                       coefficients()
-  sample.CN$pctC <- (mass.C.lm.coeff[1] + mass.C.lm.coeff[2] * sample.CN$Area.44) / sample.CN$Amount * 100
-  standard.CN$pctC <- (mass.C.lm.coeff[1] + mass.C.lm.coeff[2] * standard.CN$Area.44) / standard.CN$Amount * 100
+  sample.CN$percent.C <- (mass.C.lm.coeff[1] + mass.C.lm.coeff[2] * sample.CN$Area.44) / sample.CN$Amount * 100
+  standard.CN$percent.C <- (mass.C.lm.coeff[1] + mass.C.lm.coeff[2] * standard.CN$Area.44) / standard.CN$Amount * 100
 
   #Calculate percent C using peak area vs. mass of GA1 QTY.
   mass.N.lm.coeff <-  filter(standard.CN, group == "GA1", ) %>%
     lm(mass.N.mg ~ Area.28, data = .) %>%
     coefficients()
-  sample.CN$pctN <- (mass.N.lm.coeff[1] + mass.N.lm.coeff[2] * sample.CN$Area.28) / sample.CN$Amount * 100
-  standard.CN$pctN <- (mass.N.lm.coeff[1] + mass.N.lm.coeff[2] * standard.CN$Area.28) / standard.CN$Amount * 100
+  sample.CN$percent.N <- (mass.N.lm.coeff[1] + mass.N.lm.coeff[2] * sample.CN$Area.28) / sample.CN$Amount * 100
+  standard.CN$percent.N <- (mass.N.lm.coeff[1] + mass.N.lm.coeff[2] * standard.CN$Area.28) / standard.CN$Amount * 100
 
   #Make model coefficients dataframe
   model.coeff.temp <- data.frame(Model=c("d13C", "d15N", "Percent C", "Percent N"),

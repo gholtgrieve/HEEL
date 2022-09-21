@@ -4,7 +4,7 @@
 \alias{EA.NACHO}
 \title{Finalizes raw EA data from NACHO}
 \usage{
-EA.NACHO(data.files, combine.runs = F, area.cutoff = F)
+EA.NACHO(data.files, area.cutoff = F)
 }
 \arguments{
 \item{data.files}{Character vector that contains raw data file names with file path. If length is >1, then all the files will be combined and analyzed
@@ -24,7 +24,7 @@ Dataframe of data for each unknown sample that includes following finalized valu
 \description{
 This function is used to decompose and finalize EA data from solid samples analyzed on the Delta V irMS systems (NACHO).
 The function writes a .csv with the thinned raw data and a .pdf with all relevant information about the analysis.  The finalized
-sample data are written as a .csv file and a dataframe of the data is also returned.
+sample data are written as a .csv file and a dataframe returned.
 
 The input data file has strict formatting and data requirements.  (This all needs updating) Each sample or standard should have four rows of data: two for  N and
 2 C.  Deviations for the is will result in the function failing.  The follow columns must be present in the input data file for the function to work.

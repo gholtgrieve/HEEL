@@ -2,13 +2,12 @@
 #'
 #' @description This internal function ...
 #'
-#' @usage EA.creport(results)
+#' @usage EA.report(results)
 #'
 #' @param data.file     Character vector of full file names for raw data files from the instrument. Must be a .csv file!
 #'
 #' @importFrom rmarkdown render
 #'
-#' @return
 #'
 #' @author Gordon W. Holtgrieve
 #'
@@ -18,7 +17,10 @@
 EA.report <- function(results){
 
   # Write .csv files
-
+  rename(as_tibble(results$standard.CN), d.13C.12C.raw = d.13C.12C, d.15N.14N.raw = d.15N.14N)
+  rename(as_tibble(results$sample.CN), d.13C.12C.raw = d.13C.12C, d.15N.14N.raw = d.15N.14N)
+  write_csv(results$standard.CN, paste0(results$processed.data.dir,"/standard_CN.csv"))
+  write_csv(results$sample.CN, paste0(results$processed.data.dir,"/sample_CN.csv"))
 
   # Get the full path to the desire .Rmd file
   rmd.file.path <-  system.file("Rmd", "EAoutput.Rmd", package = "HEEL", mustWork = T)
@@ -30,7 +32,8 @@ EA.report <- function(results){
   # Render requested file using knitr
   rmarkdown::render(input = rmd.file.path,
                     output_file = output.file,
-                    output_dir = results$processed.data.dir
+                    output_dir = results$processed.data.dir,
+                    params = results
                     )
 
   # Launch the file using the system

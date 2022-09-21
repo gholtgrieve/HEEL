@@ -22,7 +22,7 @@
 #' The remaining columns should be unchanged from what is created by IsoDat.  There should be a total of 49 columns of data in the raw data file.
 #' Column names will be modified when imported to R.
 #'
-#' @usage EA.NACHO(data.files, combine.runs = F, area.cutoff = F)
+#' @usage EA.NACHO(data.files, area.cutoff = F)
 #' @param data.files     Character vector that contains raw data file names with file path. If length is >1, then all the files will be combined and analyzed
 #'                       together using a single, combined calibration curve.
 #' @param area.cutoff    Defines the peak area (Vs) cutoff below which an individual analysis (injection) is dropped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.
@@ -69,7 +69,7 @@ results <- list(data.files=data.files,
     results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results)
     results[c("standard.CN","sample.CN","calibration.coefficients")] <- EA.adjust(results)
     results[c("known.standard.values", "error.analysis.results")] <- EA.check(results)
-    #EA.report(results)
+    EA.report(results)
 
     return(results$sample.CN)
 }
