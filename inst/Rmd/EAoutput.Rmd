@@ -43,14 +43,22 @@ Run comments:
 # REFERENCE MATERIALS																						
 All internationally recognized reference material accepted values can be found at the [CIAAW](http://www.ciaaw.org/). Typically we use IsoLab working standards GA1, GA2, and Bristol Bay Sockeye (salmon) on NACHO.  You can find information about these standards on the [IsoLab web page](https://isolab.ess.washington.edu/resources/standards.php#solid). Below are data specific to this run:  
 ```{r, echo=FALSE, results='asis'}
-#library(tibble)
-#library(knitr)
+library(tibble)
+library(knitr)
+library(dplyr)
 
 knitr::kable(tibble(params$known.standard.values), format = "simple", digits = c(NA, 2,2, 1, 1),
              caption="Lab reference materials used in this run and their accepted values.")
 
 #calculate means and SD for both raw and corrected GA1, GA2, and Salmon
-#knitr::kable(XXX, format = "simple", caption="Lab reference material performance summary for this run.")
+knitr::kable(params$standard.CN[12], format = "simple")
+
+# #standards.mean <- as_tibble(params$standard.CN)  %>%
+#                     group_by(group)  %>%
+#                     summarise(d13C.raw = mean(d.13C.12C.raw),
+#                               d13C.VPDB = mean(d.13C.12C.VPDB),
+#                               d15N.raw = mean(d.15N.14N.raw),
+#                               d15N.air = mean(d.15N.14N.air))
 
 knitr::kable(tibble(params$calibration.coefficients), format = "simple", digits = 4, 
              caption="Linear calibration curve coefficents used for this run (y=mx + b).")
