@@ -2,7 +2,7 @@
 #'
 #' @description This function is used to decompose and finalize EA data from solid samples analyzed on the Delta V irMS systems (NACHO).
 #' The function writes a .csv with the thinned raw data and a .pdf with all relevant information about the analysis.  The finalized
-#' sample data are written as a .csv file and a dataframe of the data is also returned.
+#' sample data are written as a .csv file and a dataframe returned.
 #'
 #' The input data file has strict formatting and data requirements.  (This all needs updating) Each sample or standard should have four rows of data: two for  N and
 #' 2 C.  Deviations for the is will result in the function failing.  The follow columns must be present in the input data file for the function to work.
@@ -22,16 +22,13 @@
 #' The remaining columns should be unchanged from what is created by IsoDat.  There should be a total of 49 columns of data in the raw data file.
 #' Column names will be modified when imported to R.
 #'
-#' @usage EA.NACHO(combine.runs = F, area.cutoff = F)
-#'
-#' @param combine.runs   Boolean flag identifying if the standard across all runs in the folder should be combined into a single standard curve or if each run should be analyzed independently.
-#'                       FALSE means each run is corrected independently. Default is to combine standards (==T).
+#' @usage EA.NACHO(data.files, combine.runs = F, area.cutoff = F)
+#' @param data.files     Character vector that contains raw data file names with file path. If length is >1, then all the files will be combined and analyzed
+#'                       together using a single, combined calibration curve.
 #' @param area.cutoff    Defines the peak area (Vs) cutoff below which an individual analysis (injection) is dropped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.
 #'
 #' @import tidyverse
-#' @importFrom tools file_path_sans_ext
-#' @importFrom easycsv choose_dir
-#'
+
 #' @return Dataframe of data for each unknown sample that includes following finalized values (i.e., what you want...):
 #'   \describe{
 #'     \item{d13C.vs.VPDB}{13C:12C of bulk carbon in the sample in delta notation with units of per mil relatve to Vienna Pee Dee Belemite.}
@@ -44,10 +41,10 @@
 #'
 #' @export
 
-EA.NACHO <- function(combine.runs = F, area.cutoff = F){
+EA.NACHO <- function(data.files, area.cutoff = F){
 
-results <- list(analysis.dates=NA,
-                data.files=NA,
+results <- list(data.files=data.files,
+                processed.data.dir=NA,
                 raw.sequence.data=NA,
                 zero.flag=NA,
                 blank.flag=NA,
@@ -64,25 +61,15 @@ results <- list(analysis.dates=NA,
                 blank.CN=NA,
                 run.comments=NA)
 
-  dir <- easycsv::choose_dir()
-  rootDir <- getwd()
-  setwd(dir)
+    results[c("processed.data.dir", "raw.sequence.data")] <- EA.load.data(results)
+    results[c("standard.CN","sample.CN","blank.CN", "zero.flag", "blank.flag")] <- EA.organize(results)
+    results[c("standard.CN","sample.CN","blank.correct.flag")] <- EA.blank.correct(results)
+    #EA.check.peak.areas(area.cutoff = area.cutoff)
+    results[c("standard.CN","sample.CN","drift.correct.flag")] <- EA.drift.correct(results)
+    results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results)
+    results[c("standard.CN","sample.CN","calibration.coefficients")] <- EA.adjust(results)
+    results[c("known.standard.values", "error.analysis.results")] <- EA.check(results)
+    #EA.report(results)
 
-  results$analysis.dates <- readline("Enter date(s) samples were run on the irMS. Use format YYYY-MM-DD:  ")
-
-  results$data.files <- list.files(path = dir, pattern = "\\.csv$")
-
-  results$raw.sequence.data <- read.csv(results$data.files)
-
-  # Now walk through the data decomposition steps
-  results[c("standard.CN","sample.CN","blank.CN", "zero.flag", "blank.flag")] <- EA.organize(results)
-  results[c("standard.CN","sample.CN","blank.correct.flag")] <- EA.blank.correct(results)
-  #EA.check.peak.areas(area.cutoff = area.cutoff)
-  results[c("standard.CN","sample.CN","drift.correct.flag")] <- EA.drift.correct(results)
-  results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results)
-  results[c("standard.CN","sample.CN","calibration.coefficients")] <- EA.adjust(results)
-  results[c("known.standard.values", "error.analysis.results")] <- EA.check(results)
-  #EA.report(results)
-
-  return(results$sample.CN)
+    return(results$sample.CN)
 }

@@ -4,11 +4,11 @@
 \alias{EA.NACHO}
 \title{Finalizes raw EA data from NACHO}
 \usage{
-EA.NACHO(combine.runs = F, area.cutoff = F)
+EA.NACHO(data.files, combine.runs = F, area.cutoff = F)
 }
 \arguments{
-\item{combine.runs}{Boolean flag identifying if the standard across all runs in the folder should be combined into a single standard curve or if each run should be analyzed independently.
-FALSE means each run is corrected independently. Default is to combine standards (==T).}
+\item{data.files}{Character vector that contains raw data file names with file path. If length is >1, then all the files will be combined and analyzed
+together using a single, combined calibration curve.}
 
 \item{area.cutoff}{Defines the peak area (Vs) cutoff below which an individual analysis (injection) is dropped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.}
 }
