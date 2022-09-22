@@ -51,6 +51,7 @@ results <- list(data.files=data.files,
                 blank.correct.flag=NA,
                 drift.correct.flag=NA,
                 standard.plots=NA,
+                measured.standard.means=NA,
                 standard.coefficients=NA,
                 known.standard.values=NA,
                 calibration.coefficients=NA,
@@ -67,7 +68,7 @@ results <- list(data.files=data.files,
     #EA.check.peak.areas(area.cutoff = area.cutoff)
     results[c("standard.CN","sample.CN","drift.correct.flag")] <- EA.drift.correct(results)
     results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results)
-    results[c("standard.CN","sample.CN","calibration.coefficients")] <- EA.adjust(results)
+    results[c("standard.CN","sample.CN","calibration.coefficients","measured.standard.means")] <- EA.adjust(results)
     results[c("known.standard.values", "error.analysis.results")] <- EA.check(results)
     EA.report(results)
 

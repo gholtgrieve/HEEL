@@ -74,9 +74,9 @@ EA.plot.standards <- function(results){
     p21 <- gridExtra::grid.arrange(p2, p1, ncol = 2)
 
     #Save linear models for mass calculations later
-    temp <- standard.CN[standard.CN$group == "GA2" | standard.CN$group == "GA1",]
-    N.mass.vs.Area28.lm.coeff <- coefficients(lm(temp$mass.N.mg ~ temp$Area.28))
-    C.mass.vs.Area44.lm.coeff <- coefficients(lm(temp$mass.C.mg ~ temp$Area.44))
+    temp2 <- standard.CN[standard.CN$group == "GA2" | standard.CN$group == "GA1",]
+    N.mass.vs.Area28.lm.coeff <- coefficients(lm(temp2$mass.N.mg ~ temp$Area.28))
+    C.mass.vs.Area44.lm.coeff <- coefficients(lm(temp2$mass.C.mg ~ temp$Area.44))
 
 
     # PLOT 2 -----------------------------
@@ -85,25 +85,25 @@ EA.plot.standards <- function(results){
       p5 <- ggplot(temp, aes(x = Area.28, y = d15N, group = group, color = group)) +
         geom_point() +
         labs(y = "d15N", title = "d15N vs m/z 28") +
-        stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+        ggpubr::stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
                 label.y.npc = "center") +
-        stat_regline_equation(label.y.npc = "top") +
+        ggpubr::stat_regline_equation(label.y.npc = "top") +
         geom_smooth(method = lm, formula = y ~ x, se = FALSE) +
         theme_minimal() +
         theme(legend.position = "none")
       p6 <-  ggplot(temp, aes(x = Area.44, y = d13C, group = group, color = group)) +
         geom_point() +
         labs(y = "d13C", title = "d13C vs m/z 44 ") +
-        stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
+        ggpubr::stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
                 label.y.npc = "center") +
-        stat_regline_equation(label.y.npc = "top") +
+        ggpubr::stat_regline_equation(label.y.npc = "top") +
         theme_minimal() +
         geom_smooth(method = lm, formula = y ~ x, se = FALSE)
       p65 <- gridExtra::grid.arrange(p6, p5, ncol = 2)
 
-      #Save linear models for mass calculations later
-      d15N.vs.Area28.lm.coeff <- coefficients(lm(temp$d.15N.14N.drift ~ temp$Area.28))
-      d13C.vs.Area44.lm.coeff <- coefficients(lm(temp$d.13C.12C.drift ~ temp$Area.44))
+      #Save linear models for corrections later
+      d15N.vs.Area28.lm.coeff <- coefficients(lm(temp$d15N ~ temp$Area.28))
+      d13C.vs.Area44.lm.coeff <- coefficients(lm(temp$d13C ~ temp$Area.44))
 
       temp <- data.frame(Model=c("d13C.vs.Area44", "d15N.vs.Area28", "MassC.vs.Area44", "MassN.vs.Area28"),
                 rbind(d13C.vs.Area44.lm.coeff, d15N.vs.Area28.lm.coeff, C.mass.vs.Area44.lm.coeff, N.mass.vs.Area28.lm.coeff))

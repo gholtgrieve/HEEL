@@ -68,14 +68,14 @@ EA.adjust <- function(results){
   sample.CN.temp <- data.frame(sample.d13C = sample.d13C,
                                sample.d15N = sample.d15N)
 
-  #Make data matrix to populate with means of the standard in the run(s)
-  mean.standard.measured <- standard.CN.temp %>%
+  #Make data matrix to populate with means of the standard  raw values in the run(s)
+  measured.standard.means.raw <- standard.CN.temp %>%
                           group_by(group) %>%
-                          dplyr::summarize(d13C = mean(standard.d13C), d15N = mean(standard.d15N))
+                          dplyr::summarize(d13C_raw = mean(standard.d13C), d15N_raw = mean(standard.d15N))
 
   ## Adjust d13 vs. tank to vs. VPDB using GA1 and GA2 working standards
   ## Build linear model using VPDB values on the y and drift corrected raw values on the x.
-  x <- dplyr::filter(mean.standard.measured, group == "GA1" | group == "GA2")$d13C
+  x <- dplyr::filter(measured.standard.means.raw, group == "GA1" | group == "GA2")$d13C_raw
   y <- dplyr::filter(known.standard.d13C.d15N, group == "GA1" | group == "GA2")$d13C
   C.lm <- lm(y ~ x)
   C.lm.coeff <- coefficients(C.lm)
@@ -84,7 +84,7 @@ EA.adjust <- function(results){
 
   ## Adjust d13 vs. tank to vs. VPDB using GA1 and GA2 working standards
   ## Build linear model using VPDB values on the y and drift corrected raw values on the x.
-  x <- dplyr::filter(mean.standard.measured, group == "SALMON" | group == "GA2")$d15N
+  x <- dplyr::filter(measured.standard.means.raw, group == "SALMON" | group == "GA2")$d15N_raw
   y <- dplyr::filter(known.standard.d13C.d15N, group == "SALMON" | group == "GA2")$d15N
   N.lm <- lm(y ~ x)
   N.lm.coeff <- coefficients(N.lm)
@@ -111,5 +111,12 @@ EA.adjust <- function(results){
   colnames(model.coeff.temp) <- c("Value","Intercept", "Slope")
   calibration.coefficients <- tibble::tibble(model.coeff.temp)
 
-  return(list(standard.CN=standard.CN, sample.CN=sample.CN, calibration.coefficients=calibration.coefficients))
+  #Make data matrix to populate with means of the standard  adjusted values in the run(s)
+  measured.standard.means.adjusted <- standard.CN %>%
+    group_by(group) %>%
+    dplyr::summarize(d13C_VPDB = mean(d.13C.12C.VPDB), d15N_air = mean(d.15N.14N.air))
+
+  return(list(standard.CN=standard.CN, sample.CN=sample.CN,
+              calibration.coefficients=calibration.coefficients,
+              measured.standard.means = bind_cols(measured.standard.means.raw, measured.standard.means.adjusted[,2:3])))
 }

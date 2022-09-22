@@ -13,6 +13,7 @@ params:
   blank.correct.flag: ""
   drift.correct.flag: ""
   standard.plots: ""
+  measured.standard.means: ""
   standard.coefficients: ""
   known.standard.values: ""
   calibration.coefficients: ""
@@ -50,28 +51,23 @@ library(dplyr)
 knitr::kable(tibble(params$known.standard.values), format = "simple", digits = c(NA, 2,2, 1, 1),
              caption="Lab reference materials used in this run and their accepted values.")
 
-#calculate means and SD for both raw and corrected GA1, GA2, and Salmon
-knitr::kable(params$standard.CN[12], format = "simple")
-
-# #standards.mean <- as_tibble(params$standard.CN)  %>%
-#                     group_by(group)  %>%
-#                     summarise(d13C.raw = mean(d.13C.12C.raw),
-#                               d13C.VPDB = mean(d.13C.12C.VPDB),
-#                               d15N.raw = mean(d.15N.14N.raw),
-#                               d15N.air = mean(d.15N.14N.air))
+knitr::kable(params$measured.standard.means, format = "simple", digits = 1,
+             caption = "Mean measured d13C and d15N of working standards both raw and adjusted to international standards.")
 
 knitr::kable(tibble(params$calibration.coefficients), format = "simple", digits = 4, 
              caption="Linear calibration curve coefficents used for this run (y=mx + b).")
+
 knitr::kable(tibble(params$error.analysis.results), format = "simple", digits = 2, 
              caption="Accuracy and precision of standards for this run.")
 
 ```	
 
 # ZEROS & BLANKS
-The table below includes measurable blanks and zeros. Blanks are empty tins while zeros are no tin or sample. The table below, if given, contains the data for blanks and zero from this run. No table indicates blanks and zeros were not measurable. Blank correction has not been implemented in the script.  
+Blanks are empty tins while zeros are no tin or sample. The table below, if given, contains the data for blanks and zero from this run. No table indicates blanks and zeros were not measurable. A blank correction has not been implemented in the script.  
 ```{r echo=FALSE}
-knitr::kable(params$blank.CN, format = "simple", caption="Blank data.")
-knitr::kable(params$zero.CN, format = "simple", caption="Zero data.") 
+
+if (params$blank.flag) knitr::kable(params$blank.CN, format = "simple", caption="Blank data.")
+if (params$zero.flag) knitr::kable(params$zero.CN, format = "simple", caption="Zero data.") 
 
 ```
 
@@ -79,8 +75,8 @@ knitr::kable(params$zero.CN, format = "simple", caption="Zero data.")
 Your data were analysed for effects of sample mass on peak area and isotopic ratios. Ideally, there should be a strong linear response of mass C (or N) in the standard on area 44 (or 28) and no effect of peak area on $\delta$^13^C or $\delta$^15^N.  
 ```{r echo=FALSE}
 
-#params$standard.plots[1]
-#paramsstandard.plots[2]
+plot(params$standard.plots[[1]])
+plot(params$standard.plots[[2]])
 knitr::kable(params$standard.coefficients, format = "simple", digits = 4,
              caption="Liner model coefficients of mass effects.")           
                
