@@ -25,7 +25,6 @@
 #' @usage EA.NACHO(data.files, area.cutoff = F)
 #' @param data.files     Character vector that contains raw data file names with file path. If length is >1, then all the files will be combined and analyzed
 #'                       together using a single, combined calibration curve.
-#' @param area.cutoff    Defines the peak area (Vs) cutoff below which an individual analysis (injection) is dropped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.
 #'
 #' @import tidyverse
 
@@ -41,7 +40,7 @@
 #'
 #' @export
 
-EA.NACHO <- function(data.files, area.cutoff = F){
+EA.NACHO <- function(data.files){
 
 results <- list(data.files=data.files,
                 processed.data.dir=NA,
@@ -60,14 +59,15 @@ results <- list(data.files=data.files,
                 sample.CN=NA,
                 zero.CN=NA,
                 blank.CN=NA,
+                peak.area.flags=NA,
                 run.comments=NA)
 
     results[c("processed.data.dir", "raw.sequence.data")] <- EA.load.data(results)
     results[c("standard.CN","sample.CN","blank.CN", "zero.flag", "blank.flag")] <- EA.organize(results)
     results[c("standard.CN","sample.CN","blank.correct.flag")] <- EA.blank.correct(results)
-    #EA.check.peak.areas(area.cutoff = area.cutoff)
     results[c("standard.CN","sample.CN","drift.correct.flag")] <- EA.drift.correct(results)
     results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results)
+    results[c("peak.area.flags")] <- EA.check.peak.areas(results)
     results[c("standard.CN","sample.CN","calibration.coefficients","measured.standard.means")] <- EA.adjust(results)
     results[c("known.standard.values", "error.analysis.results")] <- EA.check(results)
     EA.report(results)

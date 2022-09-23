@@ -9,8 +9,6 @@ EA.NACHO(data.files, area.cutoff = F)
 \arguments{
 \item{data.files}{Character vector that contains raw data file names with file path. If length is >1, then all the files will be combined and analyzed
 together using a single, combined calibration curve.}
-
-\item{area.cutoff}{Defines the peak area (Vs) cutoff below which an individual analysis (injection) is dropped.  FALSE means no cutoff applied.  Numeric defines the cutoff value.}
 }
 \value{
 Dataframe of data for each unknown sample that includes following finalized values (i.e., what you want...):

@@ -22,6 +22,7 @@ params:
   sample.CN: ""
   zero.CN: ""
   blank.CN: ""
+  peak.area.flags: ""
   run.comments: ""
 ---
 # LABORATORY																						
@@ -35,11 +36,10 @@ Your solid samples were analyzed for bulk $\delta$^13^C and $\delta$^15^N on a T
 
 # ANALYSIS																						
 Date of Analysis (MM/DD/YY): 																		
-Original Filename(s): 																					
-Reduced Standards Filename:	 
-Reduced Samples Filename:	 
+Original Filename(s): 																				
+Processed data folder file path: `r params$processed.data.dir`  
 Run type: bulk C and N																				
-Run comments:																		
+Run comments:	`r params$run.comments`																	
 																						
 # REFERENCE MATERIALS																						
 All internationally recognized reference material accepted values can be found at the [CIAAW](http://www.ciaaw.org/). Typically we use IsoLab working standards GA1, GA2, and Bristol Bay Sockeye (salmon) on NACHO.  You can find information about these standards on the [IsoLab web page](https://isolab.ess.washington.edu/resources/standards.php#solid). Below are data specific to this run:  
@@ -47,6 +47,7 @@ All internationally recognized reference material accepted values can be found a
 library(tibble)
 library(knitr)
 library(dplyr)
+library(pander)
 
 knitr::kable(tibble(params$known.standard.values), format = "simple", digits = c(NA, 2,2, 1, 1),
              caption="Lab reference materials used in this run and their accepted values.")
@@ -83,7 +84,39 @@ knitr::kable(params$standard.coefficients, format = "simple", digits = 4,
 ```
 
 # SAMPLE MASS CHECK
-Not implemented yet. 
+The following samples are 30% below the target mass:  
+```{r, echo=FALSE}
+output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
+
+output$Unique.ID[2] <- params$peak.area.flags %>% filter(area.28.30pct.threshold.flag == T) %>% select(unique.ID)
+output$Unique.ID[1] <- params$peak.area.flags %>% filter(area.44.30pct.threshold.flag == T) %>% select(unique.ID)
+
+pander::pander(output)
+
+```
+
+The following samples are 50% below the target mass:  
+```{r, echo=FALSE}
+output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
+
+output$Unique.ID[2] <- params$peak.area.flags %>% filter(area.28.50pct.threshold.flag == T) %>% select(unique.ID)
+output$Unique.ID[1] <- params$peak.area.flags %>% filter(area.44.50pct.threshold.flag == T) %>% select(unique.ID)
+
+pander::pander(output)
+
+```
+
+The following samples are 200% above the target mass:  
+```{r, echo=FALSE}
+output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
+
+output$Unique.ID[2] <- params$peak.area.flags %>% filter(area.28.200pct.threshold.flag == T) %>% select(unique.ID)
+output$Unique.ID[1] <- params$peak.area.flags %>% filter(area.44.200pct.threshold.flag == T) %>% select(unique.ID)
+
+pander::pander(output)
+
+```
+
 
 # SAMPLE DATA
 Below is a short summary of your sample data. A more complete data set has been saved as a .csv file in the 'processed' folder.

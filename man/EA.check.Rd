@@ -6,11 +6,8 @@
 \usage{
 EA.check(results)
 }
-\arguments{
-\item{results}{List containing results from previous functions.}
-}
 \value{
-List with two objects: known.standard.values, error.analysis.results
+List with three tables: known.standard.values, error.analysis.results
 }
 \description{
 This function calculates the r

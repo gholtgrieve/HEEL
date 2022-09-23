@@ -4,9 +4,7 @@
 #'
 #' @usage EA.check(results)
 #'
-#' @param results List containing results from previous functions.
-#'
-#' @return List with two objects: known.standard.values, error.analysis.results
+#' @return List with three tables: known.standard.values, error.analysis.results
 #'
 #' @author Gordon W. Holtgrieve
 #'

@@ -15,8 +15,9 @@
 #' @importFrom stringr str_detect
 #' @importFrom dplyr summarize filter group_by
 #'
-#' @return List with two tables: 1) standard C & N data ($standard.CN),
-#'         sample C & N data ($sample.CN), and 2) calibration model coefficients ($calibration.coefficients).
+#' @return List with three tables: standard C & N data ($standard.CN),
+#'         sample C & N data ($sample.CN),
+#'         and calibration model coefficients ($calibration.coefficients).
 #'
 #' @author Gordon W. Holtgrieve
 #'

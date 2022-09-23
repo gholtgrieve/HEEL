@@ -5,7 +5,9 @@
 #'
 #' @usage EA.blank.correct(results)
 #'
-#' @param results List containing results from previous functions.
+#' @return List with two tables: standard C & N data ($standard.CN),
+#'         sample C & N data ($sample.CN), and a flag indicating if a
+#'         blank correction was performed ($blank.correct.flag).
 #'
 #' @author Gordon W. Holtgrieve
 #'

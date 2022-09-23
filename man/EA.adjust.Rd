@@ -10,8 +10,9 @@ EA.adjust(results)
 \item{results}{List containing results from previous functions.}
 }
 \value{
-List with two tables: 1) standard C & N data ($standard.CN),
-        sample C & N data ($sample.CN), and 2) calibration model coefficients ($calibration.coefficients).
+List with three tables: standard C & N data ($standard.CN),
+        sample C & N data ($sample.CN),
+        and calibration model coefficients ($calibration.coefficients).
 }
 \description{
 This function takes the raw d13C and d15N from IsoDat software and corrects them to VPDB and air, respectively,
