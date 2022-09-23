@@ -2,10 +2,10 @@
 #'
 #' @description This function is used to decompose and finalize EA data from solid samples analyzed on the Delta V irMS systems (NACHO).
 #' The function writes a .csv with the thinned raw data and a .pdf with all relevant information about the analysis.  The finalized
-#' sample data are written as a .csv file and a dataframe returned.
+#' sample data are also returned as a dataframe.
 #'
-#' The input data file has strict formatting and data requirements.  (This all needs updating) Each sample or standard should have four rows of data: two for  N and
-#' 2 C.  Deviations for the is will result in the function failing.  The follow columns must be present in the input data file for the function to work.
+#' The input data file has strict formatting and data requirements. Each sample or standard should have four rows of data: two for  N and
+#' 2 C.  Deviations for the is will result in the function failing. The follow columns must be present in the input data file for the function to work.
 #'   \describe{
 #'     \item{Row}{Row number for the IsoDat sequence file.}
 #'     \item{Analysis}{Unique number assigned by IsoDat for each analysis.}
@@ -19,10 +19,11 @@
 #'     \item{d 13C/12C}{Ratio of 13C to 12C in delta units relative to the refernce gas (i.e., CO2 tank). Numeric.}
 #'     }
 #'
-#' The remaining columns should be unchanged from what is created by IsoDat.  There should be a total of 49 columns of data in the raw data file.
-#' Column names will be modified when imported to R.
+#' The remaining columns should be unchanged from what is created by IsoDat. There should be a total of 49 columns of data in the raw data file.
+#' Column names will be modified when imported by the fucntion.
 #'
 #' @usage EA.NACHO(data.files)
+#'
 #' @param data.files     Character vector that contains raw data file names with file path. If length is >1, then all the files will be combined and analyzed
 #'                       together using a single, combined calibration curve.
 #'
