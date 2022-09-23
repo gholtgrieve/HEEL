@@ -4,7 +4,7 @@
 \alias{EA.NACHO}
 \title{Finalizes raw EA data from NACHO}
 \usage{
-EA.NACHO(data.files, area.cutoff = F)
+EA.NACHO(data.files)
 }
 \arguments{
 \item{data.files}{Character vector that contains raw data file names with file path. If length is >1, then all the files will be combined and analyzed

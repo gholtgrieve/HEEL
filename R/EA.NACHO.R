@@ -22,12 +22,13 @@
 #' The remaining columns should be unchanged from what is created by IsoDat.  There should be a total of 49 columns of data in the raw data file.
 #' Column names will be modified when imported to R.
 #'
-#' @usage EA.NACHO(data.files, area.cutoff = F)
+#' @usage EA.NACHO(data.files)
 #' @param data.files     Character vector that contains raw data file names with file path. If length is >1, then all the files will be combined and analyzed
 #'                       together using a single, combined calibration curve.
 #'
 #' @import tidyverse
-
+#' @import rmarkdown
+#'
 #' @return Dataframe of data for each unknown sample that includes following finalized values (i.e., what you want...):
 #'   \describe{
 #'     \item{d13C.vs.VPDB}{13C:12C of bulk carbon in the sample in delta notation with units of per mil relatve to Vienna Pee Dee Belemite.}
