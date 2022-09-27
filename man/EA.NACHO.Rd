@@ -25,7 +25,8 @@ The function writes a .csv with the thinned raw data and a .pdf with all relevan
 sample data are also returned as a dataframe.
 
 The input data file has strict formatting and data requirements. Each sample or standard should have four rows of data: two for  N and
-2 C.  Deviations for the is will result in the function failing. The follow columns must be present in the input data file for the function to work.
+two for C.  Deviations from this is will result in the function failing. Blanks and zeros are an excpetion and can have only two rows.
+The follow columns must be present in the input data file for the function to work.
   \describe{
     \item{Row}{Row number for the IsoDat sequence file.}
     \item{Analysis}{Unique number assigned by IsoDat for each analysis.}
@@ -34,13 +35,13 @@ The input data file has strict formatting and data requirements. Each sample or 
     \item{Amount}{Mass of SAMPLE, STANDARD, QTY, or DUMMY in miligrams (mg). BLANK and ZERO can be 0.0 or blank. Numeric.}
     \item{Is Ref _}{Flag that identifies wheter this line line is for a reference gas peak (==1) or not (==0). Numeric.}
     \item{Area 28}{Peak area for mass 28 in Vs. Numeric.}
-    \item{d 15N/14N}{Ratio of 15N to 14N in delta units relative to the refernce gas (i.e., N2 tank). Numeric.}
+    \item{d 15N/14N}{Ratio of 15N to 14N in delta units relative to the reference gas (i.e., N2 tank). Numeric.}
     \item{Area 44}{Peak area for mass 44 in Vs. Numeric.}
-    \item{d 13C/12C}{Ratio of 13C to 12C in delta units relative to the refernce gas (i.e., CO2 tank). Numeric.}
+    \item{d 13C/12C}{Ratio of 13C to 12C in delta units relative to the reference gas (i.e., CO2 tank). Numeric.}
     }
 
 The remaining columns should be unchanged from what is created by IsoDat. There should be a total of 49 columns of data in the raw data file.
-Column names will be modified when imported by the fucntion.
+Column names will be modified when imported by the function.
 }
 \author{
 Gordon W. Holtgrieve
