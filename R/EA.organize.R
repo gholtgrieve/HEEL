@@ -25,7 +25,7 @@
 #'
 #' @param results List containing results from previous functions.
 #'
-#' @import stringr
+#' @importFrom stringr str_c str_detect
 #' @importFrom tools file_path_sans_ext
 #'
 #' @return List with three tables: standard C & N data ($standard.CN), sample C & N data ($sample.CN), blank C & N data ($blank.CN).  Blank table may have zero rows.
@@ -42,7 +42,7 @@ EA.organize <- function(results){
   zero.flag = F
   blank.flag = F
 
-  raw.sequence.data$unique.ID <- str_c(raw.sequence.data$Identifier.1, raw.sequence.data$Analysis, sep="_")
+  raw.sequence.data$unique.ID <- stringr::str_c(raw.sequence.data$Identifier.1, raw.sequence.data$Analysis, sep="_")
   keep.all <- c("Row","Analysis","Identifier.1","Comment", "Amount", "unique.ID")
   keep.N <- c("Area.28", "d.15N.14N")
   keep.C <- c("Area.44", "d.13C.12C")
@@ -53,19 +53,28 @@ EA.organize <- function(results){
   tempCN <- merge(x = CO2,N2, by = "Analysis") #N and CO2 sample & standards results are combined into one object
 
   #Separate zeros from everything else and save as a .csv. If zeros are not detectable the dataframe will be empty and nrow() will return zero.
-  zero.CN <- tempCN[str_detect(tempCN$Comment, "ZERO|zero|Zero"),]
-  if(nrow(zero.CN)!=0)  zero.flag = T
+  zero.CN <- tempCN[stringr::str_detect(tempCN$Comment, "ZERO|zero|Zero"),]
+  if(nrow(zero.CN)!=0)  {
+    zero.flag = T
+    zero.CN$Comment[stringr::str_detect(zero.CN$Comment, "ZERO|zero|Zero")] <- "ZERO"
+  }
 
   #Separate blanks (not zeros) from everything else and save as a .csv. If blanks are not detectable the dataframe will be empty and nrow() will return zero
-  blank.CN <- tempCN[str_detect(tempCN$Comment, "BLANK|blank|Blank"),]
-  if(nrow(blank.CN)!=0)  blank.flag = T
+  blank.CN <- tempCN[stringr::str_detect(tempCN$Comment, "BLANK|blank|Blank"),]
+  if(nrow(blank.CN)!=0) {
+    blank.flag = T
+    blank.CN$Comment[stringr::str_detect(blank.CN$Comment, "BLANK|blank|Blank")] <- "ZERO"
+  }
 
-  #Separate unknown samples from everything else and save as a .csv.
-  sample.CN <- tempCN[str_detect(tempCN$Comment, "SAMPLE|SAMPLES|sample|Sample"),]
-  #write.csv(x = sample.CN, file = paste0("sample.CN_",sequenceID,".csv"), row.names = FALSE)
+  #Separate unknown samples from everything else. Standardize Comments column to SAMPLE
+  sample.CN <- tempCN[stringr::str_detect(tempCN$Comment, "SAMPLE|SAMPLES|sample|Sample"),]
+  sample.CN$Comment[stringr::str_detect(sample.CN$Comment, "SAMPLE|SAMPLES|sample|Sample")] <- "SAMPLE"
+
 
   #Separate standards (both regular and QTY) from everything else
-  standard.CN <- tempCN[str_detect(tempCN$Comment, "STANDARD|standard|Standard|STD|std|Std|QTY|qty|Qty"),]
+  standard.CN <- tempCN[stringr::str_detect(tempCN$Comment, "STANDARD|standard|Standard|STD|std|Std|QTY|qty|Qty"),]
+  standard.CN$Comment[stringr::str_detect(standard.CN$Comment, "STANDARD|standard|Standard|STD|std|Std")] <- "STANDARD"
+  standard.CN$Comment[stringr::str_detect(standard.CN$Comment, "QTY|qty|Qty")] <- "QTY"
 
   #Add expected mass C and N in standards based on amount (mass) and known composition of the standards.
   GA.Amt.N <- 0.0952 #proportion N by mass
@@ -74,19 +83,19 @@ EA.organize <- function(results){
   SALMON.Amt.C <- 0.457 #proportion C by mass
 
   #Start with salmon standard
-  index <- str_detect(standard.CN$Identifier.1, "sal|SAL|Sal|Salmon|salmon|SALMON")
+  index <- stringr::str_detect(standard.CN$Identifier.1, "sal|SAL|Sal|Salmon|salmon|SALMON")
   standard.CN$mass.N.mg[index] <- standard.CN$Amount[index] * SALMON.Amt.N
   standard.CN$mass.C.mg[index] <- standard.CN$Amount[index] * SALMON.Amt.C
   standard.CN$group[index] <- "SALMON"
 
   #GA1 standard (same mass for both GA1 and GA2)
-  index <- str_detect(standard.CN$Identifier.1, "GA1|ga1|Ga1")
+  index <- stringr::str_detect(standard.CN$Identifier.1, "GA1|ga1|Ga1")
   standard.CN$mass.N.mg[index] <- standard.CN$Amount[index] * GA.Amt.N
   standard.CN$mass.C.mg[index] <- standard.CN$Amount[index] * GA.Amt.C
   standard.CN$group[index] <- "GA1"
 
   #GA2 standard (same mass for both GA1 and GA2)
-  index <- str_detect(standard.CN$Identifier.1, "GA2|ga2|Ga2")
+  index <- stringr::str_detect(standard.CN$Identifier.1, "GA2|ga2|Ga2")
   standard.CN$mass.N.mg[index] <- standard.CN$Amount[index] * GA.Amt.N
   standard.CN$mass.C.mg[index] <- standard.CN$Amount[index] * GA.Amt.C
   standard.CN$group[index] <- "GA2"

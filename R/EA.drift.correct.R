@@ -43,9 +43,9 @@ EA.drift.correct <- function(results){
   # Check to see if there are standards in the run that can be used to drift correct.
   # Appropriate standards would be at least 4 repeated measures of GA1, GA2 and salmon that are at approximately the same mass.
   # This excludes QTY standard that vary in their sample mass..
-  standards.flag <- nrow(filter(standard.CN, Comment %in% c("STD","std", "Std") & group %in% c("GA1", "ga1", "Ga1"))) >= 4
-  standards.flag <- c(standards.flag, nrow(filter(standard.CN, Comment %in% c("STD","std", "Std") & group %in% c("GA2", "ga2", "Ga2"))) >= 4)
-  standards.flag <- c(standards.flag, nrow(filter(standard.CN, Comment %in% c("STD","std", "Std") & group %in% c("SALMON", "Salmon", "salmon"))) >= 4)
+  standards.flag <- nrow(filter(standard.CN, Comment %in% c("STANDARD") & group %in% c("GA1"))) >= 4
+  standards.flag <- c(standards.flag, nrow(filter(standard.CN, Comment %in% c("STANDARD") & group %in% c("GA2"))) >= 4)
+  standards.flag <- c(standards.flag, nrow(filter(standard.CN, Comment %in% c("STANDARD") & group %in% c("SALMON"))) >= 4)
 
   drift.correct.flag1 <- any(standards.flag)
 
@@ -64,7 +64,7 @@ EA.drift.correct <- function(results){
     rownames(driftAnalysis) <- c("GA1", "GA2", "SALMON")
 
     #use on STD (not QTY)
-    dataSTD <- standard.CN[stringr::str_detect(data$Comment, "STD|std|Std"),]
+    dataSTD <- standard.CN[standard.CN$Comment == "STANDARD",]
 
     group <- c("GA1", "GA2", "SALMON")
 

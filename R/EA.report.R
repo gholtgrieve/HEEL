@@ -17,8 +17,8 @@
 EA.report <- function(results){
 
   # Write .csv files
-  results$standard.CN <- rename(as_tibble(results$sample.CN), d.13C.12C.raw = d.13C.12C, d.15N.14N.raw = d.15N.14N)
-  results$standard.CN <-rename(as_tibble(results$sample.CN), d.13C.12C.raw = d.13C.12C, d.15N.14N.raw = d.15N.14N)
+  results$sample.CN <- rename(as_tibble(results$sample.CN), d.13C.12C.raw = d.13C.12C, d.15N.14N.raw = d.15N.14N)
+  results$standard.CN <-rename(as_tibble(results$standard.CN), d.13C.12C.raw = d.13C.12C, d.15N.14N.raw = d.15N.14N)
 
   write_csv(results$standard.CN, paste0(results$processed.data.dir,"/standard_CN.csv"))
   write_csv(results$sample.CN, paste0(results$processed.data.dir,"/sample_CN.csv"))
