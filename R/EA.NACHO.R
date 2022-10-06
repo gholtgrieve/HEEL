@@ -23,13 +23,14 @@
 #' The remaining columns should be unchanged from what is created by IsoDat. There should be a total of 49 columns of data in the raw data file.
 #' Column names will be modified when imported by the function.
 #'
-#' @usage EA.NACHO(data.files)
+#' @usage EA.NACHO(data.files, return.mass.percent.CN = T)
 #'
 #' @param data.files     Character vector that contains raw data file names with file path. If length is >1, then all the files will be combined and analyzed
 #'                       together using a single, combined calibration curve.
+#' @param return.mass.percent.CN Boolean to indicate whether sample mass data should be return as mass C or N as a percent of total sample mass.
+#'                               If FALSE, returned values are total mass of C or N in th sample.
 #'
-#' @import tidyverse
-#' @import rmarkdown
+#' @import tidyverse rmarkdown
 #'
 #' @return Dataframe of data for each unknown sample that includes following finalized values (i.e., what you want...):
 #'   \describe{
@@ -43,7 +44,7 @@
 #'
 #' @export
 
-EA.NACHO <- function(data.files){
+EA.NACHO <- function(data.files, return.mass.percent.CN = T){
 
 results <- list(data.files=data.files,
                 processed.data.dir=NA,
@@ -71,7 +72,7 @@ results <- list(data.files=data.files,
     results[c("standard.CN","sample.CN","drift.correct.flag")] <- EA.drift.correct(results)
     results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results)
     results[c("peak.area.flags")] <- EA.check.peak.areas(results)
-    results[c("standard.CN","sample.CN","calibration.coefficients","measured.standard.means")] <- EA.adjust(results)
+    results[c("standard.CN","sample.CN","calibration.coefficients","measured.standard.means")] <- EA.adjust(results, return.mass.percent.CN)
     results[c("known.standard.values", "error.analysis.results")] <- EA.check(results)
     EA.report(results)
 

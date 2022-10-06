@@ -4,10 +4,13 @@
 \alias{EA.adjust}
 \title{Corrects raw d13C and 15N to VPBD and air}
 \usage{
-EA.adjust(results)
+EA.adjust(results, return.mass.percent.CN)
 }
 \arguments{
 \item{results}{List containing results from previous functions.}
+
+\item{return.mass.percent.CN}{Boolean to indicate whether sample mass data should be return as mass C or N as a percent of total sample mass.
+If FALSE, returned values are total mass of C or N in th sample.}
 }
 \value{
 List with three tables: standard C & N data ($standard.CN),

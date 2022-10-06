@@ -11,6 +11,8 @@
 #'
 #' @author Gordon W. Holtgrieve
 #'
+#' @keywords internal
+#'
 #' @export
 
 check.isotope.standard.name <- function(x){
