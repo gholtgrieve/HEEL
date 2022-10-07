@@ -30,10 +30,10 @@ EA.check <- function(results){
                                 Precision = NA,
                                 Accuracy = NA)
 
-  #Calculate mean measured values dor d13C, d15N, pct C and pct N. Use salmon standard for C and GA1 for N.
+  #Calculate mean measured values or d13C, d15N, pct C and pct N. Use salmon standard for C and GA1 for N.
   mean.salmon.d13C.measured <- mean(standard.CN$d.13C.12C.VPDB[standard.CN$group == "SALMON"], na.rm = T)
-  mean.salmon.pctC.measured <- mean(standard.CN$percent.C[standard.CN$group == "SALMON"], na.rm = T)
   mean.GA1.d15N.measured <- mean(standard.CN$d.15N.14N.air[standard.CN$group == "GA1"], na.rm = T)
+  mean.salmon.pctC.measured <- mean(standard.CN$percent.C[standard.CN$group == "SALMON"], na.rm = T)
   mean.GA1.pctN.measured <- mean(standard.CN$percent.N[standard.CN$group == "GA1"], na.rm = T)
 
   #Calculate accuracy for d13C, d15N, pctC, and pctN. Use salmon standard for C and GA1 for N.

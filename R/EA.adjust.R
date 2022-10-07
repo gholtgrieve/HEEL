@@ -6,11 +6,9 @@
 #'              The function also calculates the percent C and N of samples and standards in a similar fashion using known
 #'              mass C and N in the glutamic acid standard (GA1) and peak area (masses 44 and 28).
 #'
-#' @usage EA.adjust(results, return.mass.percent.CN)
+#' @usage EA.adjust(results)
 #'
 #' @param results List containing results from previous functions.
-#' @param return.mass.percent.CN Boolean to indicate whether sample mass data should be return as mass C or N as a percent of total sample mass.
-#'                               If FALSE, returned values are total mass of C or N in th sample.
 #'
 #' @importFrom tools file_path_sans_ext
 #' @importFrom tibble tibble
@@ -26,7 +24,7 @@
 #' @keywords internal
 #' @export
 
-EA.adjust <- function(results, return.mass.percent.CN){
+EA.adjust <- function(results){
 
   known.standard.d13C.d15N<- data.frame(group = c("GA1", "GA2", "SALMON"),
                          d13C = c(-28.3, -13.7, -21.3),
@@ -37,6 +35,7 @@ EA.adjust <- function(results, return.mass.percent.CN){
   standard.CN <- results$standard.CN
   drift.correct.flag <- results$drift.correct.flag
   blank.correct.flag <- results$blank.correct.flag
+  return.mass.percent.CN <- results$return.mass.percent.CN
 
   # Pick the correct data depending on which corrections were performed.  This is ugly, but OK for now.
   if(str_detect(drift.correct.flag, "both|BOTH|Both")) {

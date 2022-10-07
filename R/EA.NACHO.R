@@ -49,6 +49,7 @@ EA.NACHO <- function(data.files, return.mass.percent.CN = T){
 results <- list(data.files=data.files,
                 processed.data.dir=NA,
                 raw.sequence.data=NA,
+                return.mass.percent.CN = return.mass.percent.CN,
                 zero.flag=NA,
                 blank.flag=NA,
                 blank.correct.flag=NA,
@@ -72,7 +73,7 @@ results <- list(data.files=data.files,
     results[c("standard.CN","sample.CN","drift.correct.flag")] <- EA.drift.correct(results)
     results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results)
     results[c("peak.area.flags")] <- EA.check.peak.areas(results)
-    results[c("standard.CN","sample.CN","calibration.coefficients","measured.standard.means")] <- EA.adjust(results, return.mass.percent.CN)
+    results[c("standard.CN","sample.CN","calibration.coefficients","measured.standard.means")] <- EA.adjust(results)
     results[c("known.standard.values", "error.analysis.results")] <- EA.check(results)
     EA.report(results)
 

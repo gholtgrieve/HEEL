@@ -8,6 +8,7 @@ params:
   data.files: ""
   processed.data.dir: ""
   raw.sequence.data: ""
+  return.mass.percent.CN: ""
   zero.flag: ""
   blank.flag: ""
   blank.correct.flag: ""
@@ -122,7 +123,12 @@ pander::pander(output)
 Below is a short summary of your sample data. A more complete data set has been saved as a .csv file in the 'processed' folder.
 ```{r echo=FALSE, results='asis'}
 
-sample.CN <- params$sample.CN[c("Identifier.1", "d.13C.12C.VPDB", "d.15N.14N.air", "percent.C", "percent.N")]
+if(params$return.mass.percent.CN = F){
+  sample.CN <- params$sample.CN[c("Identifier.1", "d.13C.12C.VPDB", "d.15N.14N.air", "mg.C", "mg.N")]
+} else {
+  sample.CN <- params$sample.CN[c("Identifier.1", "d.13C.12C.VPDB", "d.15N.14N.air", "mass.percent.C", "mass.percent.N")]
+}
+
 
 knitr::kable(tibble(sample.CN), format = "simple", caption="Sample Data", digits = c(NA, 2, 2, 1, 1))
 
