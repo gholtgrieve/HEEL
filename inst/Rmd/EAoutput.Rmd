@@ -123,7 +123,7 @@ pander::pander(output)
 Below is a short summary of your sample data. A more complete data set has been saved as a .csv file in the 'processed' folder.
 ```{r echo=FALSE, results='asis'}
 
-if(params$return.mass.percent.CN = F){
+if(params$return.mass.percent.CN == F){
   sample.CN <- params$sample.CN[c("Identifier.1", "d.13C.12C.VPDB", "d.15N.14N.air", "mg.C", "mg.N")]
 } else {
   sample.CN <- params$sample.CN[c("Identifier.1", "d.13C.12C.VPDB", "d.15N.14N.air", "mass.percent.C", "mass.percent.N")]
