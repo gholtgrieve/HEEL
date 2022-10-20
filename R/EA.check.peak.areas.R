@@ -1,6 +1,6 @@
 #' @title Check peak areas
 #'
-#' @description This internal function check whether the peak areas of samples (masses 28 and 44) are 30%, 50% or 200% of
+#' @description This internal function check whether the peak areas of samples (masses 28 and 44) are 30%, 50% or 300% of
 #' the target mass. Target masses are 200 ug C (mass 44) and 40 ug N (mass 38).
 #'
 #' @usage EA.check.peak.areas(results)
@@ -30,18 +30,18 @@ EA.check.peak.areas <- function(results){
   area.28.30pct.threshold <- as.numeric((target.N.mg * 0.3 - N.mass.vs.Area28.lm.coeff[2]) / N.mass.vs.Area28.lm.coeff[3])
   area.44.30pct.threshold <- as.numeric((target.C.mg * 0.3 - C.mass.vs.Area44.lm.coeff[2]) / C.mass.vs.Area44.lm.coeff[3])
 
-  area.28.200pct.threshold <- as.numeric((target.N.mg * 2 - N.mass.vs.Area28.lm.coeff[2]) / N.mass.vs.Area28.lm.coeff[3])
-  area.44.200pct.threshold <- as.numeric((target.C.mg * 2 - C.mass.vs.Area44.lm.coeff[2]) / C.mass.vs.Area44.lm.coeff[3])
+  area.28.300pct.threshold <- as.numeric((target.N.mg * 3 - N.mass.vs.Area28.lm.coeff[2]) / N.mass.vs.Area28.lm.coeff[3])
+  area.44.300pct.threshold <- as.numeric((target.C.mg * 3 - C.mass.vs.Area44.lm.coeff[2]) / C.mass.vs.Area44.lm.coeff[3])
 
   #check samples for peak areas below the 50% and 30% thresholds.
   peak.area.flags <- data.frame(
     unique.ID = sample.CN$unique.ID,
     area.28.50pct.threshold.flag = sample.CN$Area.28 <= area.28.50pct.threshold & sample.CN$Area.28 >= area.28.30pct.threshold,
     area.28.30pct.threshold.flag = sample.CN$Area.28 <= area.28.30pct.threshold,
-    area.28.200pct.threshold.flag = sample.CN$Area.28 >= area.28.200pct.threshold,
+    area.28.300pct.threshold.flag = sample.CN$Area.28 >= area.28.300pct.threshold,
     area.44.50pct.threshold.flag = sample.CN$Area.44 <= area.44.50pct.threshold & sample.CN$Area.44 >= area.44.30pct.threshold,
     area.44.30pct.threshold.flag = sample.CN$Area.44 <= area.44.30pct.threshold,
-    area.44.200pct.threshold.flag = sample.CN$Area.44 >= area.44.200pct.threshold
+    area.44.300pct.threshold.flag = sample.CN$Area.44 >= area.44.300pct.threshold
   )
 
 

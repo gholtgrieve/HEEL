@@ -107,12 +107,12 @@ pander::pander(output)
 
 ```
 
-The following samples are 200% above the target mass:  
+The following samples are 300% above the target mass:  
 ```{r, echo=FALSE}
 output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
 
-output$Unique.ID[2] <- params$peak.area.flags %>% filter(area.28.200pct.threshold.flag == T) %>% select(unique.ID)
-output$Unique.ID[1] <- params$peak.area.flags %>% filter(area.44.200pct.threshold.flag == T) %>% select(unique.ID)
+output$Unique.ID[2] <- params$peak.area.flags %>% filter(area.28.300pct.threshold.flag == T) %>% select(unique.ID)
+output$Unique.ID[1] <- params$peak.area.flags %>% filter(area.44.300pct.threshold.flag == T) %>% select(unique.ID)
 
 pander::pander(output)
 
@@ -120,7 +120,7 @@ pander::pander(output)
 
 
 # SAMPLE DATA
-Below is a short summary of your sample data. A more complete data set has been saved as a .csv file in the 'processed' folder.
+Below is a short summary of your sample data. A more complete data set has been saved as a .csv file.
 ```{r echo=FALSE, results='asis'}
 
 if(params$return.mass.percent.CN == F){
@@ -130,7 +130,7 @@ if(params$return.mass.percent.CN == F){
 }
 
 
-knitr::kable(tibble(sample.CN), format = "simple", caption="Sample Data", digits = c(NA, 2, 2, 1, 1))
+knitr::kable(tibble(sample.CN), format = "simple", caption="Sample Data", digits = c(NA, 2, 2, 2, 2))
 
 ```
 															
