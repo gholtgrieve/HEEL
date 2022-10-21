@@ -85,7 +85,7 @@ knitr::kable(params$standard.coefficients, format = "simple", digits = 4,
 ```
 
 # SAMPLE MASS CHECK
-The following samples are 30% below the target mass:  
+The following samples are 30% below the target mass nitrogen and/or carbon. Samples at or below 30% of the target amount of nitrogen and/or carbon are highly suspect and should be reanalyzed.
 ```{r, echo=FALSE}
 output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
 
@@ -96,22 +96,20 @@ pander::pander(output)
 
 ```
 
-The following samples are 50% below the target mass:  
+The following samples are 50% below the target mass for nitrogen. $\delta$^15^N is suspect. Consider reanalyzing the sample. 
 ```{r, echo=FALSE}
 output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
 
 output$Unique.ID[2] <- params$peak.area.flags %>% filter(area.28.50pct.threshold.flag == T) %>% select(unique.ID)
-output$Unique.ID[1] <- params$peak.area.flags %>% filter(area.44.50pct.threshold.flag == T) %>% select(unique.ID)
 
 pander::pander(output)
 
 ```
 
-The following samples are 300% above the target mass:  
+The following samples are 300% above the target mass for carbon. $\delta$^13^C is suspect. Consider reanalyzing the sample.
 ```{r, echo=FALSE}
 output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
 
-output$Unique.ID[2] <- params$peak.area.flags %>% filter(area.28.300pct.threshold.flag == T) %>% select(unique.ID)
 output$Unique.ID[1] <- params$peak.area.flags %>% filter(area.44.300pct.threshold.flag == T) %>% select(unique.ID)
 
 pander::pander(output)
