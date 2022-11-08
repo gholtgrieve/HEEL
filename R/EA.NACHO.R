@@ -49,6 +49,7 @@ EA.NACHO <- function(data.files, return.mass.percent.CN = T){
 results <- list(data.files=data.files,
                 processed.data.dir=NA,
                 raw.sequence.data=NA,
+                analysis.date=NA,
                 return.mass.percent.CN = return.mass.percent.CN,
                 zero.flag=NA,
                 blank.flag=NA,
@@ -68,7 +69,7 @@ results <- list(data.files=data.files,
                 run.comments=NA)
 
     results[c("processed.data.dir", "raw.sequence.data")] <- EA.load.data(results)
-    results[c("standard.CN","sample.CN","blank.CN", "zero.flag", "blank.flag")] <- EA.organize(results)
+    results[c("standard.CN","sample.CN","blank.CN", "zero.flag", "blank.flag", "analysis.date")] <- EA.organize(results)
     results[c("standard.CN","sample.CN","blank.correct.flag")] <- EA.blank.correct(results)
     results[c("standard.CN","sample.CN","drift.correct.flag")] <- EA.drift.correct(results)
     results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results)

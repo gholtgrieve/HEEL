@@ -10,7 +10,7 @@ EA.organize(results)
 \item{results}{List containing results from previous functions.}
 }
 \value{
-List with three tables: standard C & N data ($standard.CN), sample C & N data ($sample.CN), blank C & N data ($blank.CN).  Blank table may have zero rows.
+List with three tables: standard C & N data ($standard.CN), sample C & N data ($sample.CN), blank C & N data ($blank.CN).  Blank table may have zero rows. Also the analysis data at a character.
 }
 \description{
 This function is used to parse the raw EA data from solid samples analyzed on the Delta V irMS systems (NACHO) for further analysis.

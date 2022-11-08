@@ -19,7 +19,8 @@ Imports:
   ggpubr,
   gridExtra,
   easycsv,
-  pander
+  pander,
+  lubridate
 Suggests:
   devtools,
   roxygen2

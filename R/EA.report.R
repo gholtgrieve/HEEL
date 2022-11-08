@@ -23,7 +23,7 @@ EA.report <- function(results){
   write_csv(results$standard.CN, paste0(results$processed.data.dir,"/standard_CN.csv"))
   write_csv(results$sample.CN, paste0(results$processed.data.dir,"/sample_CN.csv"))
 
-  # Get the full path to the desire .Rmd file
+  # Get the full path to the desired .Rmd file
   rmd.file.path <-  system.file("Rmd", "EAoutput.Rmd", package = "HEEL", mustWork = T)
   file.type <- "pdf_document"
 

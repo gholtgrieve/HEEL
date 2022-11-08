@@ -1,13 +1,9 @@
 ---
-title: NACHO Data Report for bulk $\delta$^13^C and $\delta$^15^N
-output: pdf_document 
-geometry: left = 1in,right = 1in,top = 1in,bottom = 1in 
-subtitle: XXX
-description: XXX
 params:
   data.files: ""
   processed.data.dir: ""
   raw.sequence.data: ""
+  analysis.date: ""
   return.mass.percent.CN: ""
   zero.flag: ""
   blank.flag: ""
@@ -25,6 +21,11 @@ params:
   blank.CN: ""
   peak.area.flags: ""
   run.comments: ""
+  
+title: NACHO Data Report for bulk $\delta$^13^C and $\delta$^15^N
+output: pdf_document 
+geometry: left = 1in,right = 1in,top = 1in,bottom = 1in 
+
 ---
 # LABORATORY																						
 UW Facility for Compound-Specific Isotope Analysis of Environmental Samples (known informally a NACHO)  
@@ -36,8 +37,7 @@ Director is Gordon Holtgrieve, gholt@uw.edu, 206-227-9930
 Your solid samples were analyzed for bulk $\delta$^13^C and $\delta$^15^N on a ThermoFinnigan Delta V with a Carlo Erba elemental analyzer in continuous flow mode following the general method of Fry et al. 1992. Automated analysis system for coupled d13C and d15N measurements. Analytical Chemistry 64, 288-291.	
 
 # ANALYSIS																						
-Date of Analysis (MM/DD/YY): 																		
-Original Filename(s): 																				
+Date of Analysis (YYYY-MM-DD): `r params$analysis.date`																		
 Processed data folder file path: `r params$processed.data.dir`  
 Run type: bulk C and N																				
 Run comments:	`r params$run.comments`																	
@@ -120,7 +120,7 @@ pander::pander(output)
 
 
 # SAMPLE DATA
-Below is a short summary of your sample data. A more complete data set has been saved as a .csv file in the 'processed' folder.
+Below is a short summary of your sample data. A more complete data set has been saved as a .csv file in your chosen processed data folder.
 ```{r echo=FALSE, results='asis'}
 
 if(params$return.mass.percent.CN == F){

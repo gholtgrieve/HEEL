@@ -12,8 +12,8 @@
 #     \item{Analysis}{Analysis number assigned by IsoDat. Unique and continusous form the insrument. Numeric.}
 #     \item{Identifier.1}{First of two decriptions for the analsyis assinged by the user. MUST BE UNIQUE!! This column will identfy Character.}
 #     \item{Identifier.2}{Second of two decriptions for the analsyis assinged by the user. By convention we use this column to record the well number the sample/std/duumy/blank came from. Character.}
-#     \item{Comment}{Extra place to put useful information. by convention we use this column to record if that drop is a DUMMY, SAMPLE, STD, or BLANK. Character.}
-#     \item{Amount}{Mass of material packed into the tin in miligrams. Entered by user. Blanks should have '0'.  Zeros should have nothing enetred. Numeric.}
+#     \item{Comment}{Extra place to put useful information. By convention we use this column to record if that drop is a CONDITIONER, DUMMY, SAMPLE, STD, QTY, BLANK or ZERO. Character.}
+#     \item{Amount}{Mass of material packed into the tin in milligrams. Entered by user. Blanks should have '0'.  Zeros should have nothing enetred. Numeric.}
 #     \item{Gasconfiguration}{Identifies if the cups were set to N2 (massess 28, 29, 30) or CO2 (46, 47, 48) for that peak.  Not used. Character.}
 #     \item{Peak.Nr}{Peak number for the run. Should be 1-4, in order, only. The exceptions are blanks and zeros, which should have 2 peaks. Anything other than this is trouble.
 #     This is not used but can be useful for identifying missing peaks. Numeric.}
@@ -27,8 +27,9 @@
 #'
 #' @importFrom stringr str_c str_detect
 #' @importFrom tools file_path_sans_ext
+#' @importFrom lubridate mdy
 #'
-#' @return List with three tables: standard C & N data ($standard.CN), sample C & N data ($sample.CN), blank C & N data ($blank.CN).  Blank table may have zero rows.
+#' @return List with three tables: standard C & N data ($standard.CN), sample C & N data ($sample.CN), blank C & N data ($blank.CN).  Blank table may have zero rows. Also the analysis data at a character.
 #'
 #' @author Gordon W. Holtgrieve
 #'
@@ -41,6 +42,8 @@ EA.organize <- function(results){
   raw.sequence.data <- results$raw.sequence.data
   zero.flag = F
   blank.flag = F
+
+  analysis.date <- mdy(raw.sequence.data$Date[1])
 
   raw.sequence.data$unique.ID <- stringr::str_c(raw.sequence.data$Identifier.1, raw.sequence.data$Analysis, sep="_")
   keep.all <- c("Row","Analysis","Identifier.1","Comment", "Amount", "unique.ID")
@@ -101,5 +104,5 @@ EA.organize <- function(results){
   standard.CN$group[index] <- "GA2"
 
  #Make a list containing standards, samples, and blanks to be returned for easy access by subsequent functions.
-  return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.CN=blank.CN, zero.flag=zero.flag, blank.flag=blank.flag))
+  return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.CN=blank.CN, zero.flag=zero.flag, blank.flag=blank.flag, analysis.date=analysis.date))
 }
