@@ -80,12 +80,11 @@ Your data were analysed for effects of sample mass on peak area and isotopic rat
 plot(params$standard.plots[[1]])
 plot(params$standard.plots[[2]])
 knitr::kable(params$standard.coefficients, format = "simple", digits = 4,
-             caption="Liner model coefficients of mass effects.")           
+             caption="Linear model coefficients of mass effects.")           
                
 ```
 
 # SAMPLE MASS CHECK
-The following samples are 30% below the target mass:  
 The following samples are 30% below the target mass nitrogen and/or carbon. Samples at or below 30% of the target amount of nitrogen and/or carbon are highly suspect and should be reanalyzed.
 ```{r, echo=FALSE}
 output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
@@ -97,7 +96,6 @@ pander::pander(output)
 
 ```
 
-The following samples are 50% below the target mass:  
 The following samples are 50% below the target mass for nitrogen. $\delta$^15^N is suspect. Consider reanalyzing the sample. 
 ```{r, echo=FALSE}
 output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
@@ -121,7 +119,6 @@ pander::pander(output)
 
 # SAMPLE DATA
 Below is a short summary of your sample data. A more complete data set has been saved as a .csv file in your chosen processed data folder.
-
 ```{r echo=FALSE, results='asis'}
 
 if(params$return.mass.percent.CN == F){
