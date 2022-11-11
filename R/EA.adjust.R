@@ -99,7 +99,7 @@ EA.adjust <- function(results){
                       coefficients()
   if(return.mass.percent.CN == F){
     sample.CN$mg.C <- (mass.C.lm.coeff[1] + mass.C.lm.coeff[2] * sample.CN$Area.44)
-    standard.CN$mg.C <- (mass.C.lm.coeff[1] + mass.C.lm.coeff[2] * standard.CN$Area.44)
+    standard.CN$mass.percent.C <- (mass.C.lm.coeff[1] + mass.C.lm.coeff[2] * standard.CN$Area.44)/ standard.CN$Amount * 100
   } else {
     sample.CN$mass.percent.C <- (mass.C.lm.coeff[1] + mass.C.lm.coeff[2] * sample.CN$Area.44) / sample.CN$Amount * 100
     standard.CN$mass.percent.C <- (mass.C.lm.coeff[1] + mass.C.lm.coeff[2] * standard.CN$Area.44) / standard.CN$Amount * 100
@@ -111,14 +111,14 @@ EA.adjust <- function(results){
     coefficients()
   if(return.mass.percent.CN == F){
     sample.CN$mg.N <- (mass.N.lm.coeff[1] + mass.N.lm.coeff[2] * sample.CN$Area.28)
-    standard.CN$mg.N <- (mass.N.lm.coeff[1] + mass.N.lm.coeff[2] * standard.CN$Area.28)
+    standard.CN$mass.percent.N <- (mass.N.lm.coeff[1] + mass.N.lm.coeff[2] * standard.CN$Area.28)/ standard.CN$Amount * 100
   } else {
     sample.CN$mass.percent.N <- (mass.N.lm.coeff[1] + mass.N.lm.coeff[2] * sample.CN$Area.28) / sample.CN$Amount * 100
     standard.CN$mass.percent.N <- (mass.N.lm.coeff[1] + mass.N.lm.coeff[2] * standard.CN$Area.28) / standard.CN$Amount * 100
   }
 
   #Make model coefficients dataframe
-  model.coeff.temp <- data.frame(Model=c("d13C", "d15N", "Percent C", "Percent N"),
+  model.coeff.temp <- data.frame(Model=c("d13C", "d15N", "mass.percent C", "mass.percent N"),
                      rbind(C.lm.coeff, N.lm.coeff, mass.C.lm.coeff, mass.N.lm.coeff))
   colnames(model.coeff.temp) <- c("Value","Intercept", "Slope")
   calibration.coefficients <- tibble::tibble(model.coeff.temp)
