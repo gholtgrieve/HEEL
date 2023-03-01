@@ -65,23 +65,23 @@ knitr::kable(tibble(params$error.analysis.results), format = "simple", digits = 
 ```	
 
 # ZEROS & BLANKS
-Blanks are empty tins while zeros are no tin or sample. The table below, if given, contains the data for blanks and zero from this run. No table indicates blanks and zeros were not measurable. A blank correction has not been implemented in the script.  
+Blanks are empty tins while zeros are no tin or sample. The table below, if given, contains the data for blanks and zero from this run. No table indicates blanks and zeros were not measurable. A blank correction has not been implemented in the script.
 ```{r echo=FALSE}
 
 if (params$blank.flag) knitr::kable(params$blank.CN, format = "simple", caption="Blank data.")
-if (params$zero.flag) knitr::kable(params$zero.CN, format = "simple", caption="Zero data.") 
+if (params$zero.flag) knitr::kable(params$zero.CN, format = "simple", caption="Zero data.")
 
 ```
 
 # MASS EFFECTS
-Your data were analysed for effects of sample mass on peak area and isotopic ratios. Ideally, there should be a strong linear response of mass C (or N) in the standard on area 44 (or 28) and no effect of peak area on $\delta$^13^C or $\delta$^15^N.  
-```{r echo=FALSE}
-
-plot(params$standard.plots[[1]])
-plot(params$standard.plots[[2]])
+Your data were analysed for effects of sample mass on peak area and isotopic ratios. Ideally, there should be a strong linear response of mass C (or N) in the standard on area 44 (or 28) and no effect of peak area on $\delta$^13^C or $\delta$^15^N.
+```{r, echo=FALSE}
+ 
+plot(params$standard.plots[[1]], ylim=c(25,200))
+plot(params$standard.plots[[2]], ylim=c(25,200))
 knitr::kable(params$standard.coefficients, format = "simple", digits = 4,
-             caption="Linear model coefficients of mass effects.")           
-               
+              caption="Linear model coefficients of mass effects.")
+
 ```
 
 # SAMPLE MASS CHECK
@@ -96,7 +96,7 @@ pander::pander(output)
 
 ```
 
-The following samples are 50% below the target mass for nitrogen. $\delta$^15^N is suspect. Consider reanalyzing the sample. 
+The following samples are 50% below the target mass for nitrogen. $\delta$^15^N is suspect. Consider reanalyzing the sample.
 ```{r, echo=FALSE}
 output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
 
@@ -131,7 +131,7 @@ if(params$return.mass.percent.CN == F){
 knitr::kable(tibble(sample.CN), format = "simple", caption="Sample Data", digits = c(NA, 2, 2, 2, 2))
 
 ```
-															
+
 # DATA REDUCTION DETAILS
 ```{r, echo=FALSE, warning=F, message=F}
 library(knitr)
