@@ -77,33 +77,33 @@ if (params$zero.flag) knitr::kable(params$zero.CN, format = "simple", caption="Z
 Your data were analysed for effects of sample mass on peak area and isotopic ratios. Ideally, there should be a strong linear response of mass C (or N) in the standard on peak area 44 (or 28) and no effect of peak area on $\delta$^13^C or $\delta$^15^N.
 ```{r, echo=FALSE}
 
-library(ggplot2)
-library(ggpubr)
-library(gridExtra)
-
-standard.CN <- params$standard.CN
-
-##These plots do not work!!!####
-p1 <- ggplot(standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2",], aes(x = mass.N.mg, y = Area.28)) +
-  geom_point() +
-  labs(x = "mass (mg)", title = "Area Response vs. Input N") +
-  geom_smooth(method=lm, formula = y ~ x, se = FALSE) +
-  theme_minimal() +
-  theme(legend.position = "none") +
-  ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
-               label.y.npc = "center") +
-  ggpubr::stat_regline_equation()
-
-p2 <- ggplot(standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2",], aes(x = mass.C.mg, y = Area.44)) +
-  geom_point() +
-  labs(x = "mass (mg)", title = "Area Response vs. Input C") +
-  geom_smooth(method=lm, formula = y ~ x, se = FALSE) +
-  ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
-               label.y.npc = "center") +
-  theme_minimal() +
-  ggpubr::stat_regline_equation()
-
-  p21 <- gridExtra::grid.arrange(p2, p1, ncol = 2)
+# library(ggplot2)
+# library(ggpubr)
+# library(gridExtra)
+# 
+# standard.CN <- params$standard.CN
+# 
+# ##These plots do not work!!!####
+# p1 <- ggplot(standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2",], aes(x = mass.N.mg, y = Area.28)) +
+#   geom_point() +
+#   labs(x = "mass (mg)", title = "Area Response vs. Input N") +
+#   geom_smooth(method=lm, formula = y ~ x, se = FALSE) +
+#   theme_minimal() +
+#   theme(legend.position = "none") +
+#   ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
+#                label.y.npc = "center") +
+#   ggpubr::stat_regline_equation()
+# 
+# p2 <- ggplot(standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2",], aes(x = mass.C.mg, y = Area.44)) +
+#   geom_point() +
+#   labs(x = "mass (mg)", title = "Area Response vs. Input C") +
+#   geom_smooth(method=lm, formula = y ~ x, se = FALSE) +
+#   ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
+#                label.y.npc = "center") +
+#   theme_minimal() +
+#   ggpubr::stat_regline_equation()
+# 
+#   p21 <- gridExtra::grid.arrange(p2, p1, ncol = 2)
 
 #The table below seems to work.  
 knitr::kable(params$standard.coefficients, format = "simple", digits = 4,
@@ -112,32 +112,31 @@ knitr::kable(params$standard.coefficients, format = "simple", digits = 4,
 ```
 
 # SAMPLE MASS CHECK
-The following samples are 30% below the target mass nitrogen and/or carbon. Samples at or below 30% of the target amount of nitrogen and/or carbon are highly suspect and should be reanalyzed.
+Any samples listed below are 30% below the target mass nitrogen and/or carbon. Samples at or below 30% of the target amount of nitrogen and/or carbon are highly suspect and should be reanalyzed.
 ```{r, echo=FALSE}
-output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
 
-output$Unique.ID[2] <- params$peak.area.flags %>% filter(area.28.30pct.threshold.flag == T) %>% select(unique.ID)
+output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
+ 
 output$Unique.ID[1] <- params$peak.area.flags %>% filter(area.44.30pct.threshold.flag == T) %>% select(unique.ID)
+output$Unique.ID[2] <- params$peak.area.flags %>% filter(area.28.30pct.threshold.flag == T) %>% select(unique.ID)
 
 pander::pander(output)
 
 ```
 
-The following samples are 50% below the target mass for nitrogen. $\delta$^15^N is suspect. Consider reanalyzing the sample.
+Any samples listed below are 50% below the target mass for nitrogen. $\delta$^15^N is suspect. Consider reanalyzing the sample.
 ```{r, echo=FALSE}
-output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
 
-output$Unique.ID[2] <- params$peak.area.flags %>% filter(area.28.50pct.threshold.flag == T) %>% select(unique.ID)
+output <- tibble(params$peak.area.flags %>% filter(area.28.50pct.threshold.flag == T) %>% select(unique.ID))
 
 pander::pander(output)
 
+
 ```
 
-The following samples are 300% above the target mass for carbon. $\delta$^13^C is suspect. Consider reanalyzing the sample.
+Any samples listed below are 300% above the target mass for carbon. $\delta$^13^C is suspect. Consider reanalyzing the sample.
 ```{r, echo=FALSE}
-output <- tibble(Analysis = c("C", "N"), Unique.ID = NA)
-
-output$Unique.ID[1] <- params$peak.area.flags %>% filter(area.44.300pct.threshold.flag == T) %>% select(unique.ID)
+output <- tibble(params$peak.area.flags %>% filter(area.44.300pct.threshold.flag == T) %>% select(unique.ID))
 
 pander::pander(output)
 
