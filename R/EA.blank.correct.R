@@ -26,13 +26,16 @@ EA.blank.correct <- function(results){
 
   if(blank.flag == F){
 
-    print("Non-detectable blanks: Samples and Standards were NOT blank corrected.")
+    print("Non-detectable blanks. Samples and Standards were NOT blank corrected.")
     return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.correct.flag=F))
 
+  } else {
+    print("At least one blank was detectible. Samples and Standards were NOT blank corrected.")
+    return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.correct.flag=F))
   }
 
 
-  #If there are detectable blanks, plot the blanks and ask if the data should be blank corrected.
+  #FUTURE: If there are detectable blanks, plot the blanks and ask if the data should be blank corrected.
 
 
 }

@@ -65,7 +65,7 @@ knitr::kable(tibble(params$error.analysis.results), format = "simple", digits = 
 ```	
 
 # ZEROS & BLANKS
-Blanks are empty tins while zeros are no tin or sample. The table below, if given, contains the data for blanks and zero from this run. No table indicates blanks and zeros were not measurable. A blank correction has not been implemented in the script.
+Blanks are empty tins while zeros are no tin or sample. The table below, if given, contains the data for blanks and zeros from this run. No table indicates blanks and zeros were not measurable. A blank correction has not been implemented in the script.
 ```{r echo=FALSE}
 
 if (params$blank.flag) knitr::kable(params$blank.CN, format = "simple", caption="Blank data.")
@@ -74,11 +74,38 @@ if (params$zero.flag) knitr::kable(params$zero.CN, format = "simple", caption="Z
 ```
 
 # MASS EFFECTS
-Your data were analysed for effects of sample mass on peak area and isotopic ratios. Ideally, there should be a strong linear response of mass C (or N) in the standard on area 44 (or 28) and no effect of peak area on $\delta$^13^C or $\delta$^15^N.
+Your data were analysed for effects of sample mass on peak area and isotopic ratios. Ideally, there should be a strong linear response of mass C (or N) in the standard on peak area 44 (or 28) and no effect of peak area on $\delta$^13^C or $\delta$^15^N.
 ```{r, echo=FALSE}
- 
-plot(params$standard.plots[[1]], ylim=c(25,200))
-plot(params$standard.plots[[2]], ylim=c(25,200))
+
+library(ggplot2)
+library(ggpubr)
+library(gridExtra)
+
+standard.CN <- params$standard.CN
+
+##These plots do not work!!!####
+p1 <- ggplot(standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2",], aes(x = mass.N.mg, y = Area.28)) +
+  geom_point() +
+  labs(x = "mass (mg)", title = "Area Response vs. Input N") +
+  geom_smooth(method=lm, formula = y ~ x, se = FALSE) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
+               label.y.npc = "center") +
+  ggpubr::stat_regline_equation()
+
+p2 <- ggplot(standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2",], aes(x = mass.C.mg, y = Area.44)) +
+  geom_point() +
+  labs(x = "mass (mg)", title = "Area Response vs. Input C") +
+  geom_smooth(method=lm, formula = y ~ x, se = FALSE) +
+  ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
+               label.y.npc = "center") +
+  theme_minimal() +
+  ggpubr::stat_regline_equation()
+
+  p21 <- gridExtra::grid.arrange(p2, p1, ncol = 2)
+
+#The table below seems to work.  
 knitr::kable(params$standard.coefficients, format = "simple", digits = 4,
               caption="Linear model coefficients of mass effects.")
 

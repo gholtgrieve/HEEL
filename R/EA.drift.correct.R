@@ -13,7 +13,7 @@
 #' @import tidyverse
 #' @importFrom tools file_path_sans_ext
 #' @importFrom stringr str_detect
-#' @importFrom dplyr between
+#' @importFrom dplyr between filter
 #'
 #' @return Character vector of length 1 indicating the results of the drift correct as  N, C, both, or none.
 #'
