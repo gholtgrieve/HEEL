@@ -53,7 +53,7 @@ EA.organize <- function(results){
   refCO2 <- raw.sequence.data[which(raw.sequence.data$Gasconfiguration == "CO2" & raw.sequence.data$Is.Ref._ == 1), c(keep.all, keep.N, keep.C)] #This subsets the reference C02 peaks
   N2 <- raw.sequence.data[which(raw.sequence.data$Gasconfiguration == "N2" & raw.sequence.data$Is.Ref._ == 0), c("Analysis", keep.N)] #This is the sample N info
   CO2 <- raw.sequence.data[which(raw.sequence.data$Gasconfiguration == "CO2" & raw.sequence.data$Is.Ref._ == 0), c(keep.all, keep.C)] #This is the sample CO2 info
-  tempCN <- merge(x = CO2,N2, by = "Analysis") #N and CO2 sample & standards results are combined into one object
+  tempCN <- merge(x = CO2,N2, by = "Analysis", all = T) #N and CO2 sample & standards results are combined into one object
 
   #Separate zeros from everything else and save as a .csv. If zeros are not detectable the dataframe will be empty and nrow() will return zero.
   zero.CN <- tempCN[stringr::str_detect(tempCN$Comment, "ZERO|zero|Zero"),]
@@ -66,7 +66,7 @@ EA.organize <- function(results){
   blank.CN <- tempCN[stringr::str_detect(tempCN$Comment, "BLANK|blank|Blank"),]
   if(nrow(blank.CN)!=0) {
     blank.flag = T
-    blank.CN$Comment[stringr::str_detect(blank.CN$Comment, "BLANK|blank|Blank")] <- "ZERO"
+    blank.CN$Comment[stringr::str_detect(blank.CN$Comment, "BLANK|blank|Blank")] <- "BLANK"
   }
 
   #Separate unknown samples from everything else. Standardize Comments column to SAMPLE
