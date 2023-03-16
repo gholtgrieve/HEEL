@@ -18,6 +18,18 @@
 
 EA.blank.correct <- function(results){
 
+  #Internal function to perform the isotope mixing model.
+  mixing.model <- function(d, A, d.blank, A.blank){
+    R <- d/1000 + 1
+    R.blank <- d.blank/1000 + 1
+
+    R.corr <- ((R * A)-(R.blank * A.blank))/(A - A.blank)
+
+    d.corr <- (R.corr-1)*1000
+
+    return(d.corr)
+  }
+
   ## Access data ##
   blank.flag <- results$blank.flag
   blank.CN <- results$blank.CN
@@ -27,15 +39,39 @@ EA.blank.correct <- function(results){
   if(blank.flag == F){
 
     print("Non-detectable blanks. Samples and Standards were NOT blank corrected.")
-    return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.correct.flag=F))
+    return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.correct.flag = "none"))
 
   } else {
-    print("At least one blank was detectible. Samples and Standards were NOT blank corrected.")
-    return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.correct.flag=F))
-  }
 
+      # Determine if N, C, or both need blank correcting
+    if(any(!is.na(blank.CN$d.15N.14N) & !is.na(blank.CN$d.13C.12C))){
+      blank.correct.flag <- "both"
+    } else if(any(!is.na(blank.CN$d.15N.14N) & is.na(blank.CN$d.13C.12C))){
+      blank.correct.flag <- "N"
+    } else if(any(is.na(blank.CN$d.15N.14N) & !is.na(blank.CN$d.13C.12C))){
+      blank.correct.flag <- "C"
+    }
 
-  #FUTURE: If there are detectable blanks, plot the blanks and ask if the data should be blank corrected.
+      if(blank.correct.flag == "both" | blank.correct.flag == "N"){
+        # Average across blanks
+        mean.d15N.blank <- mean(blank.CN$d.15N.14N, na.rm = T)
+        mean.area28.blank <- mean(blank.CN$Area.28, na.rm = T)
 
+        # Apply mixing model
+        sample.CN$d.15N.14N.blank <- mixing.model(sample.CN$d.15N.14N, sample.CN$Area.28, mean.d15N.blank, mean.area28.blank)
+        standard.CN$d.15N.14N.blank <- mixing.model(standard.CN$d.15N.14N, standard.CN$Area.28, mean.d15N.blank, mean.area28.blank)
+      }
 
+      if(blank.correct.flag == "both" | blank.correct.flag == "C"){
+        # Average across blanks
+        mean.d13C.blank <- mean(blank.CN$d.13C.12C, na.rm = T)
+        mean.area44.blank <- mean(blank.CN$Area.44, na.rm = T)
+
+        # Apply mixing model
+        sample.CN$d.13C.12C.blank <- mixing.model(sample.CN$d.13C.12C, sample.CN$Area.44, mean.d13C.blank, mean.area44.blank)
+        standard.CN$d.13C.12C.blank <- mixing.model(standard.CN$d.13C.12C, standard.CN$Area.44, mean.d13C.blank, mean.area44.blank)
+      }
+
+    return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.correct.flag=blank.correct.flag))
+    }
 }

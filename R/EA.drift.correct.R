@@ -37,15 +37,43 @@ EA.drift.correct <- function(results){
     return(output)
   }
 
-  sample.CN <- results$sample.CN
+  #
   standard.CN <- results$standard.CN
+  sample.CN <- results$sample.CN
+  blank.correct.flag <- results$blank.correct.flag
+
+  # Pick the correct data depending on which corrections were performed.
+  if(str_detect(blank.correct.flag, "both|BOTH|Both")) {
+    standard.d13C <- standard.CN$d.13C.12C.blank
+    standard.d15N <- standard.CN$d.15N.14N.blank
+    sample.d13C <- sample.CN$d.13C.12C.blank
+    sample.d15N <- sample.CN$d.15N.14N.blank
+  } else if(str_detect(blank.correct.flag, "none|NONE|None")){
+    standard.d13C <- standard.CN$d.13C.12C
+    standard.d15N <- standard.CN$d.15N.14N
+    sample.d13C <- sample.CN$d.13C.12C
+    sample.d15N <- sample.CN$d.15N.14N
+  } else if(str_detect(blank.correct.flag, "C|c")){
+    standard.d13C <- standard.CN$d.13C.12C.blank
+    standard.d15N <- standard.CN$d.15N.14N
+    sample.d13C <- sample.CN$d.13C.12C.blank
+    sample.d15N <- sample.CN$d.15N.14N
+  } else if(str_detect(blank.correct.flag, "N|n")){
+    standard.d13C <- standard.CN$d.13C.12C
+    standard.d15N <- standard.CN$d.15N.14N.blank
+    sample.d13C <- sample.CN$d.13C.12C
+    sample.d15N <- sample.CN$d.15N.14N.blank
+  }
+
+  standard.CN.temp <- cbind(standard.CN[,c("Analysis", "Row", "Comment", "Area.28", "Area.44", "group")], standard.d15N, standard.d13C)
+  sample.CN.temp <- cbind(sample.CN[,c("Analysis", "Comment", "Area.28", "Area.44", "group")], sample.d15N, sample.d13C)
 
   # Check to see if there are standards in the run that can be used to drift correct.
   # Appropriate standards would be at least 4 repeated measures of GA1, GA2 and salmon that are at approximately the same mass.
   # This excludes QTY standard that vary in their sample mass..
-  standards.flag <- nrow(filter(standard.CN, Comment %in% c("STANDARD") & group %in% c("GA1"))) >= 4
-  standards.flag <- c(standards.flag, nrow(filter(standard.CN, Comment %in% c("STANDARD") & group %in% c("GA2"))) >= 4)
-  standards.flag <- c(standards.flag, nrow(filter(standard.CN, Comment %in% c("STANDARD") & group %in% c("SALMON"))) >= 4)
+  standards.flag <- nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c("GA1"))) >= 4
+  standards.flag <- c(standards.flag, nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c("GA2"))) >= 4)
+  standards.flag <- c(standards.flag, nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c("SALMON"))) >= 4)
 
   drift.correct.flag1 <- any(standards.flag)
 
@@ -64,7 +92,7 @@ EA.drift.correct <- function(results){
     rownames(driftAnalysis) <- c("GA1", "GA2", "SALMON")
 
     #use on STD (not QTY)
-    dataSTD <- standard.CN[standard.CN$Comment == "STANDARD",]
+    dataSTD <- standard.CN.temp[standard.CN.temp$Comment == "STANDARD",]
 
     group <- c("GA1", "GA2", "SALMON")
 
@@ -101,13 +129,16 @@ EA.drift.correct <- function(results){
     print(driftAnalysis)
     drift.correct.flag2 <- readline("Do you want to drift correct? Allowed responses: N, C, both, none.")
 
+    if(stringr::str_detect(drift.correct.flag2, "none|NONE|None|both|BOTH|Both")) drift.correct.flag2 <- stringr::str_to_lower(drift.correct.flag2)
+    if(stringr::str_detect(drift.correct.flag2, "C|c|N|n")) drift.correct.flag2 <- stringr::str_to_upper(drift.correct.flag2)
+
     # flow control
-    if(stringr::str_detect(drift.correct.flag2, "none|NONE|None")) {
+    if(drift.correct.flag2 == "none") {
       # If drift.correct.flag is false (i.e., do not drift correct), then do nothing and change the
       return(list(standard.CN=standard.CN, sample.CN=sample.CN, drift.correct.flag=drift.correct.flag2))
     }
 
-    if (stringr::str_detect(drift.correct.flag2, "C|c") | stringr::str_detect(drift.correct.flag2, "both|BOTH|Both")) {
+    if (drift.correct.flag2 == "C" | drift.correct.flag2 == "both") {
        sample.CN$d.13C.12C.drift <- drift.correct.function(data = sample.CN$d.13C.12C, row = sample.CN$Row,
                                                           driftAnalysis = driftAnalysis, element = "C")
 
@@ -116,11 +147,11 @@ EA.drift.correct <- function(results){
     }
 
 
-    if (stringr::str_detect(drift.correct.flag2, "N|n") | stringr::str_detect(drift.correct.flag2, "both|BOTH|Both")) {
-       sample.CN$d.15N.14N.drift <- drift.correct.function(data = sample.CN$d.15N.14N, row = sample.CN$Row,
+    if (drift.correct.flag2 == "N" | drift.correct.flag2 == "both") {
+       sample.CN$d.15N.14N.drift <- drift.correct.function(data = standard.CN$d.15N.14N, row = standard.CN$Row,
                                                            driftAnalysis = driftAnalysis, element = "N")
 
-      standard.CN$d.15N.14N.drift <- drift.correct.function(data = standard.CN$d.15N.14N, row = standard.CN$Row,
+      standard.CN$d.15N.14N.drift <- drift.correct.function(data = standard.CN.temp$d.15N.14N, row = standard.CN.temp$Row,
                                                             driftAnalysis = driftAnalysis, element = "N")
     }
 
