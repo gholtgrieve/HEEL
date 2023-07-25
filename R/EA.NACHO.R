@@ -28,7 +28,7 @@
 #' @param data.files     Character vector that contains raw data file names with file path. If length is >1, then all the files will be combined and analyzed
 #'                       together using a single, combined calibration curve.
 #' @param return.mass.percent.CN Boolean to indicate whether sample mass data should be return as mass C or N as a percent of total sample mass.
-#'                               If FALSE, returned values are total mass of C or N in th sample.
+#'                               If FALSE, returned values are total mass of C or N in the sample.
 #'
 #' @import tidyverse rmarkdown
 #'

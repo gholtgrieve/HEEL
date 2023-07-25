@@ -46,11 +46,25 @@ EA.blank.correct <- function(results){
       # Determine if N, C, or both need blank correcting
     if(any(!is.na(blank.CN$d.15N.14N) & !is.na(blank.CN$d.13C.12C))){
       blank.correct.flag <- "both"
+      print("Measurable carbon (C) and nitrogen (N) blanks.")
+      print(blank.CN)
     } else if(any(!is.na(blank.CN$d.15N.14N) & is.na(blank.CN$d.13C.12C))){
       blank.correct.flag <- "N"
+      print("Measurable nitrogen (N) blanks.")
+      print(blank.CN)
     } else if(any(is.na(blank.CN$d.15N.14N) & !is.na(blank.CN$d.13C.12C))){
       blank.correct.flag <- "C"
+      print("Measurable carbon (C) blanks.")
+      print(blank.CN)
     }
+
+    user.flag <- readline("Would you like to blank correct the data? Enter 'y' or 'n'.")
+
+    if(user.flag == "n"){
+
+      return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.correct.flag = "none"))
+
+    } else if (user.flag == "y"){
 
       if(blank.correct.flag == "both" | blank.correct.flag == "N"){
         # Average across blanks
@@ -72,6 +86,7 @@ EA.blank.correct <- function(results){
         standard.CN$d.13C.12C.blank <- mixing.model(standard.CN$d.13C.12C, standard.CN$Area.44, mean.d13C.blank, mean.area44.blank)
       }
 
-    return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.correct.flag=blank.correct.flag))
+      return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.correct.flag=blank.correct.flag))
     }
+  }
 }

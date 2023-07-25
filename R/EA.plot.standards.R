@@ -49,7 +49,7 @@ EA.plot.standards <- function(results){
     d13C <- standard.CN$d.13C.12C.blank[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
     d15N <- standard.CN$d.15N.14N.blank[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
   }
-  temp <- standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2", c("Area.28", "Area.44", "group")]
+  temp <- standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2", c("Row","Area.28", "Area.44", "group")]
   temp <- data.frame(d13C=d13C, d15N=d15N, temp)
 
   # PLOT 1 -----------------------------
@@ -83,7 +83,7 @@ EA.plot.standards <- function(results){
     # PLOT 2 -----------------------------
     # Delta vs. Area of QTY standards
     # includes only  GA1 & GA2
-      p5 <- ggplot(temp, aes(x = Area.28, y = d15N, group = group, color = group)) +
+      p3 <- ggplot(temp, aes(x = Area.28, y = d15N, group = group, color = group)) +
         geom_point() +
         labs(y = "d15N", title = "d15N vs m/z 28") +
       ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
@@ -92,7 +92,7 @@ EA.plot.standards <- function(results){
         geom_smooth(method = lm, formula = y ~ x, se = FALSE) +
         theme_minimal() +
         theme(legend.position = "none")
-      p6 <-  ggplot(temp, aes(x = Area.44, y = d13C, group = group, color = group)) +
+      p4 <-  ggplot(temp, aes(x = Area.44, y = d13C, group = group, color = group)) +
         geom_point() +
         labs(y = "d13C", title = "d13C vs m/z 44 ") +
         ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
@@ -100,15 +100,48 @@ EA.plot.standards <- function(results){
         ggpubr::stat_regline_equation(label.y.npc = "top") +
         theme_minimal() +
         geom_smooth(method = lm, formula = y ~ x, se = FALSE)
-      ggsave("Isotopes_vs_PeakArea.png", gridExtra::grid.arrange(p6, p5, ncol = 2))
-      p65 <- str_c(results$processed.data.dir, "/Isotopes_vs_PeakArea.png")
+      ggsave("Isotopes_vs_PeakArea.png", gridExtra::grid.arrange(p3, p4, ncol = 2))
+      p34 <- str_c(results$processed.data.dir, "/Isotopes_vs_PeakArea.png")
+
+      #Save linear models for corrections later
+      d15N.vs.Area28.lm.coeff <- coefficients(lm(temp$d15N ~ temp$Area.28))
+      d13C.vs.Area44.lm.coeff <- coefficients(lm(temp$d13C ~ temp$Area.44))
+
+      lm.temp <- data.frame(Model=c("d13C.vs.Area44", "d15N.vs.Area28", "MassC.vs.Area44", "MassN.vs.Area28"),
+                rbind(d13C.vs.Area44.lm.coeff, d15N.vs.Area28.lm.coeff, C.mass.vs.Area44.lm.coeff, N.mass.vs.Area28.lm.coeff))
+      colnames(lm.temp) <- c("Model","Intercept", "Slope")
+      standard.coefficients <- tibble(lm.temp)
+
+
+      # PLOT 3 -----------------------------
+      # Delta vs. Row number in run
+      # includes only  GA1 & GA2
+      p5 <- ggplot(temp, aes(x = Row, y = d15N, group = group, color = group)) +
+        geom_point() +
+        labs(y = "d15N", title = "d15N vs Row Number") +
+        ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
+                         label.y.npc = "center") +
+        ggpubr::stat_regline_equation(label.y.npc = "top") +
+        geom_smooth(method = lm, formula = y ~ x, se = FALSE) +
+        theme_minimal() +
+        theme(legend.position = "none")
+      p6 <-  ggplot(temp, aes(x = Row, y = d13C, group = group, color = group)) +
+        geom_point() +
+        labs(y = "d13C", title = "d13C vs Row Number") +
+        ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
+                         label.y.npc = "center") +
+        ggpubr::stat_regline_equation(label.y.npc = "top") +
+        theme_minimal() +
+        geom_smooth(method = lm, formula = y ~ x, se = FALSE)
+      ggsave("Isotopes_vs_RowNumber.png", gridExtra::grid.arrange(p6, p5, ncol = 2))
+      p65 <- str_c(results$processed.data.dir, "/Isotopes_vs_RowNumber.png")
 
       #Save linear models for corrections later
       d15N.vs.Area28.lm.coeff <- coefficients(lm(temp$d15N ~ temp$Area.28))
       d13C.vs.Area44.lm.coeff <- coefficients(lm(temp$d13C ~ temp$Area.44))
 
       temp <- data.frame(Model=c("d13C.vs.Area44", "d15N.vs.Area28", "MassC.vs.Area44", "MassN.vs.Area28"),
-                rbind(d13C.vs.Area44.lm.coeff, d15N.vs.Area28.lm.coeff, C.mass.vs.Area44.lm.coeff, N.mass.vs.Area28.lm.coeff))
+                         rbind(d13C.vs.Area44.lm.coeff, d15N.vs.Area28.lm.coeff, C.mass.vs.Area44.lm.coeff, N.mass.vs.Area28.lm.coeff))
       colnames(temp) <- c("Model","Intercept", "Slope")
       standard.coefficients <- tibble(temp)
 

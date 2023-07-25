@@ -29,9 +29,9 @@ EA.drift.correct <- function(results){
   drift.correct.function <- function(data, row, driftAnalysis, element){
 
     if(element == "N"){
-      drift.slope <- mean(driftAnalysis[,1])
+      drift.slope <- mean(as.numeric(driftAnalysis[,1]))
     } else if(element == "C"){
-      drift.slope <- mean(driftAnalysis[,4])
+      drift.slope <- mean(as.numeric(driftAnalysis[,4]))
     }
     output <- data - drift.slope * row
     return(output)
@@ -42,31 +42,32 @@ EA.drift.correct <- function(results){
   sample.CN <- results$sample.CN
   blank.correct.flag <- results$blank.correct.flag
 
+  standard.CN.temp <- standard.CN[,c("Analysis", "Row", "Comment", "Area.28", "Area.44", "group")]
+  sample.CN.temp <- sample.CN[,c("Analysis", "Row", "Comment", "Area.28", "Area.44")]
+
+
   # Pick the correct data depending on which corrections were performed.
   if(str_detect(blank.correct.flag, "both|BOTH|Both")) {
-    standard.d13C <- standard.CN$d.13C.12C.blank
-    standard.d15N <- standard.CN$d.15N.14N.blank
-    sample.d13C <- sample.CN$d.13C.12C.blank
-    sample.d15N <- sample.CN$d.15N.14N.blank
+    standard.CN.temp$d13C <- standard.CN$d.13C.12C.blank
+    standard.CN.temp$d15N <- standard.CN$d.15N.14N.blank
+    sample.CN.temp$d13C <- sample.CN$d.13C.12C.blank
+    sample.CN.temp$d15N <- sample.CN$d.15N.14N.blank
   } else if(str_detect(blank.correct.flag, "none|NONE|None")){
-    standard.d13C <- standard.CN$d.13C.12C
-    standard.d15N <- standard.CN$d.15N.14N
-    sample.d13C <- sample.CN$d.13C.12C
-    sample.d15N <- sample.CN$d.15N.14N
+    standard.CN.temp$d13C <- standard.CN$d.13C.12C
+    standard.CN.temp$d15N <- standard.CN$d.15N.14N
+    sample.CN.temp$d13C <- sample.CN$d.13C.12C
+    sample.CN.temp$d15N <- sample.CN$d.15N.14N
   } else if(str_detect(blank.correct.flag, "C|c")){
-    standard.d13C <- standard.CN$d.13C.12C.blank
-    standard.d15N <- standard.CN$d.15N.14N
-    sample.d13C <- sample.CN$d.13C.12C.blank
-    sample.d15N <- sample.CN$d.15N.14N
+    standard.CN.temp$d13C <- standard.CN$d.13C.12C.blank
+    standard.CN.temp$d15N <- standard.CN$d.15N.14N
+    sample.CN.temp$d13C <- sample.CN$d.13C.12C.blank
+    sample.CN.temp$d15N <- sample.CN$d.15N.14N
   } else if(str_detect(blank.correct.flag, "N|n")){
-    standard.d13C <- standard.CN$d.13C.12C
-    standard.d15N <- standard.CN$d.15N.14N.blank
-    sample.d13C <- sample.CN$d.13C.12C
-    sample.d15N <- sample.CN$d.15N.14N.blank
+    standard.CN.temp$d13C <- standard.CN$d.13C.12C
+    standard.CN.temp$d15N <- standard.CN$d.15N.14N.blank
+    sample.CN.temp$d13C <- sample.CN$d.13C.12C
+    sample.CN.temp$d15N <- sample.CN$d.15N.14N.blank
   }
-
-  standard.CN.temp <- cbind(standard.CN[,c("Analysis", "Row", "Comment", "Area.28", "Area.44", "group")], standard.d15N, standard.d13C)
-  sample.CN.temp <- cbind(sample.CN[,c("Analysis", "Comment", "Area.28", "Area.44", "group")], sample.d15N, sample.d13C)
 
   # Check to see if there are standards in the run that can be used to drift correct.
   # Appropriate standards would be at least 4 repeated measures of GA1, GA2 and salmon that are at approximately the same mass.
@@ -102,8 +103,8 @@ EA.drift.correct <- function(results){
       if(nrow(tempData)==0){
         #do nothing
       } else {
-        lm.drift.N <- lm(data = tempData, formula = d.15N.14N ~ Analysis)
-        lm.drift.C <- lm(data = tempData, formula = d.13C.12C ~ Analysis)
+        lm.drift.N <- lm(data = tempData, formula = d15N ~ Row)
+        lm.drift.C <- lm(data = tempData, formula = d13C ~ Row)
 
         # Record slope of the regression line
         driftAnalysis[i,"slope.N"] <- round(lm.drift.N$coefficients[2], 5)
@@ -112,12 +113,12 @@ EA.drift.correct <- function(results){
         driftAnalysis[i,"intercept.C"] <- round(lm.drift.C$coefficients[1], 3)
 
         # Does the confidence interval for all of the LM slope values exclude zero?
-        if(dplyr::between(0, confint(lm.drift.N, "Analysis", level = 0.95)[1], confint(lm.drift.N, "Analysis", level = 0.95)[2])){
+        if(dplyr::between(0, confint(lm.drift.N, "Row", level = 0.95)[1], confint(lm.drift.N, "Row", level = 0.95)[2])){
           driftAnalysis[i,"slopeCI.N"] <- "Contains Zero"
         } else {
           driftAnalysis[i,"slopeCI.N"] <- "Does Not Contain Zero"
         }
-        if(dplyr::between(0, confint(lm.drift.C, "Analysis", level = 0.95)[1], confint(lm.drift.C, "Analysis", level = 0.95)[2])){
+        if(dplyr::between(0, confint(lm.drift.C, "Row", level = 0.95)[1], confint(lm.drift.C, "Row", level = 0.95)[2])){
           driftAnalysis[i,"slopeCI.C"] <- "Contains Zero"
         } else {
           driftAnalysis[i,"slopeCI.C"] <- "Does Not Contain Zero"
@@ -129,6 +130,7 @@ EA.drift.correct <- function(results){
     print(driftAnalysis)
     drift.correct.flag2 <- readline("Do you want to drift correct? Allowed responses: N, C, both, none.")
 
+    # Standardize case
     if(stringr::str_detect(drift.correct.flag2, "none|NONE|None|both|BOTH|Both")) drift.correct.flag2 <- stringr::str_to_lower(drift.correct.flag2)
     if(stringr::str_detect(drift.correct.flag2, "C|c|N|n")) drift.correct.flag2 <- stringr::str_to_upper(drift.correct.flag2)
 
@@ -139,16 +141,16 @@ EA.drift.correct <- function(results){
     }
 
     if (drift.correct.flag2 == "C" | drift.correct.flag2 == "both") {
-       sample.CN$d.13C.12C.drift <- drift.correct.function(data = sample.CN$d.13C.12C, row = sample.CN$Row,
+       sample.CN$d.13C.12C.drift <- drift.correct.function(data = sample.CN.temp$d13C, row = sample.CN.temp$Row,
                                                           driftAnalysis = driftAnalysis, element = "C")
 
-       standard.CN$d.13C.12C.drift <- drift.correct.function(data = standard.CN$d.13C.12C, row = standard.CN$Row,
+       standard.CN$d.13C.12C.drift <- drift.correct.function(data = standard.CN.temp$d13C, row = standard.CN.temp$Row,
                                                              driftAnalysis = driftAnalysis, element = "C")
     }
 
 
     if (drift.correct.flag2 == "N" | drift.correct.flag2 == "both") {
-       sample.CN$d.15N.14N.drift <- drift.correct.function(data = standard.CN$d.15N.14N, row = standard.CN$Row,
+       sample.CN$d.15N.14N.drift <- drift.correct.function(data = standard.CN.temp$d.15N.14N, row = standard.CN.temp$Row,
                                                            driftAnalysis = driftAnalysis, element = "N")
 
       standard.CN$d.15N.14N.drift <- drift.correct.function(data = standard.CN.temp$d.15N.14N, row = standard.CN.temp$Row,
