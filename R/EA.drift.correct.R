@@ -75,6 +75,7 @@ EA.drift.correct <- function(results){
   standards.flag <- nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c("GA1"))) >= 4
   standards.flag <- c(standards.flag, nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c("GA2"))) >= 4)
   standards.flag <- c(standards.flag, nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c("SALMON"))) >= 4)
+  standards.flag <- c(standards.flag, nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c("PL"))) >= 4)
 
   drift.correct.flag1 <- any(standards.flag)
 

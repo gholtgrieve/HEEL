@@ -73,35 +73,17 @@ EA.organize <- function(results){
   sample.CN <- tempCN[stringr::str_detect(tempCN$Comment, "SAMPLE|SAMPLES|sample|Sample"),]
   sample.CN$Comment[stringr::str_detect(sample.CN$Comment, "SAMPLE|SAMPLES|sample|Sample")] <- "SAMPLE"
 
-
   #Separate standards (both regular and QTY) from everything else
   standard.CN <- tempCN[stringr::str_detect(tempCN$Comment, "STANDARD|standard|Standard|STD|std|Std|QTY|qty|Qty"),]
   standard.CN$Comment[stringr::str_detect(standard.CN$Comment, "STANDARD|standard|Standard|STD|std|Std")] <- "STANDARD"
   standard.CN$Comment[stringr::str_detect(standard.CN$Comment, "QTY|qty|Qty")] <- "QTY"
 
-  #Add expected mass C and N in standards based on amount (mass) and known composition of the standards.
-  GA.Amt.N <- 0.0952 #proportion N by mass
-  GA.Amt.C <- 0.408168 #proportion C by mass
-  SALMON.Amt.N <- 0.1183 #proportion N by mass
-  SALMON.Amt.C <- 0.457 #proportion C by mass
-
-  #Start with salmon standard
-  index <- stringr::str_detect(standard.CN$Identifier.1, "sal|SAL|Sal|Salmon|salmon|SALMON")
-  standard.CN$mass.N.mg[index] <- standard.CN$Amount[index] * SALMON.Amt.N
-  standard.CN$mass.C.mg[index] <- standard.CN$Amount[index] * SALMON.Amt.C
-  standard.CN$group[index] <- "SALMON"
-
-  #GA1 standard (same mass for both GA1 and GA2)
-  index <- stringr::str_detect(standard.CN$Identifier.1, "GA1|ga1|Ga1")
-  standard.CN$mass.N.mg[index] <- standard.CN$Amount[index] * GA.Amt.N
-  standard.CN$mass.C.mg[index] <- standard.CN$Amount[index] * GA.Amt.C
-  standard.CN$group[index] <- "GA1"
-
-  #GA2 standard (same mass for both GA1 and GA2)
-  index <- stringr::str_detect(standard.CN$Identifier.1, "GA2|ga2|Ga2")
-  standard.CN$mass.N.mg[index] <- standard.CN$Amount[index] * GA.Amt.N
-  standard.CN$mass.C.mg[index] <- standard.CN$Amount[index] * GA.Amt.C
-  standard.CN$group[index] <- "GA2"
+  #Add empty columns to standard.CN for mass percent C & N and the expected d13C and d15N.  Populated in EA.standards() function.
+  standard.CN$group <- NA
+  standard.CN$mass.C.mg <- NA
+  standard.CN$mass.N.mg <- NA
+  standard.CN$known.d13C <- NA
+  standard.CN$known.d15N <- NA
 
  #Make a list containing standards, samples, and blanks to be returned for easy access by subsequent functions.
   return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.CN=blank.CN, zero.flag=zero.flag, blank.flag=blank.flag, analysis.date=analysis.date))

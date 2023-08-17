@@ -59,6 +59,7 @@ results <- list(data.files=data.files,
                 measured.standard.means=NA,
                 standard.coefficients=NA,
                 known.standard.values=NA,
+                standards.in.run=NA,
                 calibration.coefficients=NA,
                 error.analysis.results=NA,
                 standard.CN=NA,
@@ -68,8 +69,9 @@ results <- list(data.files=data.files,
                 peak.area.flags=NA,
                 run.comments=NA)
 
-    results[c("processed.data.dir", "raw.sequence.data")] <- EA.load.data(results)
-    results[c("standard.CN","sample.CN","blank.CN", "zero.flag", "blank.flag", "analysis.date")] <- EA.organize(results)
+    results[c("processed.data.dir","raw.sequence.data")] <- EA.load.data(results)
+    results[c("standard.CN","sample.CN","blank.CN","zero.flag","blank.flag", "analysis.date")] <- EA.organize(results)
+    results[c("standard.CN","known.standard.values","standards.in.run")] <- EA.standards(results)
     results[c("standard.CN","sample.CN","blank.correct.flag")] <- EA.blank.correct(results)
     results[c("standard.CN","sample.CN","drift.correct.flag")] <- EA.drift.correct(results)
     results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results)
