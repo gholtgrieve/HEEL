@@ -40,6 +40,10 @@ EA.standards <- function(results){
   standard.CN$group[index] <- "PL"
 
   standards.in.run <- unique(standard.CN$group)
+
+  if(!"GA1" %in% standards.in.run) stop ("Required GA1 standard is missing.")
+  if(!"GA2" %in% standards.in.run) stop ("Required GA1 standard is missing.")
+  if(!("SALMON" %in% standards.in.run | "PL" %in% standards.in.run)) stop ("Required salmon or peach leaves standard is missing.")
   print("The following reference standards have been identified:")
   print(standards.in.run)
 

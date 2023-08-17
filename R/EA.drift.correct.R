@@ -69,13 +69,22 @@ EA.drift.correct <- function(results){
     sample.CN.temp$d15N <- sample.CN$d.15N.14N.blank
   }
 
+  #Decide which standards to use
+  STD1 <- "GA1"
+  STD2 <- "GA2"
+  if("SALMON" %in% standards.in.run){
+    STD3 <- "SALMON"
+  } else if ("PL" %in% standards.in.run) {
+    STD3 <- "PL"
+    print("Using peach leaves standard in place of salmon.")
+  }
+
   # Check to see if there are standards in the run that can be used to drift correct.
   # Appropriate standards would be at least 4 repeated measures of GA1, GA2 and salmon that are at approximately the same mass.
   # This excludes QTY standard that vary in their sample mass..
-  standards.flag <- nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c("GA1"))) >= 4
-  standards.flag <- c(standards.flag, nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c("GA2"))) >= 4)
-  standards.flag <- c(standards.flag, nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c("SALMON"))) >= 4)
-  standards.flag <- c(standards.flag, nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c("PL"))) >= 4)
+  standards.flag <- nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c(STD1))) >= 4
+  standards.flag <- c(standards.flag, nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c(STD2))) >= 4)
+  standards.flag <- c(standards.flag, nrow(filter(standard.CN.temp, Comment %in% c("STANDARD") & group %in% c(STD3))) >= 4)
 
   drift.correct.flag1 <- any(standards.flag)
 
@@ -91,12 +100,12 @@ EA.drift.correct <- function(results){
     driftAnalysis <- matrix(data=NA, nrow=3, ncol=6)
     colnames(driftAnalysis) <- c("slope.N", "intercept.N", "slopeCI.N",
                                    "slope.C", "intercept.C", "slopeCI.C")
-    rownames(driftAnalysis) <- c("GA1", "GA2", "SALMON")
+    rownames(driftAnalysis) <- c(STD1, STD2, STD3)
 
     #use on STD (not QTY)
     dataSTD <- standard.CN.temp[standard.CN.temp$Comment == "STANDARD",]
 
-    group <- c("GA1", "GA2", "SALMON")
+    group <- c(STD1, STD2, STD3)
 
     for(i in 1:3){
       tempData <- dataSTD[stringr::str_detect(dataSTD$group, group[i]),]

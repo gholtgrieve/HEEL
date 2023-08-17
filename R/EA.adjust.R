@@ -74,15 +74,20 @@ EA.adjust <- function(results){
                           group_by(group) %>%
                           dplyr::summarize(d13C_raw = mean(standard.d13C), d15N_raw = mean(standard.d15N))
 
-  #Decide which standards to use for N
+  #Decide which standards to use
+  STD1 <- "GA1"
+  STD2 <- "GA2"
   if("SALMON" %in% standards.in.run){
-
+    STD3 <- "SALMON"
+  } else if ("PL" %in% standards.in.run) {
+    STD3 <- "PL"
+    print("Using peach leaves standard in place of salmon.")
   }
 
   ## Adjust d13 vs. tank to vs. VPDB using GA1 and GA2 working standards
   ## Build linear model using VPDB values on the y and drift corrected raw values on the x.
-  x <- dplyr::filter(measured.standard.means.raw, group == "GA1" | group == "GA2")$d13C_raw
-  y <- dplyr::filter(known.standard.d13C.d15N, group == "GA1" | group == "GA2")$d13C
+  x <- dplyr::filter(measured.standard.means.raw, group == STD1 | group == STD2)$d13C_raw
+  y <- dplyr::filter(known.standard.d13C.d15N, group == STD1 | group == STD2)$d13C
   C.lm <- lm(y ~ x)
   C.lm.coeff <- coefficients(C.lm)
   sample.CN$d.13C.12C.VPDB <- C.lm.coeff[1] + C.lm.coeff[2] * sample.CN.temp$sample.d13C
@@ -90,15 +95,15 @@ EA.adjust <- function(results){
 
   ## Adjust d13 vs. tank to vs. VPDB using GA1 and GA2 working standards
   ## Build linear model using VPDB values on the y and drift corrected raw values on the x.
-  x <- dplyr::filter(measured.standard.means.raw, group == "SALMON" | group == "GA2")$d15N_raw
-  y <- dplyr::filter(known.standard.d13C.d15N, group == "SALMON" | group == "GA2")$d15N
+  x <- dplyr::filter(measured.standard.means.raw, group == STD3 | group == STD2)$d15N_raw
+  y <- dplyr::filter(known.standard.d13C.d15N, group == STD3 | group == STD2)$d15N
   N.lm <- lm(y ~ x)
   N.lm.coeff <- coefficients(N.lm)
   sample.CN$d.15N.14N.air <- N.lm.coeff[1] + N.lm.coeff[2] * sample.CN.temp$sample.d15N
   standard.CN$d.15N.14N.air <- N.lm.coeff[1] + N.lm.coeff[2] * standard.CN.temp$standard.d15N
 
-  #Calculate percent C using peak area vs. mass of GA1 QTY.
-  mass.C.lm.coeff <-  dplyr::filter(standard.CN, group == "GA1", ) %>%
+  #Calculate percent C using peak area vs. mass of GA1 and/or GA2 QTY.
+  mass.C.lm.coeff <-  dplyr::filter(standard.CN, group == STD1 | group == STD2, ) %>%
                       lm(mass.C.mg ~ Area.44, data = .) %>%
                       coefficients()
   if(return.mass.percent.CN == F){
@@ -109,8 +114,8 @@ EA.adjust <- function(results){
     standard.CN$mass.percent.C <- (mass.C.lm.coeff[1] + mass.C.lm.coeff[2] * standard.CN$Area.44) / standard.CN$Amount * 100
   }
 
-  #Calculate percent C using peak area vs. mass of GA1 QTY.
-  mass.N.lm.coeff <-  filter(standard.CN, group == "GA1", ) %>%
+  #Calculate percent N using peak area vs. mass of GA1 and/or GA2 QTY.
+  mass.N.lm.coeff <-  filter(standard.CN, group == STD1 | group == STD2, ) %>%
     lm(mass.N.mg ~ Area.28, data = .) %>%
     coefficients()
   if(return.mass.percent.CN == F){
