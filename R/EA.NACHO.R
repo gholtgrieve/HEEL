@@ -5,7 +5,7 @@
 #' sample data are also returned as a dataframe.
 #'
 #' The input data file has strict formatting and data requirements. Each sample or standard should have four rows of data: two for  N and
-#' two for C.  Deviations from this is will result in the function failing. Blanks and zeros are an excpetion and can have only two rows.
+#' two for C.  Deviations from this is will result in the function failing. Blanks and zeros are an exception and can have only two rows.
 #' The follow columns must be present in the input data file for the function to work.
 #'   \describe{
 #'     \item{Row}{Row number for the IsoDat sequence file.}
@@ -64,14 +64,15 @@ results <- list(data.files=data.files,
                 error.analysis.results=NA,
                 standard.CN=NA,
                 sample.CN=NA,
+                current.data.column=NA,
                 zero.CN=NA,
                 blank.CN=NA,
                 peak.area.flags=NA,
                 run.comments=NA)
 
-    results[c("processed.data.dir","raw.sequence.data")] <- EA.load.data(results)
-    results[c("standard.CN","sample.CN","blank.CN","zero.flag","blank.flag", "analysis.date")] <- EA.organize(results)
-    results[c("standard.CN","known.standard.values","standards.in.run")] <- EA.standards(results)
+    results[c("processed.data.dir","raw.sequence.data")] <- EA.load.data(results) #code reviewed by GWH 25 Oct 2023
+    results[c("standard.CN","sample.CN","blank.CN","zero.CN","zero.flag","blank.flag","analysis.date")] <- EA.organize(results) #code reviewed by GWH 25 Oct 2023
+    results[c("standard.CN","known.standard.values","standards.in.run")] <- EA.standards(results) #code reviewed by GWH 25 Oct 2023
     results[c("standard.CN","sample.CN","blank.correct.flag")] <- EA.blank.correct(results)
     results[c("standard.CN","sample.CN","drift.correct.flag")] <- EA.drift.correct(results)
     results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results)

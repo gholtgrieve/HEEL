@@ -1,8 +1,8 @@
 #' @title Loads raw EA data for further analysis.
 #'
 #' @description This internal function loads raw EA data for analysis and makes it available for further analysis. If more than one
-#' data file name (and path) is supplied, those files will e combined into a single dataframe and returned. The function also asks
-#' the user to identify nteractively the directory to place the processed data file and report.
+#' data file name (and path) is supplied, those files will be combined into a single dataframe and returned. The function also asks
+#' the user to identify interactively the directory to place the processed data file and report.
 #'
 #' @usage EA.load.data(results)
 #'

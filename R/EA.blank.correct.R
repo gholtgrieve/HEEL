@@ -38,7 +38,7 @@ EA.blank.correct <- function(results){
 
   if(blank.flag == F){
 
-    print("Non-detectable blanks. Samples and Standards were NOT blank corrected.")
+    print("Non-detectable blanks. Samples and standards were NOT blank corrected.")
     return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.correct.flag = "none"))
 
   } else {
