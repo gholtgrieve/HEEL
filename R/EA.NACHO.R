@@ -34,10 +34,10 @@
 #'
 #' @return Dataframe of data for each unknown sample that includes following finalized values (i.e., what you want...):
 #'   \describe{
-#'     \item{d13C.vs.VPDB}{13C:12C of bulk carbon in the sample in delta notation with units of per mil relatve to Vienna Pee Dee Belemite.}
-#'     \item{d15N.vs.air}{15N:14N of bulk nitrogen in the sample in delta notation with units of per mil relatve to atmospheric air.}
-#'     \item{pctC}{Percent carbon in the sample on a mass basis.}
-#'     \item{pctN}{Percent nitrogen in the sample on a mass basis.}
+#'     \item{d.13C.12C.VPDB}{13C:12C of bulk carbon in the sample in delta notation with units of per mil relatve to Vienna Pee Dee Belemite.}
+#'     \item{d.15N.14N.air}{15N:14N of bulk nitrogen in the sample in delta notation with units of per mil relatve to atmospheric air.}
+#'     \item{mass.percent.C}{Percent carbon in the sample on a mass basis.}
+#'     \item{mass.percent.N}{Percent nitrogen in the sample on a mass basis.}
 #'    }
 #'
 #' @author Gordon W. Holtgrieve
