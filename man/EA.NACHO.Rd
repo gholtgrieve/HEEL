@@ -11,7 +11,7 @@ EA.NACHO(data.files, return.mass.percent.CN = T)
 together using a single, combined calibration curve.}
 
 \item{return.mass.percent.CN}{Boolean to indicate whether sample mass data should be return as mass C or N as a percent of total sample mass.
-If FALSE, returned values are total mass of C or N in th sample.}
+If FALSE, returned values are total mass of C or N in the sample.}
 }
 \value{
 Dataframe of data for each unknown sample that includes following finalized values (i.e., what you want...):
@@ -28,7 +28,7 @@ The function writes a .csv with the thinned raw data and a .pdf with all relevan
 sample data are also returned as a dataframe.
 
 The input data file has strict formatting and data requirements. Each sample or standard should have four rows of data: two for  N and
-two for C.  Deviations from this is will result in the function failing. Blanks and zeros are an excpetion and can have only two rows.
+two for C.  Deviations from this is will result in the function failing. Blanks and zeros are an exception and can have only two rows.
 The follow columns must be present in the input data file for the function to work.
   \describe{
     \item{Row}{Row number for the IsoDat sequence file.}

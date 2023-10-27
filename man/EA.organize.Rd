@@ -10,11 +10,18 @@ EA.organize(results)
 \item{results}{List containing results from previous functions.}
 }
 \value{
-List with three tables: standard C & N data ($standard.CN), sample C & N data ($sample.CN), blank C & N data ($blank.CN).  Blank table may have zero rows. Also the analysis data at a character.
+List with four tables: standard C & N data ($standard.CN), sample C & N data ($sample.CN), blank C & N data ($blank.CN).  Blank table may have zero rows.
+Two boolean flags to indicate if there are detectable zeros and blanks.  Also returns the analysis date at a character.
+  \describe{
+    \item{standard.CN}{Dataframe of raw data IsoDat data for the standards and QTY standards.}
+    \item{sample.CN}{Dataframe of raw data IsoDat data for the unknown samples form the sequence.}
+    \item{blank.CN}{Dataframe of raw data IsoDat data for any measurable blanks in the sequence.}
+    \item{zero.CN}{Dataframe of raw data IsoDat data for any measurable zeros in the sequence.}
+   }
 }
 \description{
 This function is used to parse the raw EA data from solid samples analyzed on the Delta V irMS systems (NACHO) for further analysis.
-The function is part of the workflow for decomposing and standardizing EA data and not intended to be used directly.
+The function is part of the workflow for decomposing and standardizing EA data and not intended to be used directly. Data are split into the following categories: blanks, zeros, standards, samples
 }
 \author{
 Gordon W. Holtgrieve

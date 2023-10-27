@@ -21,6 +21,8 @@ params:
   blank.CN: ""
   peak.area.flags: ""
   run.comments: ""
+  standards.in.run: ""
+  current.data.columns: ""
   
 title: NACHO Data Report for bulk $\delta$^13^C and $\delta$^15^N
 output: pdf_document 

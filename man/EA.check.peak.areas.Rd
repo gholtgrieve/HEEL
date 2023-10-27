@@ -10,11 +10,11 @@ EA.check.peak.areas(results)
 \item{results}{List containing results from previous functions.}
 }
 \value{
-Boolean dataframe
+Boolean dataframe that records whether sample mass of C and N are outside of the desired range (FALSE == within range).
 }
 \description{
 This internal function check whether the peak areas of samples (masses 28 and 44) are 30%, 50% or 300% of
-the target mass. Target masses are 200 ug C (mass 44) and 40 ug N (mass 38).
+the target mass. Target masses are 200 ug C (m/s 44) and 40 ug N (m/z 28).
 }
 \author{
 Gordon W. Holtgrieve

@@ -2,7 +2,7 @@
 % Please edit documentation in R/EA.adjust.R
 \name{EA.adjust}
 \alias{EA.adjust}
-\title{Corrects raw d13C and 15N to VPBD and air}
+\title{Corrects raw d13C and 15N to vs. VPBD and air}
 \usage{
 EA.adjust(results)
 }
@@ -10,7 +10,15 @@ EA.adjust(results)
 \item{results}{List containing results from previous functions.}
 }
 \value{
-List with three tables: standard C & N data ($standard.CN),
+List containing four dataframes:
+  \describe{
+    \item{standard.CN}{Dataframe of raw data IsoDat data for the standards and QTY standards; updated to with new column for final corrected data.}
+    \item{sample.CN}{Dataframe of raw data IsoDat data for the unknown samples form the sequence; updated to with new column for final corrected data.}
+    \item{calibration.coefficients}{Dataframe of slope and intercept values used during data standardization.}
+    \item{measured.standard.means}{Dataframe of average d13C and d15N of standards vs. tank and vs. international standards.}
+   }
+
+standard C & N data ($standard.CN),
         sample C & N data ($sample.CN),
         and calibration model coefficients ($calibration.coefficients).
 }

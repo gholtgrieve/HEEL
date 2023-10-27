@@ -64,7 +64,7 @@ results <- list(data.files=data.files,
                 error.analysis.results=NA,
                 standard.CN=NA,
                 sample.CN=NA,
-                current.data.column=NA,
+                current.data.columns=NA,
                 zero.CN=NA,
                 blank.CN=NA,
                 peak.area.flags=NA,
@@ -73,12 +73,12 @@ results <- list(data.files=data.files,
     results[c("processed.data.dir","raw.sequence.data")] <- EA.load.data(results) #code reviewed by GWH 25 Oct 2023
     results[c("standard.CN","sample.CN","blank.CN","zero.CN","zero.flag","blank.flag","analysis.date")] <- EA.organize(results) #code reviewed by GWH 25 Oct 2023
     results[c("standard.CN","known.standard.values","standards.in.run")] <- EA.standards(results) #code reviewed by GWH 25 Oct 2023
-    results[c("standard.CN","sample.CN","blank.correct.flag")] <- EA.blank.correct(results)
-    results[c("standard.CN","sample.CN","drift.correct.flag")] <- EA.drift.correct(results)
-    results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results)
-    results[c("peak.area.flags")] <- EA.check.peak.areas(results)
-    results[c("standard.CN","sample.CN","calibration.coefficients","measured.standard.means")] <- EA.adjust(results)
-    results[c("known.standard.values", "error.analysis.results")] <- EA.check(results)
+    results[c("standard.CN","sample.CN","blank.correct.flag", "current.data.columns")] <- EA.blank.correct(results) #code reviewed by GWH 27 Oct 2023
+    results[c("standard.CN","sample.CN","drift.correct.flag", "current.data.columns")] <- EA.drift.correct(results) #code reviewed by GWH 27 Oct 2023
+    results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results) #code reviewed by GWH 27 Oct 2023
+    results[c("peak.area.flags")] <- EA.check.peak.areas(results) #code reviewed by GWH 27 Oct 2023
+    results[c("standard.CN","sample.CN","calibration.coefficients","measured.standard.means")] <- EA.adjust(results) #code reviewed by GWH 27 Oct 2023
+    results[c("known.standard.values", "error.analysis.results")] <- EA.check(results) #code reviewed by GWH 27 Oct 2023
     EA.report(results)
 
     return(results$sample.CN)

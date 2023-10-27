@@ -7,10 +7,13 @@
 EA.check(results)
 }
 \value{
-List with three tables: known.standard.values, error.analysis.results
+List with one tibble:
+   \describe{
+     \item{error.analysis.results}{Table containing accuracy and precision of derived data.}
+   }
 }
 \description{
-This function calculates the r
+Calculates precision and accuracy of d13C, d15N, mass percent C, and mass percent N.
 }
 \author{
 Gordon W. Holtgrieve

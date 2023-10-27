@@ -96,12 +96,6 @@ EA.organize <- function(results){
   standard.CN$known.d13C <- NA
   standard.CN$known.d15N <- NA
 
-  #Record the column names that have the current working mass C, mass N, d13C, and d15. The working column will change as dat are corrected
-  #for blanks, drift, etc.  This list helps to tack what has been done.
-  current.data.column <- vector(mode="character", length = 4,
-                                x=c())
-  names (current.data.column) <- c("peak.area.44", "peak.area.28","12C.13C", "14N.15N")
-
  #Make a list containing standards, samples, and blanks to be returned for easy access by subsequent functions.
   return(list(standard.CN=standard.CN, sample.CN=sample.CN, blank.CN=blank.CN, zero.CN=zero.CN,
               zero.flag=zero.flag, blank.flag=blank.flag, analysis.date=analysis.date))

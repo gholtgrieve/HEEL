@@ -12,6 +12,7 @@
 #'     \item{standard.CN}{Dataframe of raw data IsoDat data for the standards and QTY standards; updated to include known mass C, mass N, d13C, and d15N.}
 #'     \item{known.standard.values}{Dataframe of known values of the working standards used.}
 #'     \item{zero.CN}{Character vector of standards used in this data set.}
+#'     }
 #'
 #' @author Gordon W. Holtgrieve
 #'

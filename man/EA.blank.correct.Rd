@@ -7,13 +7,17 @@
 EA.blank.correct(results)
 }
 \value{
-List with two tables: standard C & N data ($standard.CN),
-        sample C & N data ($sample.CN), and a flag indicating if a
-        blank correction was performed ($blank.correct.flag).
+List with two tables and a Boolean flag:
+  \describe{
+    \item{standard.CN}{Dataframe of raw data IsoDat data for the standards and QTY standards; updated to with new column for blank corrected data, if required.}
+    \item{sample.CN}{Dataframe of raw data IsoDat data for the unknown samples form the sequence; updated to with new column for blank corrected data, if required.}
+    \item{blank.correct.flag}{Boolean flag to indicate if a blank correction was performed.}
+    \item{current.data.columns}{Character: Names of the columns in sample.CN and standard.CN tables that should be used in future calculations.}
+    }
 }
 \description{
-(Currently Not Implemented) Analyzes blanks for the run and reports result to the user, then asking whether or not to
-              blank correct standard and sample data. The correction is based on empty tins and a simple mixing model.
+Analyzes blanks for the run and reports result to the user, then asking whether or not to blank correct
+standard and sample data. The correction is based on peak area of mass 28 (mass N) and d15N of empty tins and a simple mixing model.
 }
 \author{
 Gordon W. Holtgrieve

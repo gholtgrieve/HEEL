@@ -15,7 +15,12 @@
 #' @importFrom stringr str_detect
 #' @importFrom dplyr between filter
 #'
-#' @return Character vector of length 1 indicating the results of the drift correct as  N, C, both, or none.
+#' @return List with two tables and a Boolean flag:
+#'   \describe{
+#'     \item{standard.CN}{Dataframe of raw data IsoDat data for the standards and QTY standards; updated to with new column for drift corrected data, if required.}
+#'     \item{sample.CN}{Dataframe of raw data IsoDat data for the unknown samples form the sequence; updated to with new column for drift corrected data, if required.}
+#'     \item{drift.correct.flag}{Boolean flag to indicate if a drift correction was performed.}
+#'     }
 #'
 #' @author Gordon W. Holtgrieve
 #'
@@ -25,7 +30,7 @@
 
 EA.drift.correct <- function(results){
 
-  #Internal function to do the linear drift correct on a given set of data.
+  #Internal function to do a linear drift correct on a given set of data.
   drift.correct.function <- function(data, row, driftAnalysis, element){
 
     if(element == "N"){
@@ -37,37 +42,17 @@ EA.drift.correct <- function(results){
     return(output)
   }
 
-  #
+  ##Load data##
   standard.CN <- results$standard.CN
   sample.CN <- results$sample.CN
   blank.correct.flag <- results$blank.correct.flag
+  current.data.columns <- results$current.data.columns
+  standards.in.run <- results$standards.in.run
 
-  standard.CN.temp <- standard.CN[,c("Analysis", "Row", "Comment", "Area.28", "Area.44", "group")]
-  sample.CN.temp <- sample.CN[,c("Analysis", "Row", "Comment", "Area.28", "Area.44")]
-
-
-  # Pick the correct data depending on which corrections were performed.
-  if(str_detect(blank.correct.flag, "both|BOTH|Both")) {
-    standard.CN.temp$d13C <- standard.CN$d.13C.12C.blank
-    standard.CN.temp$d15N <- standard.CN$d.15N.14N.blank
-    sample.CN.temp$d13C <- sample.CN$d.13C.12C.blank
-    sample.CN.temp$d15N <- sample.CN$d.15N.14N.blank
-  } else if(str_detect(blank.correct.flag, "none|NONE|None")){
-    standard.CN.temp$d13C <- standard.CN$d.13C.12C
-    standard.CN.temp$d15N <- standard.CN$d.15N.14N
-    sample.CN.temp$d13C <- sample.CN$d.13C.12C
-    sample.CN.temp$d15N <- sample.CN$d.15N.14N
-  } else if(str_detect(blank.correct.flag, "C|c")){
-    standard.CN.temp$d13C <- standard.CN$d.13C.12C.blank
-    standard.CN.temp$d15N <- standard.CN$d.15N.14N
-    sample.CN.temp$d13C <- sample.CN$d.13C.12C.blank
-    sample.CN.temp$d15N <- sample.CN$d.15N.14N
-  } else if(str_detect(blank.correct.flag, "N|n")){
-    standard.CN.temp$d13C <- standard.CN$d.13C.12C
-    standard.CN.temp$d15N <- standard.CN$d.15N.14N.blank
-    sample.CN.temp$d13C <- sample.CN$d.13C.12C
-    sample.CN.temp$d15N <- sample.CN$d.15N.14N.blank
-  }
+  standard.CN.temp <- standard.CN[,c("Analysis", "Row", "Comment", "group", "Area.28", "Area.44", current.data.columns)]
+  sample.CN.temp <- sample.CN[,c("Analysis", "Row", "Comment", "Area.28", "Area.44", current.data.columns)]
+  names(standard.CN.temp) <- c("Analysis", "Row", "Comment", "group", "Area.28", "Area.44", "d15N", "d13C")
+  names(sample.CN.temp) <- c("Analysis", "Row", "Comment", "Area.28", "Area.44", "d15N", "d13C")
 
   #Decide which standards to use
   STD1 <- "GA1"
@@ -91,7 +76,8 @@ EA.drift.correct <- function(results){
   if(!drift.correct.flag1){  #Tests if none of the above checks are TRUE
 
     print("Samples and Standards NOT drift corrected becuase of insufficent data to perform calculation.")
-    return(list(standard.CN=standard.CN, sample.CN=sample.CN, drift.correct.flag = "none"))
+    return(list(standard.CN=standard.CN, sample.CN=sample.CN,
+                drift.correct.flag = "none", current.data.columns=current.data.columns))
 
   } else if(drift.correct.flag1){
 
@@ -140,34 +126,38 @@ EA.drift.correct <- function(results){
     print(driftAnalysis)
     drift.correct.flag2 <- readline("Do you want to drift correct? Allowed responses: N, C, both, none.")
 
-    # Standardize case
-    if(stringr::str_detect(drift.correct.flag2, "none|NONE|None|both|BOTH|Both")) drift.correct.flag2 <- stringr::str_to_lower(drift.correct.flag2)
-    if(stringr::str_detect(drift.correct.flag2, "C|c|N|n")) drift.correct.flag2 <- stringr::str_to_upper(drift.correct.flag2)
+    # Standardize case to UPPER
+      drift.correct.flag2 <- stringr::str_to_upper(drift.correct.flag2)
 
-    # flow control
-    if(drift.correct.flag2 == "none") {
+    # Flow Control
+    # If the user indicates no drift correction, return the original data.
+    if(drift.correct.flag2 == "NONE") {
       # If drift.correct.flag is false (i.e., do not drift correct), then do nothing and change the
-      return(list(standard.CN=standard.CN, sample.CN=sample.CN, drift.correct.flag=drift.correct.flag2))
+      return(list(standard.CN=standard.CN, sample.CN=sample.CN, drift.correct.flag=drift.correct.flag2, current.data.columns=current.data.columns))
     }
 
-    if (drift.correct.flag2 == "C" | drift.correct.flag2 == "both") {
+    # If the user indicates drift correction of N or both C and N, do this.
+    if (drift.correct.flag2 == "N" | drift.correct.flag2 == "BOTH") {
+      sample.CN$d.15N.14N.drift <- drift.correct.function(data = sample.CN.temp$d15N, row = sample.CN.temp$Row,
+                                                          driftAnalysis = driftAnalysis, element = "N")
+      standard.CN$d.15N.14N.drift <- drift.correct.function(data = standard.CN.temp$d15N, row = standard.CN.temp$Row,
+                                                            driftAnalysis = driftAnalysis, element = "N")
+      current.data.columns[1] <-c("d.15N.14N.drift")
+    }
+
+    # If the user indicates drift correction of C or both C and N, do this.
+    if (drift.correct.flag2 == "C" | drift.correct.flag2 == "BOTH") {
        sample.CN$d.13C.12C.drift <- drift.correct.function(data = sample.CN.temp$d13C, row = sample.CN.temp$Row,
                                                           driftAnalysis = driftAnalysis, element = "C")
 
        standard.CN$d.13C.12C.drift <- drift.correct.function(data = standard.CN.temp$d13C, row = standard.CN.temp$Row,
                                                              driftAnalysis = driftAnalysis, element = "C")
+       current.data.columns[2] <-c("d.13C.12C.drift")
     }
 
-
-    if (drift.correct.flag2 == "N" | drift.correct.flag2 == "both") {
-       sample.CN$d.15N.14N.drift <- drift.correct.function(data = standard.CN.temp$d.15N.14N, row = standard.CN.temp$Row,
-                                                           driftAnalysis = driftAnalysis, element = "N")
-
-      standard.CN$d.15N.14N.drift <- drift.correct.function(data = standard.CN.temp$d.15N.14N, row = standard.CN.temp$Row,
-                                                            driftAnalysis = driftAnalysis, element = "N")
-    }
-
-    return(list(standard.CN=standard.CN, sample.CN=sample.CN, drift.correct.flag=drift.correct.flag2))
+    #Return results
+    return(list(standard.CN=standard.CN, sample.CN=sample.CN,
+                drift.correct.flag=drift.correct.flag2, current.data.columns=current.data.columns))
   }
 }
 

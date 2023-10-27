@@ -29,32 +29,19 @@ EA.plot.standards <- function(results){
 
   standard.CN <- results$standard.CN
   sequenceID <- results$analysis.dates
-  drift.correct.flag <- results$drift.correct.flag
-  blank.correct.flag <- results$blank.correct.flag
+  current.data.columns <- results$current.data.columns
+#  drift.correct.flag <- results$drift.correct.flag
+#  blank.correct.flag <- results$blank.correct.flag
 
   # Pick the correct data depending on which corrections were performed.
-  if(str_detect(drift.correct.flag, "both|BOTH|Both")) {
-      d13C <- standard.CN$d.13C.12C.drift[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
-      d15N <- standard.CN$d.15N.14N.drift[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
-  } else if(str_detect(drift.correct.flag, "none|NONE|None")){
-    d13C <- standard.CN$d.13C.12C[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
-    d15N <- standard.CN$d.15N.14N[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
-  } else if(str_detect(drift.correct.flag, "C|c")){
-    d13C <- standard.CN$d.13C.12C.drift[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
-    d15N <- standard.CN$d.15N.14N[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
-  } else if(str_detect(drift.correct.flag, "N|n")){
-    d15N <- standard.CN$d.15N.14N.drift[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
-    d13C <- standard.CN$d.13C.12C[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
-  } else if (blank.correct.flag){
-    d13C <- standard.CN$d.13C.12C.blank[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
-    d15N <- standard.CN$d.15N.14N.blank[standard.CN$group=="GA1"|standard.CN$group=="GA2"]
-  }
-  temp <- standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2", c("Row","Area.28", "Area.44", "group")]
-  temp <- data.frame(d13C=d13C, d15N=d15N, temp)
+  standard.CN.temp <- standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2",
+                                  c("Analysis", "Row", "Comment", "group", "Area.28", "Area.44", "mass.N.mg", "mass.C.mg", current.data.columns)]
+  names(standard.CN.temp) <- c("Analysis", "Row", "Comment", "group", "Area.28", "Area.44", "mass.N.mg", "mass.C.mg", "d15N", "d13C")
+
 
   # PLOT 1 -----------------------------
   # Area Response vs. Measured Element Mass for GA1 & GA2 standards
-    p1 <- ggplot(standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2",], aes(x = mass.N.mg, y = Area.28)) +
+    p1 <- ggplot(standard.CN.temp, aes(x = mass.N.mg, y = Area.28)) +
       geom_point() +
       labs(x = "mass (mg)", title = "Area Response vs. Input N") +
       geom_smooth(method=lm, formula = y ~ x, se = FALSE) +
@@ -63,7 +50,7 @@ EA.plot.standards <- function(results){
       ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
                label.y.npc = "center") +
       ggpubr::stat_regline_equation()
-    p2 <- ggplot(standard.CN[standard.CN$group=="GA1"|standard.CN$group=="GA2",], aes(x = mass.C.mg, y = Area.44)) +
+    p2 <- ggplot(standard.CN.temp, aes(x = mass.C.mg, y = Area.44)) +
       geom_point() +
       labs(x = "mass (mg)", title = "Area Response vs. Input C") +
       geom_smooth(method=lm, formula = y ~ x, se = FALSE) +
@@ -75,15 +62,14 @@ EA.plot.standards <- function(results){
     p21 <- str_c(results$processed.data.dir, "/PeakArea_vs_Mass.png")
 
     #Save linear models for mass calculations later
-    temp2 <- standard.CN[standard.CN$group == "GA2" | standard.CN$group == "GA1",]
-    N.mass.vs.Area28.lm.coeff <- coefficients(lm(temp2$mass.N.mg ~ temp$Area.28))
-    C.mass.vs.Area44.lm.coeff <- coefficients(lm(temp2$mass.C.mg ~ temp$Area.44))
+    N.mass.vs.Area28.lm.coeff <- coefficients(lm(standard.CN.temp$mass.N.mg ~ standard.CN.temp$Area.28))
+    C.mass.vs.Area44.lm.coeff <- coefficients(lm(standard.CN.temp$mass.C.mg ~ standard.CN.temp$Area.44))
 
 
     # PLOT 2 -----------------------------
     # Delta vs. Area of QTY standards
     # includes only  GA1 & GA2
-      p3 <- ggplot(temp, aes(x = Area.28, y = d15N, group = group, color = group)) +
+      p3 <- ggplot(standard.CN.temp[standard.CN.temp$Comment=="STANDARD",], aes(x = Area.28, y = d15N, group = group, color = group)) +
         geom_point() +
         labs(y = "d15N", title = "d15N vs m/z 28") +
       ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
@@ -92,7 +78,7 @@ EA.plot.standards <- function(results){
         geom_smooth(method = lm, formula = y ~ x, se = FALSE) +
         theme_minimal() +
         theme(legend.position = "none")
-      p4 <-  ggplot(temp, aes(x = Area.44, y = d13C, group = group, color = group)) +
+      p4 <-  ggplot(standard.CN.temp[standard.CN.temp$Comment=="STANDARD",], aes(x = Area.44, y = d13C, group = group, color = group)) +
         geom_point() +
         labs(y = "d13C", title = "d13C vs m/z 44 ") +
         ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
@@ -104,8 +90,8 @@ EA.plot.standards <- function(results){
       p34 <- str_c(results$processed.data.dir, "/Isotopes_vs_PeakArea.png")
 
       #Save linear models for corrections later
-      d15N.vs.Area28.lm.coeff <- coefficients(lm(temp$d15N ~ temp$Area.28))
-      d13C.vs.Area44.lm.coeff <- coefficients(lm(temp$d13C ~ temp$Area.44))
+      d15N.vs.Area28.lm.coeff <- coefficients(lm(d15N ~ Area.28, data=standard.CN.temp[standard.CN.temp$Comment=="STANDARD",]))
+      d13C.vs.Area44.lm.coeff <- coefficients(lm(d13C ~ Area.44, data=standard.CN.temp[standard.CN.temp$Comment=="STANDARD",]))
 
       lm.temp <- data.frame(Model=c("d13C.vs.Area44", "d15N.vs.Area28", "MassC.vs.Area44", "MassN.vs.Area28"),
                 rbind(d13C.vs.Area44.lm.coeff, d15N.vs.Area28.lm.coeff, C.mass.vs.Area44.lm.coeff, N.mass.vs.Area28.lm.coeff))
@@ -116,7 +102,7 @@ EA.plot.standards <- function(results){
       # PLOT 3 -----------------------------
       # Delta vs. Row number in run
       # includes only  GA1 & GA2
-      p5 <- ggplot(temp, aes(x = Row, y = d15N, group = group, color = group)) +
+      p5 <- ggplot(standard.CN.temp, aes(x = Row, y = d15N, group = group, color = group)) +
         geom_point() +
         labs(y = "d15N", title = "d15N vs Row Number") +
         ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
@@ -125,7 +111,7 @@ EA.plot.standards <- function(results){
         geom_smooth(method = lm, formula = y ~ x, se = FALSE) +
         theme_minimal() +
         theme(legend.position = "none")
-      p6 <-  ggplot(temp, aes(x = Row, y = d13C, group = group, color = group)) +
+      p6 <-  ggplot(standard.CN.temp, aes(x = Row, y = d13C, group = group, color = group)) +
         geom_point() +
         labs(y = "d13C", title = "d13C vs Row Number") +
         ggpubr::stat_cor(aes(label = paste(after_stat(rr.label), after_stat(p.label), sep = "~`,`~")),
@@ -137,8 +123,8 @@ EA.plot.standards <- function(results){
       p65 <- str_c(results$processed.data.dir, "/Isotopes_vs_RowNumber.png")
 
       #Save linear models for corrections later
-      d15N.vs.Area28.lm.coeff <- coefficients(lm(temp$d15N ~ temp$Area.28))
-      d13C.vs.Area44.lm.coeff <- coefficients(lm(temp$d13C ~ temp$Area.44))
+      d15N.vs.Area28.lm.coeff <- coefficients(lm(standard.CN.temp$d15N ~ standard.CN.temp$Area.28))
+      d13C.vs.Area44.lm.coeff <- coefficients(lm(standard.CN.temp$d13C ~ standard.CN.temp$Area.44))
 
       temp <- data.frame(Model=c("d13C.vs.Area44", "d15N.vs.Area28", "MassC.vs.Area44", "MassN.vs.Area28"),
                          rbind(d13C.vs.Area44.lm.coeff, d15N.vs.Area28.lm.coeff, C.mass.vs.Area44.lm.coeff, N.mass.vs.Area28.lm.coeff))

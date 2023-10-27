@@ -10,7 +10,12 @@ EA.drift.correct(results)
 \item{results}{List containing results from previous functions.}
 }
 \value{
-Character vector of length 1 indicating the results of the drift correct as  N, C, both, or none.
+List with two tables and a Boolean flag:
+  \describe{
+    \item{standard.CN}{Dataframe of raw data IsoDat data for the standards and QTY standards; updated to with new column for drift corrected data, if required.}
+    \item{sample.CN}{Dataframe of raw data IsoDat data for the unknown samples form the sequence; updated to with new column for drift corrected data, if required.}
+    \item{drift.correct.flag}{Boolean flag to indicate if a drift correction was performed.}
+    }
 }
 \description{
 This function uses repeated analysis of known standard to check for an, if desired, correct raw data for instrumental drift.
