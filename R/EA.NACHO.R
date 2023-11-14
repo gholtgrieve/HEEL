@@ -78,7 +78,7 @@ results <- list(data.files=data.files,
     results[c("standard.plots","standard.coefficients")] <- EA.plot.standards(results) #code reviewed by GWH 27 Oct 2023
     results[c("peak.area.flags")] <- EA.check.peak.areas(results) #code reviewed by GWH 27 Oct 2023
     results[c("standard.CN","sample.CN","calibration.coefficients","measured.standard.means")] <- EA.adjust(results) #code reviewed by GWH 27 Oct 2023
-    results[c("known.standard.values", "error.analysis.results")] <- EA.check(results) #code reviewed by GWH 27 Oct 2023
+    results[c("error.analysis.results")] <- EA.check(results) #code reviewed by GWH 27 Oct 2023
     EA.report(results)
 
     return(results$sample.CN)

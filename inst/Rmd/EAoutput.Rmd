@@ -52,7 +52,9 @@ library(knitr)
 library(dplyr)
 library(pander)
 
-knitr::kable(tibble(params$known.standard.values), format = "simple", digits = c(NA, 2,2, 1, 1),
+known.stds <- dplyr::filter(params$known.standard.values, group %in% params$standards.in.run)
+
+knitr::kable(tibble(known.stds), format = "simple", digits = c(NA, 2,2, 1, 1),
              caption="Lab reference materials used in this run and their accepted values.")
 
 knitr::kable(params$measured.standard.means, format = "simple", digits = 1,
